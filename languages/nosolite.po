@@ -1,0 +1,19 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: tform1.caption
+msgid "Nosolite"
+msgstr ""
+
+#: tform1.mm_file.caption
+msgid "File"
+msgstr ""
+
+#: tform1.panelbalance.caption
+msgid "PanelBalance"
+msgstr ""
+
+#: tform1.tabwallet.caption
+msgid "Wallet"
+msgstr ""
+
