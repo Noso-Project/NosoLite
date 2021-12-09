@@ -1,0 +1,11 @@
+/lib
+/backup
+/locale
+nosolite
+nosolite.exe
+nosolite.dbg
+gitinst.txt
+*.res
+*.lps
+*.mo
+
