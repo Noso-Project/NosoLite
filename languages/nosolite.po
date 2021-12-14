@@ -10,6 +10,10 @@ msgstr ""
 msgid "Error loading wallet from file: %s"
 msgstr ""
 
+#: nl_language.rserror0003
+msgid "FAILED"
+msgstr ""
+
 #: nl_language.rsgui0001
 msgid "Address"
 msgstr ""
@@ -26,6 +30,22 @@ msgstr ""
 msgid "Balance"
 msgstr ""
 
+#: nl_language.rsgui0005
+msgid "Host"
+msgstr ""
+
+#: nl_language.rsgui0006
+msgid "Block"
+msgstr ""
+
+#: nl_language.rsgui0007
+msgid "Pending"
+msgstr ""
+
+#: nl_language.rsgui0008
+msgid "Branch"
+msgstr ""
+
 #: tform1.caption
 msgid "Nosolite"
 msgstr ""
@@ -38,8 +58,8 @@ msgstr ""
 msgid "File"
 msgstr ""
 
-#: tform1.panelbalance.caption
-msgid "PanelBalance"
+#: tform1.tabnodes.caption
+msgid "Nodes"
 msgstr ""
 
 #: tform1.tabwallet.caption

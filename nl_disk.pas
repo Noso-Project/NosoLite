@@ -5,11 +5,13 @@ unit nl_disk;
 interface
 
 uses
-  Classes, SysUtils, nl_data, nl_cripto, nl_language, dialogs;
+  Classes, SysUtils, nl_data, nl_cripto, nl_language, dialogs, nl_functions;
 
 Procedure VerifyFilesStructure();
 Procedure CreateNewWallet();
 Procedure LoadWallet();
+Procedure SaveOptions();
+Procedure LoadOptions();
 
 implementation
 
@@ -18,6 +20,7 @@ Procedure VerifyFilesStructure();
 Begin
 if not directoryexists(WalletDirectory) then CreateDir(WalletDirectory);
 if not FileExists(WalletFileName) then CreateNewWallet() else LoadWallet();
+if not FileExists(OptionsFilename) then SaveOptions() else LoadOptions();
 End;
 
 //******************************************************************************
@@ -64,9 +67,51 @@ EXCEPT on E:Exception do
   begin
   ShowMessage(format(rsError0002,[e.Message]));
   end;
-END;
+END{Try};
 End;
 
+//******************************************************************************
+// OPTIONS
+//******************************************************************************
+
+Procedure SaveOptions();
+Begin
+TRY
+Assignfile(FILE_Options, OptionsFilename);
+rewrite(FILE_Options);
+writeln(FILE_Options,'block '+WO_LastBlock.ToString);
+writeln(FILE_Options,'sumary '+WO_LastSumary);
+writeln(FILE_Options,'refresh '+WO_Refreshrate.ToString);
+CloseFile(FILE_Options);
+EXCEPT on E:Exception do
+   begin
+
+   end;
+END{Try};
+
+End;
+
+Procedure LoadOptions();
+var
+  LLine : string;
+Begin
+TRY
+Assignfile(FILE_Options, OptionsFilename);
+reset(FILE_Options);
+while not eof(FILE_Options) do
+   begin
+   readln(FILE_Options,LLine);
+    if parameter(LLine,0) ='block' then WO_LastBlock:=Parameter(LLine,1).ToInteger();
+    if parameter(LLine,0) ='sumary' then WO_LastSumary:=Parameter(LLine,1);
+    if parameter(LLine,0) ='refresh' then WO_Refreshrate:=Parameter(LLine,1).ToInteger();
+   end;
+CloseFile(FILE_Options);
+EXCEPT on E:Exception do
+   begin
+
+   end;
+END{Try};
+End;
 
 END. // END UNIT
 

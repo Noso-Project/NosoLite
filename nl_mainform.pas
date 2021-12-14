@@ -6,13 +6,15 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, ExtCtrls,
-  Grids, Menus, StdCtrls, nl_GUI, nl_disk, nl_data;
+  Grids, Menus, StdCtrls, nl_GUI, nl_disk, nl_data, nl_functions, IdTCPClient;
 
 type
 
   { TForm1 }
 
   TForm1 = class(TForm)
+    LabelBlock: TLabel;
+    LabelCLock: TLabel;
     LBalance: TLabel;
     MainMenu: TMainMenu;
     MM_File: TMenuItem;
@@ -20,6 +22,8 @@ type
     PanelBalance: TPanel;
     PanelStatus: TPanel;
     SGridAddresses: TStringGrid;
+    SGridNodes: TStringGrid;
+    TabNodes: TTabSheet;
     TabWallet: TTabSheet;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -52,6 +56,10 @@ procedure TForm1.FormCreate(Sender: TObject);
 Begin
 //Initialize dynamic arrays
 setlength(ARRAY_Addresses,0);
+setlength(ARRAY_Nodes,0);
+ClientChannel := TIdTCPClient.Create(form1);
+LoadSeedNodes();
+
 // Verify files structure
 VerifyFilesStructure;
 
@@ -62,12 +70,18 @@ procedure TForm1.FormShow(Sender: TObject);
 Begin
 LoadGUIInterface();
 RefreshAddresses();
+RefreshNodes();
+
+THREAD_Update := TUpdateThread.Create(true);
+THREAD_Update.FreeOnTerminate:=true;
+THREAD_Update.Start;
 End;
 
 // On resize form events
 procedure TForm1.FormResize(Sender: TObject);
 begin
 ResizeSGridAddresses();
+ResizeSGridNodes();
 end;
 
 // On close query form events
@@ -79,6 +93,7 @@ End;
 // On close form events
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 Begin
+ClientChannel.Free;
 
 End;
 

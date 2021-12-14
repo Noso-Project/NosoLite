@@ -103,21 +103,24 @@
       <FormatVersion Value="2"/>
       <Modes Count="0"/>
     </RunParams>
-    <RequiredPackages Count="4">
+    <RequiredPackages Count="5">
       <Item1>
-        <PackageName Value="dcpcrypt"/>
+        <PackageName Value="indylaz"/>
       </Item1>
       <Item2>
-        <PackageName Value="CryptoLib4PascalPackage"/>
+        <PackageName Value="dcpcrypt"/>
       </Item2>
       <Item3>
-        <PackageName Value="HashLib4PascalPackage"/>
+        <PackageName Value="CryptoLib4PascalPackage"/>
       </Item3>
       <Item4>
-        <PackageName Value="LCL"/>
+        <PackageName Value="HashLib4PascalPackage"/>
       </Item4>
+      <Item5>
+        <PackageName Value="LCL"/>
+      </Item5>
     </RequiredPackages>
-    <Units Count="9">
+    <Units Count="10">
       <Unit0>
         <Filename Value="nosolite.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -159,6 +162,10 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="nl_signerUtils"/>
       </Unit8>
+      <Unit9>
+        <Filename Value="nl_network.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit9>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

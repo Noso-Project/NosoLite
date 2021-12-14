@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 769
+  Left = 719
   Height = 480
-  Top = 134
+  Top = 151
   Width = 640
   Caption = 'Nosolite'
   ClientHeight = 460
@@ -18,7 +18,7 @@ object Form1: TForm1
   LCLVersion = '2.0.10.0'
   object PageControl: TPageControl
     Left = 0
-    Height = 410
+    Height = 426
     Top = 0
     Width = 640
     ActivePage = TabWallet
@@ -27,7 +27,7 @@ object Form1: TForm1
     TabOrder = 0
     object TabWallet: TTabSheet
       Caption = 'Wallet'
-      ClientHeight = 382
+      ClientHeight = 398
       ClientWidth = 632
       object PanelBalance: TPanel
         Left = 0
@@ -36,7 +36,6 @@ object Form1: TForm1
         Width = 632
         Align = alTop
         BevelOuter = bvNone
-        Caption = 'PanelBalance'
         ClientHeight = 50
         ClientWidth = 632
         Color = clBlack
@@ -63,7 +62,7 @@ object Form1: TForm1
       end
       object SGridAddresses: TStringGrid
         Left = 0
-        Height = 332
+        Height = 348
         Top = 50
         Width = 632
         Align = alClient
@@ -83,20 +82,75 @@ object Form1: TForm1
         OnPrepareCanvas = SGridAddressesPrepareCanvas
       end
     end
+    object TabNodes: TTabSheet
+      Caption = 'Nodes'
+      ClientHeight = 398
+      ClientWidth = 632
+      object SGridNodes: TStringGrid
+        Left = 0
+        Height = 398
+        Top = 0
+        Width = 632
+        Align = alClient
+        ColCount = 4
+        FixedCols = 0
+        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goSmoothScroll]
+        RowCount = 1
+        ScrollBars = ssVertical
+        TabOrder = 0
+      end
+    end
   end
   object PanelStatus: TPanel
     Left = 0
-    Height = 50
-    Top = 410
+    Height = 34
+    Top = 426
     Width = 640
     Align = alBottom
     BevelOuter = bvNone
     BevelWidth = 4
     BorderWidth = 1
     BorderStyle = bsSingle
+    ClientHeight = 30
+    ClientWidth = 636
     Color = clSilver
     ParentColor = False
     TabOrder = 1
+    object LabelCLock: TLabel
+      Left = 634
+      Height = 28
+      Top = 1
+      Width = 1
+      Align = alRight
+      Font.CharSet = ANSI_CHARSET
+      Font.Color = clBlack
+      Font.Height = -16
+      Font.Name = 'Consolas'
+      Font.Pitch = fpFixed
+      Font.Quality = fqDraft
+      Font.Style = [fsBold]
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+    end
+    object LabelBlock: TLabel
+      Left = 6
+      Height = 28
+      Top = 1
+      Width = 1
+      Align = alLeft
+      BorderSpacing.Left = 5
+      Font.CharSet = ANSI_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'Consolas'
+      Font.Pitch = fpFixed
+      Font.Quality = fqDraft
+      Font.Style = [fsBold]
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+    end
   end
   object MainMenu: TMainMenu
     Left = 556

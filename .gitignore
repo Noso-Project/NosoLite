@@ -6,6 +6,7 @@ nosolite
 nosolite.exe
 nosolite.dbg
 gitinst.txt
+options.nsl
 *.res
 *.lps
 *.mo
