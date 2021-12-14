@@ -39,6 +39,7 @@ form1.SGridAddresses.Cells[3,0] := rsGUI0004;
 
 End;
 
+// Refresh the adressess grid
 Procedure RefreshAddresses();
 var
   counter : integer = 0;

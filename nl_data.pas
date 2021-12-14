@@ -25,6 +25,14 @@ DivResult = packed record
    residuo : string[255];
    end;
 
+TUpdateThread = class(TThread)
+    private
+      procedure UpdateGUI;
+    protected
+      procedure Execute; override;
+    public
+      Constructor Create(CreateSuspended : boolean);
+    end;
 
 CONST
   WalletDirectory = 'wallet'+directoryseparator;  // Wallet folder
@@ -39,8 +47,28 @@ var
 
   ARRAY_Addresses : array of WalletData;
 
+  THREAD_Update : TUpdateThread;
+
 
 implementation
+
+constructor TUpdateThread.Create(CreateSuspended : boolean);
+Begin
+inherited Create(CreateSuspended);
+FreeOnTerminate := True;
+End;
+
+procedure TUpdateThread.UpdateGUI();
+Begin
+// GUI update here
+End;
+
+procedure TUpdateThread.Execute;
+Begin
+// all the process to update
+Synchronize(@UpdateGUI);
+// wait OptionsRefreshRate
+End;
 
 END. // END UNIT
 
