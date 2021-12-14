@@ -1,6 +1,7 @@
 /lib
 /backup
 /locale
+/wallet
 nosolite
 nosolite.exe
 nosolite.dbg
