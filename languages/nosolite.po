@@ -1,8 +1,37 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8"
 
+#: nl_language.rserror0001
+msgctxt "nl_language.rserror0001"
+msgid "Error creating new wallet file: %s"
+msgstr ""
+
+#: nl_language.rserror0002
+msgid "Error loading wallet from file: %s"
+msgstr ""
+
+#: nl_language.rsgui0001
+msgid "Address"
+msgstr ""
+
+#: nl_language.rsgui0002
+msgid "Incoming"
+msgstr ""
+
+#: nl_language.rsgui0003
+msgid "Outgoing"
+msgstr ""
+
+#: nl_language.rsgui0004
+msgid "Balance"
+msgstr ""
+
 #: tform1.caption
 msgid "Nosolite"
+msgstr ""
+
+#: tform1.lbalance.caption
+msgid "0.00000000 NOSO"
 msgstr ""
 
 #: tform1.mm_file.caption

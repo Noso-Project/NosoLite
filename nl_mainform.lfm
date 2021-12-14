@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 724
+  Left = 769
   Height = 480
-  Top = 136
+  Top = 134
   Width = 640
   Caption = 'Nosolite'
   ClientHeight = 460
@@ -37,9 +37,29 @@ object Form1: TForm1
         Align = alTop
         BevelOuter = bvNone
         Caption = 'PanelBalance'
+        ClientHeight = 50
+        ClientWidth = 632
         Color = clBlack
         ParentColor = False
         TabOrder = 0
+        object LBalance: TLabel
+          Left = 386
+          Height = 50
+          Top = 0
+          Width = 240
+          Align = alRight
+          BorderSpacing.Right = 6
+          Caption = '0.00000000 NOSO'
+          Font.CharSet = ANSI_CHARSET
+          Font.Color = clWhite
+          Font.Height = -29
+          Font.Name = 'Consolas'
+          Font.Pitch = fpFixed
+          Font.Quality = fqDraft
+          Layout = tlCenter
+          ParentColor = False
+          ParentFont = False
+        end
       end
       object SGridAddresses: TStringGrid
         Left = 0
@@ -49,9 +69,18 @@ object Form1: TForm1
         Align = alClient
         ColCount = 4
         FixedCols = 0
+        Font.CharSet = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Consolas'
+        Font.Pitch = fpFixed
+        Font.Quality = fqDraft
+        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRowSelect, goSmoothScroll]
+        ParentFont = False
         RowCount = 1
         ScrollBars = ssVertical
         TabOrder = 1
+        OnPrepareCanvas = SGridAddressesPrepareCanvas
       end
     end
   end
