@@ -3,13 +3,12 @@ program nosolite;
 {$mode objfpc}{$H+}
 
 uses
-  {$IFDEF UNIX}{$IFDEF UseCThreads}
+  {$IFDEF UNIX}
   cthreads,
-  {$ENDIF}{$ENDIF}
+  {$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, nl_mainform, nl_language, nl_GUI, nl_data, nl_functions, nl_disk,
-  nl_cripto, nl_network, nl_signerUtils
-  { you can add units after this };
+  nl_cripto, nl_network, nl_signerUtils, indylaz;
 
 {$R *.res}
 
