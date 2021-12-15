@@ -72,9 +72,11 @@ LoadGUIInterface();
 RefreshAddresses();
 RefreshNodes();
 
+
 THREAD_Update := TUpdateThread.Create(true);
 THREAD_Update.FreeOnTerminate:=true;
 THREAD_Update.Start;
+
 End;
 
 // On resize form events

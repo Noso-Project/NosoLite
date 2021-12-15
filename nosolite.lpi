@@ -61,6 +61,14 @@
               </Win32>
             </Options>
           </Linking>
+          <Other>
+            <Verbosity>
+              <ShoLineNum Value="True"/>
+              <ShowExecInfo Value="True"/>
+              <ShowHintsForUnusedUnitsInMainSrc Value="True"/>
+              <ShowHintsForSenderNotUsed Value="True"/>
+            </Verbosity>
+          </Other>
         </CompilerOptions>
       </Item2>
       <Item3 Name="Release">
@@ -103,22 +111,16 @@
       <FormatVersion Value="2"/>
       <Modes Count="0"/>
     </RunParams>
-    <RequiredPackages Count="5">
+    <RequiredPackages Count="3">
       <Item1>
-        <PackageName Value="indylaz"/>
+        <PackageName Value="CryptoLib4PascalPackage"/>
       </Item1>
       <Item2>
-        <PackageName Value="dcpcrypt"/>
+        <PackageName Value="indylaz_runtime"/>
       </Item2>
       <Item3>
-        <PackageName Value="CryptoLib4PascalPackage"/>
-      </Item3>
-      <Item4>
-        <PackageName Value="HashLib4PascalPackage"/>
-      </Item4>
-      <Item5>
         <PackageName Value="LCL"/>
-      </Item5>
+      </Item3>
     </RequiredPackages>
     <Units Count="10">
       <Unit0>

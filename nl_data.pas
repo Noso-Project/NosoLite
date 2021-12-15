@@ -25,6 +25,7 @@ DivResult = packed record
    residuo : string[255];
    end;
 
+
 TUpdateThread = class(TThread)
     private
       procedure UpdateGUI;
