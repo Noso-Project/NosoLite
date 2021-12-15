@@ -36,8 +36,8 @@ if not errored then
    ClientChannel.Host:=Host;
    ClientChannel.Port:=StrToIntDef(Port,8080);
       TRY
-      ClientChannel.ConnectTimeout:= 5000;
-      ClientChannel.ReadTimeout:=5000;
+      ClientChannel.ConnectTimeout:= 1000;
+      ClientChannel.ReadTimeout:=500;
       ClientChannel.Connect;
       ClientChannel.IOHandler.WriteLn('NODESTATUS');
       result := ClientChannel.IOHandler.ReadLn(IndyTextEncoding_UTF8);

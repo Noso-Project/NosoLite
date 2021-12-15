@@ -5,7 +5,7 @@ unit nl_data;
 interface
 
 uses
-  Classes, SysUtils, IdTCPClient;
+  Classes, SysUtils, IdTCPClient, dateutils;
 
 Type
 
@@ -74,6 +74,8 @@ var
                                  '107.172.5.8:8080 '+
                                  '185.239.239.184:8080 '+
                                  '109.230.238.240:8080';
+  Int_LastThreadExecution : int64 = 0;
+
   WO_LastBlock : integer = 0;
   WO_LastSumary : string = '';
   WO_Refreshrate : integer = 15;
@@ -101,28 +103,34 @@ procedure TUpdateThread.Execute;
 var
   counter : integer;
   LLine : String = '';
+  ActualTime : int64;
 Begin
 While not terminated do
    begin
-   For counter := 0 to length(ARRAY_Nodes)-1 do
+   ActualTime := DateTimeToUnix(now);
+   if ActualTime >= Int_LastThreadExecution+WO_Refreshrate then
       begin
-      LLine := GetNodeStatus(ARRAY_Nodes[counter].host,ARRAY_Nodes[counter].port.ToString);
-      if LLine <> '' then
+      For counter := 0 to length(ARRAY_Nodes)-1 do
          begin
-         ARRAY_Nodes[counter].block:=Parameter(LLine,2).ToInteger();
-         ARRAY_Nodes[counter].Pending:=Parameter(LLine,3).ToInteger();
-         ARRAY_Nodes[counter].Branch:=Parameter(LLine,5);
-         end
-      else
-         begin
-         ARRAY_Nodes[counter].block:=0;
-         ARRAY_Nodes[counter].Pending:=0;
-         ARRAY_Nodes[counter].Branch:=rsError0003;
+         LLine := '';
+         if not terminated then LLine := GetNodeStatus(ARRAY_Nodes[counter].host,ARRAY_Nodes[counter].port.ToString);
+         if LLine <> '' then
+            begin
+            ARRAY_Nodes[counter].block:=Parameter(LLine,2).ToInteger();
+            ARRAY_Nodes[counter].Pending:=Parameter(LLine,3).ToInteger();
+            ARRAY_Nodes[counter].Branch:=Parameter(LLine,5);
+            end
+         else
+            begin
+            ARRAY_Nodes[counter].block:=0;
+            ARRAY_Nodes[counter].Pending:=0;
+            ARRAY_Nodes[counter].Branch:=rsError0003;
+            end;
          end;
+      Consensus;
+      Synchronize(@UpdateGUI);
+      Int_LastThreadExecution := DateTimeToUnix(now);
       end;
-   Consensus;
-   Synchronize(@UpdateGUI);
-   Sleep(WO_Refreshrate*1000);
    end;
 End;
 

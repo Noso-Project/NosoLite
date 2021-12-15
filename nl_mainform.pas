@@ -89,14 +89,15 @@ end;
 // On close query form events
 procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: boolean);
 Begin
-
+THREAD_Update.Terminate;
+THREAD_Update.WaitFor;
 End;
 
 // On close form events
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 Begin
 ClientChannel.Free;
-
+application.Terminate;
 End;
 
 // Prepare canvas for adressess grid
