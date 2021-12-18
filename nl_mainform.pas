@@ -7,16 +7,18 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, ExtCtrls,
   Grids, Menus, StdCtrls, nl_GUI, nl_disk, nl_data, nl_functions, IdTCPClient,
-  nl_language, nl_cripto, Clipbrd, nl_explorer;
+  nl_language, nl_cripto, Clipbrd, nl_explorer, IdComponent;
 
 type
 
   { TForm1 }
 
   TForm1 = class(TForm)
+    ClientChannel: TIdTCPClient;
     ImageBlockInfo: TImage;
     ImageSync: TImage;
     ImageDownload: TImage;
+    LabelDownload: TLabel;
     LabelBlockInfo: TLabel;
     LabelCLock: TLabel;
     LBalance: TLabel;
@@ -40,6 +42,11 @@ type
     TabNodes: TTabSheet;
     TabLog: TTabSheet;
     TabWallet: TTabSheet;
+    procedure ClientChannelWork(ASender: TObject; AWorkMode: TWorkMode;
+      AWorkCount: Int64);
+    procedure ClientChannelWorkBegin(ASender: TObject; AWorkMode: TWorkMode;
+      AWorkCountMax: Int64);
+    procedure ClientChannelWorkEnd(ASender: TObject; AWorkMode: TWorkMode);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormResize(Sender: TObject);
@@ -81,7 +88,7 @@ setlength(ARRAY_Addresses,0);
 setlength(ARRAY_Nodes,0);
 setlength(ARRAY_Sumary,0);
 LogLines :=TStringList.create;
-ClientChannel := TIdTCPClient.Create(form1);
+
 LoadSeedNodes();
 
 // Verify files structure
@@ -112,6 +119,7 @@ end;
 // On close query form events
 procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: boolean);
 Begin
+Closing_App := true;
 THREAD_Update.Terminate;
 THREAD_Update.WaitFor;
 SaveOptions;
@@ -140,6 +148,33 @@ if (ACol>0)  then
    (Sender as TStringGrid).Canvas.TextStyle := ts;
    end;
 End;
+
+//******************************************************************************
+// Client channel
+//******************************************************************************
+
+// On work begin
+procedure TForm1.ClientChannelWorkBegin(ASender: TObject; AWorkMode: TWorkMode;
+  AWorkCountMax: Int64);
+Begin
+Int_SumarySize := AWorkCountMax;
+Form1.LabelDownload.Caption
+End;
+
+// Client on work
+procedure TForm1.ClientChannelWork(ASender: TObject; AWorkMode: TWorkMode;
+  AWorkCount: Int64);
+Begin
+Form1.LabelDownload.Caption:=IntToStr(((AWorkCount*100) div Int_SumarySize))+' %';
+End;
+
+// On work end
+procedure TForm1.ClientChannelWorkEnd(ASender: TObject; AWorkMode: TWorkMode);
+Begin
+Tolog(format(rsGUI0013,[Int_SumarySize div 1024]));
+Form1.LabelDownload.Caption  := '0 %';
+End;
+
 
 //******************************************************************************
 // Addresses Pop Up menu

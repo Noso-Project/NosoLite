@@ -12,6 +12,9 @@ function GetSumary():boolean;
 
 implementation
 
+Uses
+  nl_mainform;
+
 // Connects a client and returns the nodestatus
 function GetNodeStatus(Host,Port:String):string;
 var
@@ -24,26 +27,26 @@ if Host = '127.0.0.1' then
    end;
 if not errored then
    begin
-   if ClientChannel.Connected then
+   if form1.ClientChannel.Connected then
       begin
          TRY
-         ClientChannel.IOHandler.InputBuffer.Clear;
-         ClientChannel.Disconnect;
+         form1.ClientChannel.IOHandler.InputBuffer.Clear;
+         form1.ClientChannel.Disconnect;
          EXCEPT on E:exception do
             begin
             ToLog(Format(rsError0005,[E.Message]));
             end;
          END{try};
       end;
-   ClientChannel.Host:=Host;
-   ClientChannel.Port:=StrToIntDef(Port,8080);
+   form1.ClientChannel.Host:=Host;
+   form1.ClientChannel.Port:=StrToIntDef(Port,8080);
       TRY
-      ClientChannel.ConnectTimeout:= 1000;
-      ClientChannel.ReadTimeout:=500;
-      ClientChannel.Connect;
-      ClientChannel.IOHandler.WriteLn('NODESTATUS');
-      result := ClientChannel.IOHandler.ReadLn(IndyTextEncoding_UTF8);
-      ClientChannel.Disconnect();
+      form1.ClientChannel.ConnectTimeout:= 1000;
+      form1.ClientChannel.ReadTimeout:=500;
+      form1.ClientChannel.Connect;
+      form1.ClientChannel.IOHandler.WriteLn('NODESTATUS');
+      result := form1.ClientChannel.IOHandler.ReadLn(IndyTextEncoding_UTF8);
+      form1.ClientChannel.Disconnect();
       EXCEPT on E:Exception do
          begin
          ToLog(Format(rsError0006,[Host,E.message]));
@@ -58,26 +61,26 @@ var
   AFileStream : TFileStream;
 Begin
 result := false;
-ClientChannel.Host:='192.210.226.118';
-ClientChannel.Port:=8080;
-ClientChannel.ConnectTimeout:= 1000;
-ClientChannel.ReadTimeout:=500;
-//ClientChannel.OnWork:=;
+form1.ClientChannel.Host:='192.210.226.118';
+form1.ClientChannel.Port:=8080;
+form1.ClientChannel.ConnectTimeout:= 1000;
+form1.ClientChannel.ReadTimeout:=500;
+//form1.ClientChannel.OnWork:=@Form1.ClientChannelWorkBegin;
 TRY
-ClientChannel.Connect;
-ClientChannel.IOHandler.WriteLn('GETSUMARY');
+form1.ClientChannel.Connect;
+form1.ClientChannel.IOHandler.WriteLn('GETSUMARY');
 AFileStream := TFileStream.Create(SumaryFilename, fmCreate);
    TRY
-   ClientChannel.IOHandler.ReadStream(AFileStream);
+   form1.ClientChannel.IOHandler.ReadStream(AFileStream);
    result := true;
    EXCEPT on E:Exception do
       begin
-
+      ToLog(Format(rsError0008,[form1.ClientChannel.Host]));
       end;
    END{Try};
 FINALLY
 AFileStream.Free;
-ClientChannel.Disconnect();
+form1.ClientChannel.Disconnect();
 END{try};
 
 End;

@@ -42,6 +42,10 @@ msgstr ""
 msgid "Error: Address already exists on wallet-> %s"
 msgstr ""
 
+#: nl_language.rserror0008
+msgid "Error: Downloading summary from -> %s"
+msgstr ""
+
 #: nl_language.rsexp0001
 msgid "Name"
 msgstr ""
@@ -92,6 +96,10 @@ msgstr ""
 
 #: nl_language.rsgui0012
 msgid "Added new wallet: %s"
+msgstr ""
+
+#: nl_language.rsgui0013
+msgid "Sumary downloaded: %d kb"
 msgstr ""
 
 #: tform1.caption

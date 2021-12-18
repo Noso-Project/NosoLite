@@ -84,7 +84,6 @@ var
   ARRAY_Sumary : array of SumaryData;
 
   THREAD_Update : TUpdateThread;
-  ClientChannel : TIdTCPClient;
 
   STR_SeedNodes : String = 'DefNodes '+
                                  '45.146.252.103:8080 '+
@@ -95,6 +94,7 @@ var
                                  '109.230.238.240:8080';
   Int_LastThreadExecution : int64 = 0;
   Int_WalletBalance       : int64 = 0;
+  Int_SumarySize          : int64 = 0;
 
   WO_LastBlock : integer = 0;
   WO_LastSumary : string = '';

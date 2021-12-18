@@ -281,13 +281,13 @@ object Form1: TForm1
       Height = 30
       Hint = 'Downloading summary'
       Top = 1
-      Width = 32
+      Width = 88
       Align = alLeft
       BevelOuter = bvNone
       BorderWidth = 1
       BorderStyle = bsSingle
       ClientHeight = 26
-      ClientWidth = 28
+      ClientWidth = 84
       Color = clLime
       ParentColor = False
       ParentShowHint = False
@@ -359,6 +359,24 @@ object Form1: TForm1
           426082
         }
       end
+      object LabelDownload: TLabel
+        Left = 77
+        Height = 24
+        Top = 1
+        Width = 1
+        Align = alRight
+        BorderSpacing.Right = 5
+        Font.CharSet = ANSI_CHARSET
+        Font.Color = clWhite
+        Font.Height = -16
+        Font.Name = 'Consolas'
+        Font.Pitch = fpFixed
+        Font.Quality = fqDraft
+        Font.Style = [fsBold]
+        Layout = tlCenter
+        ParentColor = False
+        ParentFont = False
+      end
     end
   end
   object MainMenu: TMainMenu
@@ -390,5 +408,15 @@ object Form1: TForm1
         OnClick = MenuItem3Click
       end
     end
+  end
+  object ClientChannel: TIdTCPClient
+    OnWork = ClientChannelWork
+    OnWorkBegin = ClientChannelWorkBegin
+    OnWorkEnd = ClientChannelWorkEnd
+    ConnectTimeout = 0
+    Port = 0
+    ReadTimeout = -1
+    Left = 391
+    Top = 360
   end
 end

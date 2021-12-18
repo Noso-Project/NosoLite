@@ -17,6 +17,7 @@ Resourcestring
   rsError0005 = 'Error: Disconnecting client-> %s';
   rsError0006 = 'Error: connectiong node %s-> %s';
   rsError0007 = 'Error: Address already exists on wallet-> %s';
+  rsError0008 = 'Error: Downloading summary from -> %s';
 
   // GUI interface
   rsGUI0001 = 'Address';
@@ -27,11 +28,11 @@ Resourcestring
   rsGUI0006 = 'Block';
   rsGUI0007 = 'Pending';
   rsGUI0008 = 'Branch';
-  rsGUI0009 = '%s NOSO'; // AVAILABLE
+  rsGUI0009 = '%s NOSO';
   rsGUI0010 = 'Import from file';
   rsGUI0011 = '[%s] %s';
   rsGUI0012 = 'Added new wallet: %s';
-
+  rsGUI0013 = 'Sumary downloaded: %d kb';
 
   // Dialogs
   rsDIA0001 = 'Import address keys';
