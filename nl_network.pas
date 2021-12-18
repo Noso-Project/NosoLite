@@ -65,11 +65,10 @@ form1.ClientChannel.Host:='192.210.226.118';
 form1.ClientChannel.Port:=8080;
 form1.ClientChannel.ConnectTimeout:= 1000;
 form1.ClientChannel.ReadTimeout:=500;
-//form1.ClientChannel.OnWork:=@Form1.ClientChannelWorkBegin;
+AFileStream := TFileStream.Create(SumaryFilename, fmCreate);
 TRY
 form1.ClientChannel.Connect;
 form1.ClientChannel.IOHandler.WriteLn('GETSUMARY');
-AFileStream := TFileStream.Create(SumaryFilename, fmCreate);
    TRY
    form1.ClientChannel.IOHandler.ReadStream(AFileStream);
    result := true;
@@ -78,11 +77,13 @@ AFileStream := TFileStream.Create(SumaryFilename, fmCreate);
       ToLog(Format(rsError0008,[form1.ClientChannel.Host]));
       end;
    END{Try};
-FINALLY
-AFileStream.Free;
-form1.ClientChannel.Disconnect();
+EXCEPT on E:Exception do
+   begin
+   ToLog(Format(rsError0008,[form1.ClientChannel.Host]));
+   end;
 END{try};
-
+if form1.ClientChannel.Connected then form1.ClientChannel.Disconnect();
+AFileStream.Free;
 End;
 
 
