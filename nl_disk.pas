@@ -5,13 +5,16 @@ unit nl_disk;
 interface
 
 uses
-  Classes, SysUtils, nl_data, nl_cripto, nl_language, dialogs, nl_functions;
+  Classes, SysUtils, nl_data, nl_cripto, nl_language, dialogs, nl_functions, fileutil;
 
 Procedure VerifyFilesStructure();
 Procedure CreateNewWallet();
 Procedure LoadWallet();
+Procedure SaveWallet();
 Procedure SaveOptions();
 Procedure LoadOptions();
+Procedure CreateSumary();
+Procedure LoadSumary();
 
 implementation
 
@@ -19,8 +22,10 @@ implementation
 Procedure VerifyFilesStructure();
 Begin
 if not directoryexists(WalletDirectory) then CreateDir(WalletDirectory);
+if not directoryexists(DataDirectory) then CreateDir(DataDirectory);
 if not FileExists(WalletFileName) then CreateNewWallet() else LoadWallet();
 if not FileExists(OptionsFilename) then SaveOptions() else LoadOptions();
+if not FileExists(SumaryFilename) then CreateSumary() else LoadSumary();
 End;
 
 //******************************************************************************
@@ -42,7 +47,7 @@ if not fileexists(WalletFileName) then
    closefile(FILE_Wallet);
    EXCEPT on E:Exception do
      begin
-     ShowMessage(format(rsError0001,[e.Message]));
+     ToLog(format(rsError0001,[e.Message]));
      end;
    END;
    end;
@@ -64,10 +69,39 @@ for counter := 0 to length(ARRAY_Addresses)-1 do
    end;
 closefile(FILE_Wallet);
 EXCEPT on E:Exception do
-  begin
-  ShowMessage(format(rsError0002,[e.Message]));
-  end;
+   begin
+   ToLog(format(rsError0002,[e.Message]));
+   end;
 END{Try};
+End;
+
+// Save wallet file to disk
+Procedure SaveWallet();
+var
+  Counter:integer;
+  Previous : int64;
+Begin
+copyfile (WalletFileName,WalletFileName+'.bak');
+assignfile(FILE_Wallet,WalletFileName);
+reset(FILE_Wallet);
+EnterCriticalSection(CS_ARRAY_Addresses);
+TRY
+For Counter := 0 to length(ARRAY_Addresses)-1 do
+   begin
+   seek(FILE_Wallet,Counter);
+   Previous := ARRAY_Addresses[Counter].Pending;
+   ARRAY_Addresses[Counter].Pending := 0;
+   write(FILE_Wallet,ARRAY_Addresses[Counter]);
+   ARRAY_Addresses[Counter].Pending := Previous;
+   end;
+EXCEPT on E:Exception do
+   begin
+   ToLog(Format(rsError0004,[E.Message]))
+   end;
+END{Try};
+LeaveCriticalSection(CS_ARRAY_Addresses);
+SAVE_Wallet := false;
+closefile(FILE_Wallet);
 End;
 
 //******************************************************************************
@@ -109,6 +143,41 @@ CloseFile(FILE_Options);
 EXCEPT on E:Exception do
    begin
 
+   end;
+END{Try};
+End;
+
+//******************************************************************************
+// SUMARY
+//******************************************************************************
+
+// Creates a empty sumary file
+Procedure CreateSumary();
+Begin
+SetLength(ARRAY_Sumary,0);
+assignfile(FILE_Sumary,SumaryFilename);
+Rewrite(FILE_Sumary);
+CloseFile(FILE_Sumary);
+End;
+
+// Loads a sumary to memory
+Procedure LoadSumary();
+var
+  Counter : integer = 0;
+Begin
+TRY
+SetLength(ARRAY_Sumary,0);
+assignfile(FILE_Sumary,SumaryFilename);
+Reset(FILE_Sumary);
+SetLength(ARRAY_Sumary,fileSize(FILE_Sumary));
+for Counter := 0 to Filesize(FILE_Sumary)-1 do
+   Begin
+   seek(FILE_Sumary,Counter);
+   read(FILE_Sumary,ARRAY_Sumary[Counter]);
+   end;
+CloseFile(FILE_Sumary);
+EXCEPT on E:Exception do
+   begin
    end;
 END{Try};
 End;

@@ -5,12 +5,15 @@ unit nl_cripto;
 interface
 
 uses
-  Classes, SysUtils, nl_data, nl_signerutils, HlpHashFactory;
+  Classes, SysUtils, nl_data, nl_signerutils, HlpHashFactory, Base64, nl_language, nl_GUI;
 
-Function CreateNewAddress():WalletData;
+Function CreateNewAddress(keysData:string = ''):WalletData;
 function GetAddressFromPublicKey(PubKey:String):String;
 function HashSha256String(StringToHash:string):string;
 function HashMD160String(StringToHash:string):String;
+function GetStringSigned(StringtoSign, PrivateKey:String):String;
+function VerifySignedString(StringToVerify,SignedHash,PublicKey:String):boolean;
+Procedure ImportKeys(Keysline:String);
 
 // Big Maths
 function ClearLeadingCeros(numero:string):string;
@@ -26,14 +29,22 @@ function BMDecTo58(numero:string):string;
 
 implementation
 
+Uses
+  nl_functions, dialogs;
+
 // Creates a new address
-Function CreateNewAddress():WalletData;
+Function CreateNewAddress(keysData:string = ''):WalletData;
 var
   MyData : WalletData;
   Address: String;
   KeysPair: TKeyPair;
 Begin
-KeysPair := TSignerUtils.GenerateECKeyPair(TKeyType.SECP256K1);
+if Keysdata = '' then KeysPair := TSignerUtils.GenerateECKeyPair(TKeyType.SECP256K1)
+else
+   begin
+   KeysPair.PublicKey := Parameter(keysData,0);
+   KeysPair.PrivateKey := Parameter(keysData,1);
+   end;
 Address := GetAddressFromPublicKey(KeysPair.PublicKey);
 MyData.Hash:=Address;
 Mydata.Custom:='';
@@ -46,6 +57,7 @@ MyData.LastOP:= 0;
 Result := MyData;
 End;
 
+// Generates the public hash from the public key
 function GetAddressFromPublicKey(PubKey:String):String;
 var
   PubSHAHashed,Hash1,Hash2,clave:String;
@@ -67,12 +79,59 @@ result :=
 THashFactory.TCrypto.CreateSHA2_256().ComputeString(StringToHash, TEncoding.UTF8).ToString();
 End;
 
-// Rturns hash MD160 of a string
+// Returns hash MD160 of a string
 function HashMD160String(StringToHash:string):String;
 Begin
 result :=
 THashFactory.TCrypto.CreateRIPEMD160().ComputeString(StringToHash, TEncoding.UTF8).ToString();
 End;
+
+// Returns the signature of a specified string
+function GetStringSigned(StringtoSign, PrivateKey:String):String;
+var
+  Signature, MessageAsBytes: TBytes;
+Begin
+MessageAsBytes :=StrToByte(DecodeStringBase64(StringtoSign));
+Signature := TSignerUtils.SignMessage(MessageAsBytes, StrToByte(DecodeStringBase64(PrivateKey)),
+      TKeyType.SECP256K1);
+Result := EncodeStringBase64(ByteToString(Signature));
+End;
+
+// Verify if a signed string is valid
+function VerifySignedString(StringToVerify,SignedHash,PublicKey:String):boolean;
+var
+  Signature, MessageAsBytes: TBytes;
+Begin
+MessageAsBytes := StrToByte(DecodeStringBase64(StringToVerify));
+Signature := StrToByte(DecodeStringBase64(SignedHash));
+Result := TSignerUtils.VerifySignature(Signature, MessageAsBytes,
+      StrToByte(DecodeStringBase64(PublicKey)), TKeyType.SECP256K1);
+End;
+
+// Process a keys import
+Procedure ImportKeys(Keysline:String);
+var
+  PublicK, PrivateK : string;
+  Signature : String;
+  PublicHash : String;
+  SignProcess : boolean = false;
+Begin
+PublicK := Parameter(Keysline,0);
+PrivateK := Parameter(Keysline,1);
+TRY
+Signature := GetStringSigned('VERIFICATION',PrivateK);
+SignProcess := VerifySignedString('VERIFICATION',signature,PublicK);
+EXCEPT on E:Exception do
+   begin
+   ToLog(rsDIA0003);
+   end;
+END{Try};
+if SignProcess then
+   begin
+   TryInsertAddress(CreateNewAddress(Keysline));
+   end;
+End;
+
 
 // *****************************************************************************
 // ***************************FUNCTIONS OF BIGMATHS*****************************

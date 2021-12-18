@@ -5,13 +5,14 @@ unit nl_GUI;
 interface
 
 uses
-  Classes, SysUtils, nl_functions, nl_language, nl_data;
+  Classes, SysUtils, nl_functions, nl_language, nl_data, graphics;
 
 Procedure ResizeSGridAddresses();
 Procedure ResizeSGridNodes();
 Procedure LoadGUIInterface();
 Procedure RefreshAddresses();
 Procedure RefreshNodes();
+Procedure RefreshStatus();
 
 implementation
 
@@ -56,26 +57,31 @@ form1.SGridNodes.Cells[1,0] := rsGUI0006;
 form1.SGridNodes.Cells[2,0] := rsGUI0007;
 form1.SGridNodes.Cells[3,0] := rsGUI0008;
 
-form1.LabelBlock.Caption:='Block: '+WO_LastBlock.ToString;
 End;
 
 // Refresh the adressess grid
 Procedure RefreshAddresses();
 var
   counter : integer = 0;
+  AddressBalance : int64;
 Begin
+Int_WalletBalance := 0;
+EnterCriticalSection(CS_ARRAY_Addresses);
 form1.SGridAddresses.RowCount:=length(ARRAY_Addresses)+1;
 if length(ARRAY_Addresses)>0 then
    begin
    for counter := 0 to length(ARRAY_Addresses)-1 do
       begin
-      if ARRAY_Addresses[counter].Custom<>'' then form1.SGridAddresses.Cells[0,counter+1] := ARRAY_Addresses[counter].custom
-      else form1.SGridAddresses.Cells[0,counter+1] := ARRAY_Addresses[counter].Hash;
+      form1.SGridAddresses.Cells[0,counter+1] := GetAddressToShow(ARRAY_Addresses[counter].Hash);
       form1.SGridAddresses.Cells[1,counter+1] := Int2Curr(0);
       form1.SGridAddresses.Cells[2,counter+1] := Int2Curr(0);
-      form1.SGridAddresses.Cells[3,counter+1] := Int2Curr(0);
+      AddressBalance := GetAddressBalanceFromSumary(ARRAY_Addresses[counter].Hash);
+      Int_WalletBalance := Int_WalletBalance+ AddressBalance;
+      form1.SGridAddresses.Cells[3,counter+1] := Int2Curr(AddressBalance);
       end;
    end;
+LeaveCriticalSection(CS_ARRAY_Addresses);
+form1.LBalance.Caption:=Format(rsGUI0009,[Int2Curr(Int_WalletBalance)]);
 End;
 
 // Refresh the nodes grid
@@ -94,7 +100,13 @@ if length(ARRAY_Nodes)>0 then
       form1.SGridNodes.Cells[3,counter+1] := ARRAY_Nodes[counter].Branch;
       end;
    end;
+End;
 
+Procedure RefreshStatus();
+Begin
+if Wallet_Synced then form1.PanelBlockInfo.Color:=clGreen
+else form1.PanelBlockInfo.Color:=clRed;
+form1.LabelBlockInfo.Caption:=WO_LastBlock.ToString;
 End;
 
 END. // END UNIT

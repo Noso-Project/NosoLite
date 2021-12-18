@@ -5,9 +5,10 @@ unit nl_network;
 interface
 
 uses
-  Classes, SysUtils, nl_data, IdGlobal, dialogs;
+  Classes, SysUtils, nl_data, IdGlobal, dialogs, nl_functions, nl_language;
 
 function GetNodeStatus(Host,Port:String):string;
+function GetSumary():boolean;
 
 implementation
 
@@ -30,6 +31,7 @@ if not errored then
          ClientChannel.Disconnect;
          EXCEPT on E:exception do
             begin
+            ToLog(Format(rsError0005,[E.Message]));
             end;
          END{try};
       end;
@@ -44,12 +46,45 @@ if not errored then
       ClientChannel.Disconnect();
       EXCEPT on E:Exception do
          begin
-         //ShowMessage(E.message)
+         ToLog(Format(rsError0006,[Host,E.message]));
          end;
       END{try};
    end;
+End;
+
+// Downloads the sumary file from a node
+function GetSumary():boolean;
+var
+  AFileStream : TFileStream;
+Begin
+result := false;
+ClientChannel.Host:='192.210.226.118';
+ClientChannel.Port:=8080;
+ClientChannel.ConnectTimeout:= 1000;
+ClientChannel.ReadTimeout:=500;
+//ClientChannel.OnWork:=;
+TRY
+ClientChannel.Connect;
+ClientChannel.IOHandler.WriteLn('GETSUMARY');
+AFileStream := TFileStream.Create(SumaryFilename, fmCreate);
+   TRY
+   ClientChannel.IOHandler.ReadStream(AFileStream);
+   result := true;
+   EXCEPT on E:Exception do
+      begin
+
+      end;
+   END{Try};
+FINALLY
+AFileStream.Free;
+ClientChannel.Disconnect();
+END{try};
 
 End;
+
+
+
+
 
 END. // END UNIT.
 

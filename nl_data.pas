@@ -28,7 +28,14 @@ DivResult = packed record
 
 TUpdateThread = class(TThread)
     private
-      procedure UpdateGUI;
+      procedure UpdateNodes;
+      procedure UpdateAddresses;
+      procedure UpdateLog;
+      procedure UpdateStatus;
+      procedure showsync;
+      procedure hidesync;
+      procedure showdownload;
+      procedure hidedownload;
     protected
       procedure Execute; override;
     public
@@ -48,10 +55,20 @@ ConsensusData = packed record
    count : integer;
    end;
 
+SumaryData = Packed Record
+   Hash : String[40]; // El hash publico o direccion
+   Custom : String[40]; // En caso de que la direccion este personalizada
+   Balance : int64; // el ultimo saldo conocido de la direccion
+   Score : int64; // estado del registro de la direccion.
+   LastOP : int64;// tiempo de la ultima operacion en UnixTime.
+   end;
+
 CONST
   WalletDirectory = 'wallet'+directoryseparator;  // Wallet folder
-  WalletFileName = WalletDirectory+'wallet.psk';  // Wallet keys file
-  OptionsFilename = 'options.nsl';                // Options file
+  DataDirectory   = 'data'+directoryseparator;
+  WalletFileName = WalletDirectory+'wallet.pkw';  // Wallet keys file
+  SumaryFilename = DataDirectory+'sumary.psk';
+  OptionsFilename = DataDirectory+'options.nsl';                // Options file
 
   HexAlphabet : string = '0123456789ABCDEF';
   B58Alphabet : string = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
@@ -60,9 +77,11 @@ CONST
 var
   FILE_Wallet : File of WalletData;       // Wallet file pointer
   FILE_Options : textfile;
+  FILE_Sumary : File of SumaryData;
 
   ARRAY_Addresses : array of WalletData;
   ARRAY_Nodes : array of NodeData;
+  ARRAY_Sumary : array of SumaryData;
 
   THREAD_Update : TUpdateThread;
   ClientChannel : TIdTCPClient;
@@ -75,16 +94,30 @@ var
                                  '185.239.239.184:8080 '+
                                  '109.230.238.240:8080';
   Int_LastThreadExecution : int64 = 0;
+  Int_WalletBalance       : int64 = 0;
 
   WO_LastBlock : integer = 0;
   WO_LastSumary : string = '';
   WO_Refreshrate : integer = 15;
 
+  // Global variables
+  SAVE_Wallet : Boolean = false;
+  Closing_App : boolean = false;
+  Wallet_Synced : Boolean = false;
+  REF_Addresses : Boolean = false;
+  REF_Nodes : Boolean = false;
+  REF_Status : Boolean = false;
+  LogLines : TStringList;
+
+  // Critical Sections
+  CS_ARRAY_Addresses: TRTLCriticalSection;
+  CS_LOG            : TRTLCriticalSection;
+
 
 implementation
 
 Uses
-  nl_mainform, nl_network, nl_functions, nl_GUI, nl_language;
+  nl_mainform, nl_network, nl_functions, nl_GUI, nl_language, nl_disk;
 
 constructor TUpdateThread.Create(CreateSuspended : boolean);
 Begin
@@ -92,11 +125,53 @@ inherited Create(CreateSuspended);
 FreeOnTerminate := True;
 End;
 
-procedure TUpdateThread.UpdateGUI();
+procedure TUpdateThread.UpdateNodes();
 Begin
-//Form1.LabelCLock.Caption:=DateTimeToStr(now);
-form1.LabelBlock.Caption:='Block: '+WO_LastBlock.ToString;
 RefreshNodes();
+REF_Nodes := false
+End;
+
+procedure TUpdateThread.UpdateAddresses();
+Begin
+RefreshAddresses;
+REF_Addresses := false;
+End;
+
+procedure TUpdateThread.UpdateLog();
+Begin
+EnterCriticalSection(CS_LOG);
+While LogLines.Count>0 do
+   begin
+   Form1.MemoLog.lines.Add(LogLines[0]);
+   LogLines.Delete(0);
+   end;
+LeaveCriticalSection(CS_LOG);
+End;
+
+procedure TUpdateThread.UpdateStatus();
+Begin
+RefreshStatus();
+REF_Status := false;
+End;
+
+procedure TUpdateThread.showsync();
+Begin
+Form1.Panelsync.Visible:=true;
+End;
+
+procedure TUpdateThread.hidesync();
+Begin
+Form1.Panelsync.Visible:=false;
+End;
+
+procedure TUpdateThread.showdownload();
+Begin
+Form1.PanelDownload.Visible:=true;
+End;
+
+procedure TUpdateThread.hidedownload();
+Begin
+Form1.PanelDownload.Visible:=false;
 End;
 
 procedure TUpdateThread.Execute;
@@ -110,6 +185,8 @@ While not terminated do
    ActualTime := DateTimeToUnix(now);
    if ActualTime >= Int_LastThreadExecution+WO_Refreshrate then
       begin
+      Synchronize(@showsync);
+      sleep(1);
       For counter := 0 to length(ARRAY_Nodes)-1 do
          begin
          LLine := '';
@@ -127,10 +204,28 @@ While not terminated do
             ARRAY_Nodes[counter].Branch:=rsError0003;
             end;
          end;
-      Consensus;
-      Synchronize(@UpdateGUI);
+      Synchronize(@hidesync);
+      if Consensus then
+         begin
+         Synchronize(@showdownload);
+         if GetSumary then
+            begin
+            LoadSumary;
+            REF_Addresses := true;
+            Wallet_Synced := true;
+            REF_Status := true;
+            end;
+         Synchronize(@hidedownload);
+         end;
+      REF_Nodes := true;
       Int_LastThreadExecution := DateTimeToUnix(now);
       end;
+   if SAVE_Wallet then SaveWallet;
+   if REF_Addresses then Synchronize(@UpdateAddresses);
+   if LogLines.Count>0 then Synchronize(@UpdateLog);
+   if REF_Nodes then Synchronize(@UpdateNodes);
+   if REF_Status then Synchronize(@UpdateStatus);
+   Sleep(10);
    end;
 End;
 

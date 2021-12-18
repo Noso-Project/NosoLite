@@ -1,0 +1,10 @@
+{"version":1,"strings":[
+{"hash":197523714,"name":"tformexplorer.caption","sourcebytes":[70,111,114,109,69,120,112,108,111,114,101,114],"value":"FormExplorer"},
+{"hash":5117888,"name":"tformexplorer.butfolderup.hint","sourcebytes":[71,111,32,117,112],"value":"Go up"},
+{"hash":75078772,"name":"tformexplorer.butaccept.hint","sourcebytes":[65,99,99,101,112,116],"value":"Accept"},
+{"hash":11530,"name":"tformexplorer.comboxmask.text","sourcebytes":[42,46,42],"value":"*.*"},
+{"hash":3848468,"name":"tformexplorer.labadd.caption","sourcebytes":[83,101,108,101,99,116,32,97,100,100,114,101,115,115,101,115,32,116,111,32,98,101,32,105,109,112,111,114,116,101,100],"value":"Select addresses to be imported"},
+{"hash":115838195,"name":"tformexplorer.butokadd.hint","sourcebytes":[73,109,112,111,114,116,32,115,101,108,101,99,116,101,100,32,97,100,100,114,101,115,115,101,115],"value":"Import selected addresses"},
+{"hash":36632978,"name":"tformexplorer.butcanceladd.hint","sourcebytes":[66,97,99,107,32,116,111,32,101,120,112,108,111,114,101,114],"value":"Back to explorer"},
+{"hash":195296268,"name":"tformexplorer.checkboxselectall.caption","sourcebytes":[83,101,108,101,99,116,32,97,108,108],"value":"Select all"}
+]}

@@ -3,5 +3,14 @@
 {"hash":98054852,"name":"tform1.tabwallet.caption","sourcebytes":[87,97,108,108,101,116],"value":"Wallet"},
 {"hash":1586271,"name":"tform1.lbalance.caption","sourcebytes":[48,46,48,48,48,48,48,48,48,48,32,78,79,83,79],"value":"0.00000000 NOSO"},
 {"hash":5593795,"name":"tform1.tabnodes.caption","sourcebytes":[78,111,100,101,115],"value":"Nodes"},
-{"hash":315429,"name":"tform1.mm_file.caption","sourcebytes":[70,105,108,101],"value":"File"}
+{"hash":21335,"name":"tform1.tablog.caption","sourcebytes":[76,111,103],"value":"Log"},
+{"hash":107879739,"name":"tform1.panelblockinfo.hint","sourcebytes":[76,97,115,116,32,98,108,111,99,107],"value":"Last block"},
+{"hash":257266087,"name":"tform1.panelsync.hint","sourcebytes":[83,121,110,99,104,114,111,110,105,122,105,110,103],"value":"Synchronizing"},
+{"hash":109191929,"name":"tform1.paneldownload.hint","sourcebytes":[68,111,119,110,108,111,97,100,105,110,103,32,115,117,109,109,97,114,121],"value":"Downloading summary"},
+{"hash":315429,"name":"tform1.mm_file.caption","sourcebytes":[70,105,108,101],"value":"File"},
+{"hash":21703,"name":"tform1.menuitem5.caption","sourcebytes":[78,101,119],"value":"New"},
+{"hash":304761,"name":"tform1.menuitem4.caption","sourcebytes":[67,111,112,121],"value":"Copy"},
+{"hash":84178580,"name":"tform1.menuitem1.caption","sourcebytes":[73,109,112,111,114,116],"value":"Import"},
+{"hash":315429,"name":"tform1.menuitem2.caption","sourcebytes":[70,105,108,101],"value":"File"},
+{"hash":335107,"name":"tform1.menuitem3.caption","sourcebytes":[75,101,121,115],"value":"Keys"}
 ]}
