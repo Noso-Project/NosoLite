@@ -158,21 +158,20 @@ procedure TForm1.ClientChannelWorkBegin(ASender: TObject; AWorkMode: TWorkMode;
   AWorkCountMax: Int64);
 Begin
 Int_SumarySize := AWorkCountMax;
-Form1.LabelDownload.Caption
 End;
 
 // Client on work
 procedure TForm1.ClientChannelWork(ASender: TObject; AWorkMode: TWorkMode;
   AWorkCount: Int64);
 Begin
-Form1.LabelDownload.Caption:=IntToStr(((AWorkCount*100) div Int_SumarySize))+' %';
+//Form1.LabelDownload.Caption:=IntToStr(((AWorkCount*100) div Int_SumarySize))+' %';
 End;
 
 // On work end
 procedure TForm1.ClientChannelWorkEnd(ASender: TObject; AWorkMode: TWorkMode);
 Begin
 Tolog(format(rsGUI0013,[Int_SumarySize div 1024]));
-Form1.LabelDownload.Caption  := '0 %';
+//Form1.LabelDownload.Caption  := '0 %';
 End;
 
 
