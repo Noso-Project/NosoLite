@@ -5,7 +5,7 @@ unit nl_GUI;
 interface
 
 uses
-  Classes, SysUtils, nl_functions, nl_language, nl_data, graphics;
+  Classes, SysUtils, nl_functions, nl_language, nl_data, graphics, DateUtils;
 
 Procedure ResizeSGridAddresses();
 Procedure ResizeSGridNodes();
@@ -56,7 +56,10 @@ form1.SGridNodes.Cells[0,0] := rsGUI0005;
 form1.SGridNodes.Cells[1,0] := rsGUI0006;
 form1.SGridNodes.Cells[2,0] := rsGUI0007;
 form1.SGridNodes.Cells[3,0] := rsGUI0008;
-
+Form1.SGridSC.Cells[0,0]:=rsGUI0014;
+Form1.SGridSC.Cells[0,1]:=rsGUI0015;
+Form1.SGridSC.Cells[0,2]:=rsGUI0016;
+form1.CBMultisend.Checked:=WO_Multisend;
 End;
 
 // Refresh the adressess grid
@@ -102,11 +105,13 @@ if length(ARRAY_Nodes)>0 then
    end;
 End;
 
+// Refresh the status bar
 Procedure RefreshStatus();
 Begin
 if Wallet_Synced then form1.PanelBlockInfo.Color:=clGreen
 else form1.PanelBlockInfo.Color:=clRed;
 form1.LabelBlockInfo.Caption:=WO_LastBlock.ToString;
+form1.LabelTime.Caption:=TimestampToDate(G_UTCTime);
 End;
 
 END. // END UNIT

@@ -5,7 +5,7 @@ unit nl_network;
 interface
 
 uses
-  Classes, SysUtils, nl_data, IdGlobal, dialogs, nl_functions, nl_language;
+  Classes, SysUtils, nl_data, IdGlobal, dialogs, nl_functions, nl_language, nl_Disk;
 
 function GetNodeStatus(Host,Port:String):string;
 function GetSumary():boolean;
@@ -59,19 +59,22 @@ End;
 function GetSumary():boolean;
 var
   AFileStream : TFileStream;
+  DownloadedFile : Boolean = false;
 Begin
 result := false;
 form1.ClientChannel.Host:='192.210.226.118';
 form1.ClientChannel.Port:=8080;
 form1.ClientChannel.ConnectTimeout:= 1000;
 form1.ClientChannel.ReadTimeout:=500;
-AFileStream := TFileStream.Create(SumaryFilename, fmCreate);
+AFileStream := TFileStream.Create(ZipSumaryFilename, fmCreate);
 TRY
 form1.ClientChannel.Connect;
-form1.ClientChannel.IOHandler.WriteLn('GETSUMARY');
+form1.ClientChannel.IOHandler.WriteLn('GETZIPSUMARY');
    TRY
+   form1.ClientChannel.IOHandler.ReadLn(IndyTextEncoding_UTF8);
    form1.ClientChannel.IOHandler.ReadStream(AFileStream);
    result := true;
+   DownloadedFile := true;
    EXCEPT on E:Exception do
       begin
       ToLog(Format(rsError0008,[form1.ClientChannel.Host]));
@@ -84,6 +87,7 @@ EXCEPT on E:Exception do
 END{try};
 if form1.ClientChannel.Connected then form1.ClientChannel.Disconnect();
 AFileStream.Free;
+if DownloadedFile then UnZipSumary();
 End;
 
 

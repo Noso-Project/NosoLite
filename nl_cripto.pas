@@ -14,6 +14,7 @@ function HashMD160String(StringToHash:string):String;
 function GetStringSigned(StringtoSign, PrivateKey:String):String;
 function VerifySignedString(StringToVerify,SignedHash,PublicKey:String):boolean;
 Procedure ImportKeys(Keysline:String);
+Procedure SendTo(Destination:String;Ammount:int64;Reference:String);
 
 // Big Maths
 function ClearLeadingCeros(numero:string):string;
@@ -113,7 +114,6 @@ Procedure ImportKeys(Keysline:String);
 var
   PublicK, PrivateK : string;
   Signature : String;
-  PublicHash : String;
   SignProcess : boolean = false;
 Begin
 PublicK := Parameter(Keysline,0);
@@ -132,6 +132,14 @@ if SignProcess then
    end;
 End;
 
+// Process a coin sent
+Procedure SendTo(Destination:String;Ammount:int64;Reference:String);
+var
+  CurrTime : int64;
+Begin
+if reference = '' then reference := 'null';
+CurrTime := UTCTime;
+End;
 
 // *****************************************************************************
 // ***************************FUNCTIONS OF BIGMATHS*****************************

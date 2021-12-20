@@ -5,16 +5,21 @@ unit nl_disk;
 interface
 
 uses
-  Classes, SysUtils, nl_data, nl_cripto, nl_language, dialogs, nl_functions, fileutil;
+  Classes, SysUtils, nl_data, nl_cripto, nl_language, dialogs, nl_functions, fileutil,
+  Zipper;
 
 Procedure VerifyFilesStructure();
 Procedure CreateNewWallet();
 Procedure LoadWallet();
 Procedure SaveWallet();
+Procedure CreateTrashWallet();
+Procedure MoveAddressToTrash(Address:WalletData);
 Procedure SaveOptions();
 Procedure LoadOptions();
 Procedure CreateSumary();
 Procedure LoadSumary();
+Procedure UnZipSumary();
+
 
 implementation
 
@@ -24,6 +29,7 @@ Begin
 if not directoryexists(WalletDirectory) then CreateDir(WalletDirectory);
 if not directoryexists(DataDirectory) then CreateDir(DataDirectory);
 if not FileExists(WalletFileName) then CreateNewWallet() else LoadWallet();
+if not FileExists(TrashFilename) then CreateTrashWallet();
 if not FileExists(OptionsFilename) then SaveOptions() else LoadOptions();
 if not FileExists(SumaryFilename) then CreateSumary() else LoadSumary();
 End;
@@ -53,6 +59,7 @@ if not fileexists(WalletFileName) then
    end;
 End;
 
+// Loads the wallet from disk
 Procedure LoadWallet();
 var
   counter : integer = 0;
@@ -94,6 +101,7 @@ For Counter := 0 to length(ARRAY_Addresses)-1 do
    write(FILE_Wallet,ARRAY_Addresses[Counter]);
    ARRAY_Addresses[Counter].Pending := Previous;
    end;
+Truncate(FILE_Wallet);
 EXCEPT on E:Exception do
    begin
    ToLog(Format(rsError0004,[E.Message]))
@@ -102,6 +110,24 @@ END{Try};
 LeaveCriticalSection(CS_ARRAY_Addresses);
 SAVE_Wallet := false;
 closefile(FILE_Wallet);
+End;
+
+// Creates the trash wallet file
+Procedure CreateTrashWallet();
+Begin
+assignfile(FILE_Trash,TrashFilename);
+rewrite(FILE_Trash);
+closefile(FILE_Trash);
+End;
+
+// Moves an address to the trash wallet
+Procedure MoveAddressToTrash(Address:WalletData);
+Begin
+assignfile(FILE_Trash,TrashFilename);
+reset(FILE_Trash);
+seek(FILE_Trash,FileSize(FILE_Trash));
+write(FILE_Trash,Address);
+closefile(FILE_Trash);
 End;
 
 //******************************************************************************
@@ -116,6 +142,7 @@ rewrite(FILE_Options);
 writeln(FILE_Options,'block '+WO_LastBlock.ToString);
 writeln(FILE_Options,'sumary '+WO_LastSumary);
 writeln(FILE_Options,'refresh '+WO_Refreshrate.ToString);
+writeln(FILE_Options,'multisend '+BoolToStr(WO_MultiSend,true));
 CloseFile(FILE_Options);
 EXCEPT on E:Exception do
    begin
@@ -125,6 +152,7 @@ END{Try};
 
 End;
 
+// Load the options file
 Procedure LoadOptions();
 var
   LLine : string;
@@ -138,6 +166,7 @@ while not eof(FILE_Options) do
     if parameter(LLine,0) ='block' then WO_LastBlock:=Parameter(LLine,1).ToInteger();
     if parameter(LLine,0) ='sumary' then WO_LastSumary:=Parameter(LLine,1);
     if parameter(LLine,0) ='refresh' then WO_Refreshrate:=Parameter(LLine,1).ToInteger();
+    if parameter(LLine,0) ='multisend' then WO_Multisend:=StrToBool(Parameter(LLine,1));
    end;
 CloseFile(FILE_Options);
 EXCEPT on E:Exception do
@@ -178,6 +207,29 @@ for Counter := 0 to Filesize(FILE_Sumary)-1 do
 CloseFile(FILE_Sumary);
 EXCEPT on E:Exception do
    begin
+   end;
+END{Try};
+End;
+
+// Unzip the received sumary file
+Procedure UnZipSumary();
+var
+  UnZipper: TUnZipper;
+Begin
+TRY
+UnZipper := TUnZipper.Create;
+   try
+   UnZipper.FileName := ZipSumaryFilename;
+   UnZipper.OutputPath := '';
+   UnZipper.Examine;
+   UnZipper.UnZipAllFiles;
+   finally
+   UnZipper.Free;
+   end;
+//if delfile then Trydeletefile(ZipSumaryFilename);
+EXCEPT on E:Exception do
+   begin
+   tolog ('Error unzipping block file');
    end;
 END{Try};
 End;

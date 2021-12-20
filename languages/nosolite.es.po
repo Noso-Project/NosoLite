@@ -35,7 +35,7 @@ msgid "Error: Disconnecting client-> %s"
 msgstr ""
 
 #: nl_language.rserror0006
-msgid "Error: connectiong node %s-> %s"
+msgid "Error: connecting node %s-> %s"
 msgstr ""
 
 #: nl_language.rserror0007
@@ -44,6 +44,14 @@ msgstr ""
 
 #: nl_language.rserror0008
 msgid "Error: Downloading summary from -> %s"
+msgstr ""
+
+#: nl_language.rserror0009
+msgid "Error: Can not delete only address of the wallet"
+msgstr ""
+
+#: nl_language.rserror0010
+msgid "Error: Invalid parameters for sending coins"
 msgstr ""
 
 #: nl_language.rsexp0001
@@ -102,12 +110,32 @@ msgstr ""
 msgid "Sumary downloaded: %d kb"
 msgstr ""
 
+#: nl_language.rsgui0014
+msgid "Destination"
+msgstr ""
+
+#: nl_language.rsgui0015
+msgid "Ammount"
+msgstr ""
+
+#: nl_language.rsgui0016
+msgid "Reference"
+msgstr ""
+
 #: tform1.caption
 msgid "Nosolite"
 msgstr ""
 
+#: tform1.editscmont.text
+msgid "0.00000000"
+msgstr ""
+
 #: tform1.lbalance.caption
 msgid "0.00000000 NOSO"
+msgstr ""
+
+#: tform1.lsctop.caption
+msgid "Send coins"
 msgstr ""
 
 #: tform1.menuitem1.caption
@@ -131,6 +159,19 @@ msgstr ""
 msgid "New"
 msgstr ""
 
+#: tform1.menuitem6.caption
+msgid "Set as Default"
+msgstr ""
+
+#: tform1.menuitem7.caption
+msgid "Delete"
+msgstr ""
+
+#: tform1.menuitem8.caption
+msgctxt "tform1.menuitem8.caption"
+msgid "Confirm"
+msgstr ""
+
 #: tform1.mm_file.caption
 msgctxt "tform1.mm_file.caption"
 msgid "File"
@@ -148,6 +189,31 @@ msgstr ""
 #: tform1.panelsync.hint
 msgctxt "tform1.panelsync.hint"
 msgid "Synchronizing"
+msgstr ""
+
+#: tform1.sbscmax.hint
+msgid "Send all"
+msgstr ""
+
+#: tform1.sbscpaste.hint
+msgid "Paste destination"
+msgstr ""
+
+#: tform1.scbitcancel.caption
+msgid "Cancel"
+msgstr ""
+
+#: tform1.scbitclea.caption
+msgid "Clear"
+msgstr ""
+
+#: tform1.scbitconf.caption
+msgctxt "tform1.scbitconf.caption"
+msgid "Confirm"
+msgstr ""
+
+#: tform1.scbitsend.caption
+msgid "Send"
 msgstr ""
 
 #: tform1.tablog.caption

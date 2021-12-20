@@ -5,7 +5,7 @@ unit nl_functions;
 interface
 
 uses
-  Classes, SysUtils,strutils, nl_data, nl_language;
+  Classes, SysUtils,strutils, nl_data, nl_language, dateutils;
 
 function ThisPercent(percent, thiswidth : integer;RestarBarra : boolean = false):integer;
 function Int2Curr(Value: int64): string;
@@ -17,8 +17,17 @@ function GetAddressToShow(address:string):String;
 function IsAddressOnWallet(address:string):Boolean;
 Procedure ToLog(StringToAdd:String);
 function TryInsertAddress(Address:WalletData):boolean;
+function GetMaximunToSend(ammount:int64):int64;
+function IsValidAddressHash(Address:String):boolean;
+function IsValid58(base58text:string):boolean;
+function AddressSumaryIndex(Address:string):integer;
+function UTCTime():int64;
+function TimestampToDate(timestamp:int64):String;
 
 implementation
+
+uses
+  nl_cripto;
 
 // Returns the X percentage of a specified number
 function ThisPercent(percent, thiswidth : integer;RestarBarra : boolean = false):integer;
@@ -114,10 +123,10 @@ if temp = ' ' then temp := '';
 Result := Temp;
 End;
 
-// Calculates the mainnetconsensus
+// Calculates the mainnet consensus
 function Consensus():Boolean;
 var
-  counter, TotalNodes : integer;
+  counter : integer;
   ArrT : array of ConsensusData;
   CBlock : integer = 0;
   CBranch : string = '';
@@ -270,6 +279,106 @@ else
    ToLog(Format(rsError0007,[GetAddressToShow(Address.Hash)]));
    end;
 End;
+
+// Returns the maximun ammount that can be send
+function GetMaximunToSend(ammount:int64):int64;
+var
+  Available : int64;
+  maximum : int64;
+  Fee : int64;
+  SenT : int64;
+  Diff : int64;
+Begin
+Available := ammount;
+maximum := (Available * Comisiontrfr) div (Comisiontrfr+1);
+Fee := maximum div Comisiontrfr;
+SenT := maximum + Fee;
+Diff := Available-SenT;
+result := maximum+Diff;
+End;
+
+// Checks if a string is a valid address
+function IsValidAddressHash(Address:String):boolean;
+var
+  OrigHash : String;
+  Clave:String;
+Begin
+result := false;
+trim(address);
+if ((length(address)>20) and (address[1] = 'N') ) then
+   begin
+   OrigHash := Copy(Address,2,length(address)-3);
+   if IsValid58(OrigHash) then
+      begin
+      Clave := BMDecTo58(BMB58resumen(OrigHash));
+      OrigHash := 'N'+OrigHash+clave;
+      if OrigHash = Address then result := true else result := false;
+      end;
+   end
+End;
+
+// Returns if a string is a valid Base58
+function IsValid58(base58text:string):boolean;
+var
+  counter : integer;
+Begin
+result := true;
+if length(base58text) > 0 then
+   begin
+   for counter := 1 to length(base58text) do
+      begin
+      if pos (base58text[counter],B58Alphabet) = 0 then
+         begin
+         result := false;
+         break;
+         end;
+      end;
+   end
+else result := false;
+End;
+
+// Returns the address sumary index
+function AddressSumaryIndex(Address:string):integer;
+var
+  cont : integer = 0;
+Begin
+result := -1;
+trim(Address);
+if ((address <> '') and (length(ARRAY_Sumary) > 0)) then
+   begin
+   for cont := 0 to length(ARRAY_Sumary)-1 do
+      begin
+      if ((ARRAY_Sumary[cont].Hash=address) or (ARRAY_Sumary[cont].Custom=address)) then
+         begin
+         result:= cont;
+         break;
+         end;
+      end;
+   end;
+End;
+
+// Returns the UTCTime
+function UTCTime():int64;
+var
+  G_TIMELocalTimeOffset : int64;
+  GetLocalTimestamp : int64;
+  UnixTime : int64;
+Begin
+G_TIMELocalTimeOffset := GetLocalTimeOffset*60;
+GetLocalTimestamp := DateTimeToUnix(now);
+UnixTime := GetLocalTimestamp+G_TIMELocalTimeOffset;
+result := UnixTime;
+End;
+
+// Returns a DateTime format from a Unix time
+function TimestampToDate(timestamp:int64):String;
+var
+  DateToShow : TDateTime;
+begin
+DateToShow := UnixToDateTime(timestamp);
+result := DateTimeToStr(DateToShow);
+end;
+
 
 END. // END UNIT
 

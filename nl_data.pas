@@ -67,15 +67,19 @@ CONST
   WalletDirectory = 'wallet'+directoryseparator;  // Wallet folder
   DataDirectory   = 'data'+directoryseparator;
   WalletFileName = WalletDirectory+'wallet.pkw';  // Wallet keys file
+  TrashFilename  = WalletDirectory+'trash.pkw';
   SumaryFilename = DataDirectory+'sumary.psk';
+  ZipSumaryFilename = DataDirectory+'sumary.zip';
   OptionsFilename = DataDirectory+'options.nsl';                // Options file
+  Comisiontrfr = 10000;
 
   HexAlphabet : string = '0123456789ABCDEF';
   B58Alphabet : string = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
   B36Alphabet : string = '0123456789abcdefghijklmnopqrstuvwxyz';
 
 var
-  FILE_Wallet : File of WalletData;       // Wallet file pointer
+  FILE_Wallet : File of WalletData; // Wallet file pointer
+  FILE_Trash  : File of WalletData;
   FILE_Options : textfile;
   FILE_Sumary : File of SumaryData;
 
@@ -99,6 +103,7 @@ var
   WO_LastBlock : integer = 0;
   WO_LastSumary : string = '';
   WO_Refreshrate : integer = 15;
+  WO_Multisend : boolean = false;
 
   // Global variables
   SAVE_Wallet : Boolean = false;
@@ -108,6 +113,7 @@ var
   REF_Nodes : Boolean = false;
   REF_Status : Boolean = false;
   LogLines : TStringList;
+  G_UTCTime : int64;
 
   // Critical Sections
   CS_ARRAY_Addresses: TRTLCriticalSection;
@@ -225,6 +231,11 @@ While not terminated do
    if LogLines.Count>0 then Synchronize(@UpdateLog);
    if REF_Nodes then Synchronize(@UpdateNodes);
    if REF_Status then Synchronize(@UpdateStatus);
+   if UTCTime <> G_UTCTime then
+      begin
+      G_UTCTime := UTCTime;
+      Synchronize(@UpdateStatus);
+      end;
    Sleep(10);
    end;
 End;
