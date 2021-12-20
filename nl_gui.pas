@@ -26,9 +26,9 @@ var
 Begin
 GridWidth := form1.SGridAddresses.Width;
 form1.SGridAddresses.ColWidths[0] := ThisPercent(40,GridWidth);
-form1.SGridAddresses.ColWidths[1] := ThisPercent(20,GridWidth);
-form1.SGridAddresses.ColWidths[2] := ThisPercent(20,GridWidth);
-form1.SGridAddresses.ColWidths[3] := ThisPercent(20,GridWidth,true);
+form1.SGridAddresses.ColWidths[1] := ThisPercent(18,GridWidth);
+form1.SGridAddresses.ColWidths[2] := ThisPercent(18,GridWidth);
+form1.SGridAddresses.ColWidths[3] := ThisPercent(24,GridWidth,true);
 End;
 
 // Resize the stringgrid containing the nodes

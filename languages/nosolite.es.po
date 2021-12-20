@@ -13,6 +13,14 @@ msgstr ""
 msgid "Error: Invalid keys"
 msgstr ""
 
+#: nl_language.rsdia0004
+msgid "Password length must be 8 chars or more"
+msgstr ""
+
+#: nl_language.rsdia0005
+msgid "Passwords do not match"
+msgstr ""
+
 #: nl_language.rserror0001
 msgctxt "nl_language.rserror0001"
 msgid "Error: creating new wallet file-> %s"
@@ -52,6 +60,10 @@ msgstr ""
 
 #: nl_language.rserror0010
 msgid "Error: Invalid parameters for sending coins"
+msgstr ""
+
+#: nl_language.rserror0011
+msgid "Error: Invalid password for address %s"
 msgstr ""
 
 #: nl_language.rsexp0001
@@ -142,6 +154,10 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
+#: tform1.menuitem10.caption
+msgid "Unlock"
+msgstr ""
+
 #: tform1.menuitem2.caption
 msgctxt "tform1.menuitem2.caption"
 msgid "File"
@@ -170,6 +186,10 @@ msgstr ""
 #: tform1.menuitem8.caption
 msgctxt "tform1.menuitem8.caption"
 msgid "Confirm"
+msgstr ""
+
+#: tform1.menuitem9.caption
+msgid "Lock"
 msgstr ""
 
 #: tform1.mm_file.caption

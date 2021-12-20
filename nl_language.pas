@@ -20,6 +20,7 @@ Resourcestring
   rsError0008 = 'Error: Downloading summary from -> %s';
   rsError0009 = 'Error: Can not delete only address of the wallet';
   rsError0010 = 'Error: Invalid parameters for sending coins';
+  rsError0011 = 'Error: Invalid password for address %s';
 
   // GUI interface
   rsGUI0001 = 'Address';
@@ -43,6 +44,8 @@ Resourcestring
   rsDIA0001 = 'Import address keys';
   rsDIA0002 = 'Paste here the address keys';
   rsDIA0003 = 'Error: Invalid keys';
+  rsDIA0004 = 'Password length must be 8 chars or more';
+  rsDIA0005 = 'Passwords do not match';
 
   // Explorer
   rsEXP0001 = 'Name';

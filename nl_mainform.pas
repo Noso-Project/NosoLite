@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, ExtCtrls,
   Grids, Menus, StdCtrls, nl_GUI, nl_disk, nl_data, nl_functions, IdTCPClient,
-  nl_language, nl_cripto, Clipbrd, Buttons, Spin, nl_explorer, IdComponent;
+  nl_language, nl_cripto, Clipbrd, Buttons, Spin, nl_explorer, IdComponent, strutils, Types;
 
 type
 
@@ -34,6 +34,7 @@ type
     MemoLog: TMemo;
     MemoSCCon: TMemo;
     MenuItem1: TMenuItem;
+    MenuItem10: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
@@ -41,6 +42,7 @@ type
     MenuItem6: TMenuItem;
     MenuItem7: TMenuItem;
     MenuItem8: TMenuItem;
+    MenuItem9: TMenuItem;
     MM_File: TMenuItem;
     PageControl: TPageControl;
     PanelDown: TPanel;
@@ -77,18 +79,24 @@ type
     procedure FormResize(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
+    procedure MenuItem10Click(Sender: TObject);
     procedure MenuItem2Click(Sender: TObject);
     procedure MenuItem3Click(Sender: TObject);
     procedure MenuItem4Click(Sender: TObject);
     procedure MenuItem5Click(Sender: TObject);
     procedure MenuItem6Click(Sender: TObject);
     procedure MenuItem8Click(Sender: TObject);
+    procedure MenuItem9Click(Sender: TObject);
     procedure SBSCMaxClick(Sender: TObject);
     procedure SBSCPasteClick(Sender: TObject);
     procedure SCBitCancelClick(Sender: TObject);
     procedure SCBitCleaClick(Sender: TObject);
     procedure SCBitConfClick(Sender: TObject);
     procedure SCBitSendClick(Sender: TObject);
+    procedure SGridAddressesContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
+    procedure SGridAddressesDrawCell(Sender: TObject; aCol, aRow: Integer;
+      aRect: TRect; aState: TGridDrawState);
     procedure SGridAddressesPrepareCanvas(sender: TObject; aCol, aRow: Integer;
       aState: TGridDrawState);
   private
@@ -184,6 +192,34 @@ if (ACol>0)  then
    end;
 End;
 
+// Grid addresses draw cell
+procedure TForm1.SGridAddressesDrawCell(Sender: TObject; aCol, aRow: Integer;
+  aRect: TRect; aState: TGridDrawState);
+var
+  Bitmap    : TBitmap;
+  myRect    : TRect;
+  CurrPos   : integer;
+  ColWidth : Integer;
+Begin
+CurrPos := aRow-1;
+if ((CurrPos >=0) and (Acol = 0)) then
+   begin
+   if copy(ARRAY_Addresses[CurrPos].PrivateKey,1,1) = '*' then
+      begin
+      ColWidth := (sender as TStringGrid).ColWidths[0];
+      Bitmap:=TBitmap.Create;
+      ImageList.GetBitmap(2,Bitmap);
+      myRect := Arect;
+      myrect.Left:=ColWidth-20;
+      myRect.Right := ColWidth-4;
+      myrect.top:=myrect.Top+2;
+      myrect.Bottom:=myrect.Top+18;
+      (sender as TStringGrid).Canvas.StretchDraw(myRect,bitmap);
+      Bitmap.free
+      end;
+   end;
+End;
+
 //******************************************************************************
 // Client channel
 //******************************************************************************
@@ -213,6 +249,22 @@ End;
 //******************************************************************************
 // Addresses Pop Up menu
 //******************************************************************************
+
+// On context pop up; before showing the menu
+procedure TForm1.SGridAddressesContextPopup(Sender: TObject; MousePos: TPoint;
+  var Handled: Boolean);
+begin
+if copy(ARRAY_Addresses[SGridAddresses.Row-1].PrivateKey,1,1) = '*' then
+   begin
+   menuitem9.Visible:=false;
+   menuitem10.Visible:=true;
+   end
+else
+   begin
+   menuitem9.Visible:=true;
+   menuitem10.Visible:=false;
+   end;
+end;
 
 // Import address from keys
 procedure TForm1.MenuItem3Click(Sender: TObject);
@@ -275,6 +327,78 @@ if length(ARRAY_Addresses)>1 then
    end
 else ToLog(rsError0009);
 End;
+
+// Lock Address
+procedure TForm1.MenuItem9Click(Sender: TObject);
+var
+  pass1, pass2 : string;
+  PassHash : String;
+  crypted : string;
+  CurrPos : integer;
+Begin
+CurrPos := SGridAddresses.Row-1;
+pass1 := InputBox('Lock address','Please enter your password', '');
+if length(pass1)<8 then
+   begin
+   ShowMessage(rsDIA0004);
+   end
+else
+   begin
+   pass2 := InputBox('Lock address','Confirm your password', '');
+   if pass1 <> pass2 then
+      begin
+      ShowMessage(rsDIA0005);
+      end
+   else
+      begin
+      PassHash := HashSha256String(pass1);
+      crypted := '*'+XorEncode(PassHash,ARRAY_Addresses[CurrPos].PrivateKey);
+      ARRAY_Addresses[CurrPos].PrivateKey := crypted;
+      REF_Addresses := true;
+      SAVE_Wallet := true;
+      end
+   end;
+End;
+
+// Unlock address
+procedure TForm1.MenuItem10Click(Sender: TObject);
+var
+  CurrPos : integer;
+  pass1: string;
+  PassHash : String;
+  crypted, decrypted : string;
+  Signature : String;
+  SignProcess : boolean = false;
+begin
+CurrPos := SGridAddresses.Row-1;
+pass1 := InputBox('Unlock address','Please enter your password', '');
+if length(pass1)<8 then
+   begin
+   ShowMessage(rsDIA0004);
+   end
+else
+   begin
+   PassHash := HashSha256String(pass1);
+   crypted := ARRAY_Addresses[CurrPos].PrivateKey;
+   delete(Crypted,1,1);
+   decrypted := XorDecode(PassHash, crypted);
+   TRY
+   Signature := GetStringSigned('VERIFICATION',decrypted);
+   SignProcess := VerifySignedString('VERIFICATION',signature,ARRAY_Addresses[CurrPos].PublicKey);
+   EXCEPT on E:Exception do
+      begin
+      ToLog(format(rsError0011,[ARRAY_Addresses[CurrPos].Hash]));
+      end;
+   END{Try};
+   if SignProcess then
+      begin
+      ARRAY_Addresses[CurrPos].PrivateKey := decrypted;
+      REF_Addresses := true;
+      SAVE_Wallet := true;
+      end
+   else ToLog(format(rsError0011,[ARRAY_Addresses[CurrPos].Hash]));
+   end;
+end;
 
 // Import addresses from file
 procedure TForm1.MenuItem2Click(Sender: TObject);
