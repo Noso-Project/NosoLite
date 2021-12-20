@@ -66,6 +66,10 @@ msgstr ""
 msgid "Error: Invalid password for address %s"
 msgstr ""
 
+#: nl_language.rserror0012
+msgid "Error: Insufficient funds"
+msgstr ""
+
 #: nl_language.rsexp0001
 msgid "Name"
 msgstr ""
@@ -156,6 +160,22 @@ msgstr ""
 
 #: tform1.menuitem10.caption
 msgid "Unlock"
+msgstr ""
+
+#: tform1.menuitem11.caption
+msgid "15 seg"
+msgstr ""
+
+#: tform1.menuitem12.caption
+msgid "1 min"
+msgstr ""
+
+#: tform1.menuitem13.caption
+msgid "10 min"
+msgstr ""
+
+#: tform1.menuitem14.caption
+msgid "Stop"
 msgstr ""
 
 #: tform1.menuitem2.caption

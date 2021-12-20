@@ -5,15 +5,17 @@ unit nl_network;
 interface
 
 uses
-  Classes, SysUtils, nl_data, IdGlobal, dialogs, nl_functions, nl_language, nl_Disk;
+  Classes, SysUtils, nl_data, IdGlobal, dialogs, nl_functions, nl_language,
+  IdTCPClient;
 
 function GetNodeStatus(Host,Port:String):string;
 function GetSumary():boolean;
+function SendOrder(OrderString:String):String;
 
 implementation
 
 Uses
-  nl_mainform;
+  nl_mainform, nl_Disk;
 
 // Connects a client and returns the nodestatus
 function GetNodeStatus(Host,Port:String):string;
@@ -90,8 +92,25 @@ AFileStream.Free;
 if DownloadedFile then UnZipSumary();
 End;
 
-
-
+function SendOrder(OrderString:String):String;
+var
+  Client : TidTCPClient;
+Begin
+Result := '';
+Client := TidTCPClient.Create(nil);
+Client.Host:='192.210.226.118';
+Client.Port:=8080;
+Client.ConnectTimeout:= 1000;
+Client.ReadTimeout:=500;
+TRY
+Client.Connect;
+Client.IOHandler.WriteLn(OrderString);
+Result := Client.IOHandler.ReadLn(IndyTextEncoding_UTF8);
+FINALLY
+Client.Disconnect();
+END{Try};
+client.Free;
+End;
 
 
 END. // END UNIT.

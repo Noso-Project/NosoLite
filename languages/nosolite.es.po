@@ -1,13 +1,23 @@
 msgid ""
-msgstr "Content-Type: text/plain; charset=UTF-8"
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
+"X-Generator: Poedit 3.0\n"
 
 #: nl_language.rsdia0001
 msgid "Import address keys"
-msgstr ""
+msgstr "Importar claves de dirección"
 
 #: nl_language.rsdia0002
 msgid "Paste here the address keys"
-msgstr ""
+msgstr "Pega aquí las claves de dirección"
 
 #: nl_language.rsdia0003
 msgid "Error: Invalid keys"
@@ -15,11 +25,11 @@ msgstr ""
 
 #: nl_language.rsdia0004
 msgid "Password length must be 8 chars or more"
-msgstr ""
+msgstr "La longitud de la contraseña debe ser de 8 caracteres o más"
 
 #: nl_language.rsdia0005
 msgid "Passwords do not match"
-msgstr ""
+msgstr "Las contraseñas no coinciden"
 
 #: nl_language.rserror0001
 msgctxt "nl_language.rserror0001"
@@ -32,7 +42,7 @@ msgstr ""
 
 #: nl_language.rserror0003
 msgid "FAILED"
-msgstr ""
+msgstr "FALLO"
 
 #: nl_language.rserror0004
 msgid "Error: Saving wallet to disk-> %s"
@@ -66,41 +76,45 @@ msgstr ""
 msgid "Error: Invalid password for address %s"
 msgstr ""
 
+#: nl_language.rserror0012
+msgid "Error: Insufficient funds"
+msgstr ""
+
 #: nl_language.rsexp0001
 msgid "Name"
 msgstr ""
 
 #: nl_language.rsgui0001
 msgid "Address"
-msgstr ""
+msgstr "Direccion"
 
 #: nl_language.rsgui0002
 msgid "Incoming"
-msgstr ""
+msgstr "Entrante"
 
 #: nl_language.rsgui0003
 msgid "Outgoing"
-msgstr ""
+msgstr "Saliente"
 
 #: nl_language.rsgui0004
 msgid "Balance"
-msgstr ""
+msgstr "Saldo"
 
 #: nl_language.rsgui0005
 msgid "Host"
-msgstr ""
+msgstr "Anfitrion"
 
 #: nl_language.rsgui0006
 msgid "Block"
-msgstr ""
+msgstr "Bloque"
 
 #: nl_language.rsgui0007
 msgid "Pending"
-msgstr ""
+msgstr "Pendiente"
 
 #: nl_language.rsgui0008
 msgid "Branch"
-msgstr ""
+msgstr "Rama"
 
 #: nl_language.rsgui0009
 msgid "%s NOSO"
@@ -108,7 +122,7 @@ msgstr ""
 
 #: nl_language.rsgui0010
 msgid "Import from file"
-msgstr ""
+msgstr "Importar desde un archivo"
 
 #: nl_language.rsgui0011
 msgid "[%s] %s"
@@ -124,15 +138,15 @@ msgstr ""
 
 #: nl_language.rsgui0014
 msgid "Destination"
-msgstr ""
+msgstr "Destino"
 
 #: nl_language.rsgui0015
 msgid "Ammount"
-msgstr ""
+msgstr "Ammount"
 
 #: nl_language.rsgui0016
 msgid "Reference"
-msgstr ""
+msgstr "Referencia"
 
 #: tform1.caption
 msgid "Nosolite"
@@ -140,7 +154,7 @@ msgstr ""
 
 #: tform1.editscmont.text
 msgid "0.00000000"
-msgstr ""
+msgstr "0.00000000"
 
 #: tform1.lbalance.caption
 msgid "0.00000000 NOSO"
@@ -148,36 +162,52 @@ msgstr ""
 
 #: tform1.lsctop.caption
 msgid "Send coins"
-msgstr ""
+msgstr "Enviar fondos"
 
 #: tform1.menuitem1.caption
 msgid "Import"
-msgstr ""
+msgstr "Importar"
 
 #: tform1.menuitem10.caption
 msgid "Unlock"
+msgstr "Desbloquear"
+
+#: tform1.menuitem11.caption
+msgid "15 seg"
+msgstr ""
+
+#: tform1.menuitem12.caption
+msgid "1 min"
+msgstr ""
+
+#: tform1.menuitem13.caption
+msgid "10 min"
+msgstr ""
+
+#: tform1.menuitem14.caption
+msgid "Stop"
 msgstr ""
 
 #: tform1.menuitem2.caption
 msgctxt "tform1.menuitem2.caption"
 msgid "File"
-msgstr ""
+msgstr "Archivo"
 
 #: tform1.menuitem3.caption
 msgid "Keys"
-msgstr ""
+msgstr "Claves"
 
 #: tform1.menuitem4.caption
 msgid "Copy"
-msgstr ""
+msgstr "Copiar"
 
 #: tform1.menuitem5.caption
 msgid "New"
-msgstr ""
+msgstr "Nuevo"
 
 #: tform1.menuitem6.caption
 msgid "Set as Default"
-msgstr ""
+msgstr "Como predeterminado"
 
 #: tform1.menuitem7.caption
 msgid "Delete"
@@ -186,7 +216,7 @@ msgstr ""
 #: tform1.menuitem8.caption
 msgctxt "tform1.menuitem8.caption"
 msgid "Confirm"
-msgstr ""
+msgstr "Confirmar"
 
 #: tform1.menuitem9.caption
 msgid "Lock"
@@ -195,7 +225,7 @@ msgstr ""
 #: tform1.mm_file.caption
 msgctxt "tform1.mm_file.caption"
 msgid "File"
-msgstr ""
+msgstr "Archivo"
 
 #: tform1.panelblockinfo.hint
 msgid "Last block"
@@ -209,62 +239,62 @@ msgstr ""
 #: tform1.panelsync.hint
 msgctxt "tform1.panelsync.hint"
 msgid "Synchronizing"
-msgstr ""
+msgstr "Sincronizar"
 
 #: tform1.sbscmax.hint
 msgid "Send all"
-msgstr ""
+msgstr "Enviar todo"
 
 #: tform1.sbscpaste.hint
 msgid "Paste destination"
-msgstr ""
+msgstr "Pegar destino"
 
 #: tform1.scbitcancel.caption
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: tform1.scbitclea.caption
 msgid "Clear"
-msgstr ""
+msgstr "Limpiar"
 
 #: tform1.scbitconf.caption
 msgctxt "tform1.scbitconf.caption"
 msgid "Confirm"
-msgstr ""
+msgstr "Confirmar"
 
 #: tform1.scbitsend.caption
 msgid "Send"
-msgstr ""
+msgstr "Enviar"
 
 #: tform1.tablog.caption
 msgid "Log"
-msgstr ""
+msgstr "Historial"
 
 #: tform1.tabnodes.caption
 msgid "Nodes"
-msgstr ""
+msgstr "Nodos"
 
 #: tform1.tabwallet.caption
 msgid "Wallet"
-msgstr ""
+msgstr "Cartera"
 
 #: tformexplorer.butaccept.hint
 msgctxt "tformexplorer.butaccept.hint"
 msgid "Accept"
-msgstr ""
+msgstr "Aceptar"
 
 #: tformexplorer.butcanceladd.hint
 msgid "Back to explorer"
-msgstr ""
+msgstr "Volver al explorador"
 
 #: tformexplorer.butfolderup.hint
 msgctxt "tformexplorer.butfolderup.hint"
 msgid "Go up"
-msgstr ""
+msgstr "Subir"
 
 #: tformexplorer.butokadd.hint
 msgid "Import selected addresses"
-msgstr ""
+msgstr "Importar direcciones seleccionadas"
 
 #: tformexplorer.caption
 msgid "FormExplorer"
@@ -273,7 +303,7 @@ msgstr ""
 #: tformexplorer.checkboxselectall.caption
 msgctxt "tformexplorer.checkboxselectall.caption"
 msgid "Select all"
-msgstr ""
+msgstr "Seleccionar todos"
 
 #: tformexplorer.comboxmask.text
 msgid "*.*"
@@ -281,5 +311,5 @@ msgstr ""
 
 #: tformexplorer.labadd.caption
 msgid "Select addresses to be imported"
-msgstr ""
+msgstr "Seleccione las direcciones que se van a importar"
 

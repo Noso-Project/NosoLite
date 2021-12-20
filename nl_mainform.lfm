@@ -175,8 +175,10 @@ object Form1: TForm1
       Color = clRed
       ParentColor = False
       ParentShowHint = False
+      PopupMenu = POMRefresh
       ShowHint = True
       TabOrder = 0
+      OnContextPopup = PanelBlockInfoContextPopup
       object ImageBlockInfo: TImage
         Left = 6
         Height = 19
@@ -1007,5 +1009,25 @@ object Form1: TForm1
       49EB082B49EB082B49EB082B49EB082B49EB082B49EB082B49EB082B49EB082B
       49EB051E33DE0000004800000000
     }
+  end
+  object POMRefresh: TPopupMenu
+    Left = 483
+    Top = 312
+    object MenuItem11: TMenuItem
+      Caption = '15 seg'
+      OnClick = MenuItem11Click
+    end
+    object MenuItem12: TMenuItem
+      Caption = '1 min'
+      OnClick = MenuItem12Click
+    end
+    object MenuItem13: TMenuItem
+      Caption = '10 min'
+      OnClick = MenuItem13Click
+    end
+    object MenuItem14: TMenuItem
+      Caption = 'Stop'
+      OnClick = MenuItem14Click
+    end
   end
 end

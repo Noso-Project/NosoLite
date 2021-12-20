@@ -35,6 +35,10 @@ type
     MemoSCCon: TMemo;
     MenuItem1: TMenuItem;
     MenuItem10: TMenuItem;
+    MenuItem11: TMenuItem;
+    MenuItem12: TMenuItem;
+    MenuItem13: TMenuItem;
+    MenuItem14: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
@@ -52,6 +56,7 @@ type
     PanelSync: TPanel;
     PanelStatus: TPanel;
     PanelDownload: TPanel;
+    POMRefresh: TPopupMenu;
     PUMAddressess: TPopupMenu;
     SBSCMax: TSpeedButton;
     SBSCPaste: TSpeedButton;
@@ -80,6 +85,10 @@ type
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure MenuItem10Click(Sender: TObject);
+    procedure MenuItem11Click(Sender: TObject);
+    procedure MenuItem12Click(Sender: TObject);
+    procedure MenuItem13Click(Sender: TObject);
+    procedure MenuItem14Click(Sender: TObject);
     procedure MenuItem2Click(Sender: TObject);
     procedure MenuItem3Click(Sender: TObject);
     procedure MenuItem4Click(Sender: TObject);
@@ -87,6 +96,8 @@ type
     procedure MenuItem6Click(Sender: TObject);
     procedure MenuItem8Click(Sender: TObject);
     procedure MenuItem9Click(Sender: TObject);
+    procedure PanelBlockInfoContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
     procedure SBSCMaxClick(Sender: TObject);
     procedure SBSCPasteClick(Sender: TObject);
     procedure SCBitCancelClick(Sender: TObject);
@@ -360,6 +371,8 @@ else
    end;
 End;
 
+
+
 // Unlock address
 procedure TForm1.MenuItem10Click(Sender: TObject);
 var
@@ -404,6 +417,49 @@ end;
 procedure TForm1.MenuItem2Click(Sender: TObject);
 begin
 ShowExplorer(GetCurrentDir,rsGUI0010,'*.pkw',true);
+end;
+
+//******************************************************************************
+// Refresh PoP Up menu
+//******************************************************************************
+
+// On popup menu
+procedure TForm1.PanelBlockInfoContextPopup(Sender: TObject; MousePos: TPoint;
+  var Handled: Boolean);
+Begin
+menuitem11.Checked:=false;
+menuitem12.Checked:=false;
+menuitem13.Checked:=false;
+menuitem14.Checked:=false;
+if WO_Refreshrate = 15 then menuitem11.Checked:=true;
+if WO_Refreshrate = 60 then menuitem12.Checked:=true;
+if WO_Refreshrate = 600 then menuitem13.Checked:=true;
+if WO_Refreshrate = 0 then menuitem14.Checked:=true;
+End;
+
+// 15 segs
+procedure TForm1.MenuItem11Click(Sender: TObject);
+Begin
+WO_Refreshrate := 15;
+SaveOptions;
+End;
+
+procedure TForm1.MenuItem12Click(Sender: TObject);
+begin
+WO_Refreshrate := 60;
+SaveOptions;
+end;
+
+procedure TForm1.MenuItem13Click(Sender: TObject);
+begin
+WO_Refreshrate := 600;
+SaveOptions;
+end;
+
+procedure TForm1.MenuItem14Click(Sender: TObject);
+begin
+WO_Refreshrate := 0;
+SaveOptions;
 end;
 
 //******************************************************************************

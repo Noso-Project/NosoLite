@@ -55,6 +55,23 @@ ConsensusData = packed record
    count : integer;
    end;
 
+OrderData = Packed Record
+   Block : integer;
+   OrderID : String[64];
+   OrderLines : Integer;
+   OrderType : String[6];
+   TimeStamp : Int64;
+   Reference : String[64];
+     TrxLine : integer;
+     Sender : String[120];    // La clave publica de quien envia
+     Address : String[40];
+     Receiver : String[40];
+     AmmountFee : Int64;
+     AmmountTrf : Int64;
+     Signature : String[120];
+     TrfrID : String[64];
+   end;
+
 SumaryData = Packed Record
    Hash : String[40]; // El hash publico o direccion
    Custom : String[40]; // En caso de que la direccion este personalizada
@@ -72,6 +89,9 @@ CONST
   ZipSumaryFilename = DataDirectory+'sumary.zip';
   OptionsFilename = DataDirectory+'options.nsl';                // Options file
   Comisiontrfr = 10000;
+  MinimunFee = 10;
+  Protocol = 1;
+  ProgramVersion = '1.0';
 
   HexAlphabet : string = '0123456789ABCDEF';
   B58Alphabet : string = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
@@ -189,7 +209,7 @@ Begin
 While not terminated do
    begin
    ActualTime := DateTimeToUnix(now);
-   if ActualTime >= Int_LastThreadExecution+WO_Refreshrate then
+   if ((ActualTime >= Int_LastThreadExecution+WO_Refreshrate) and (WO_Refreshrate>0)) then
       begin
       Synchronize(@showsync);
       sleep(1);

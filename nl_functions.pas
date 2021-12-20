@@ -13,6 +13,7 @@ Procedure LoadSeedNodes();
 Function Parameter(LineText:String;ParamNumber:int64):String;
 function Consensus():Boolean;
 function GetAddressBalanceFromSumary(address:string):int64;
+function GetAddressPendingPays(address : string):int64;
 function GetAddressToShow(address:string):String;
 function IsAddressOnWallet(address:string):Boolean;
 Procedure ToLog(StringToAdd:String);
@@ -23,6 +24,14 @@ function IsValid58(base58text:string):boolean;
 function AddressSumaryIndex(Address:string):integer;
 function UTCTime():int64;
 function TimestampToDate(timestamp:int64):String;
+function GetFee(monto:int64):Int64;
+function GetOrderHash(TextLine:string):String;
+function GetTransferHash(TextLine:string):String;
+Function SendFundsFromAddress(Origen, Destino:String; monto, comision:int64; reference,
+  ordertime:String;linea:integer):OrderData;
+function GetPTCEcn(OrderType:String):String;
+function GetStringFromOrder(order:orderdata):String;
+function WalletAddressIndex(address:string):integer;
 
 implementation
 
@@ -219,6 +228,11 @@ for cont := 0 to length(ARRAY_Sumary)-1 do
    end;
 End;
 
+function GetAddressPendingPays(address : string):int64;
+Begin
+result := 0;
+End;
+
 // Returns the address OUTPUT to show: hash or custom (if any)
 function GetAddressToShow(address:string):String;
 var
@@ -379,6 +393,106 @@ DateToShow := UnixToDateTime(timestamp);
 result := DateTimeToStr(DateToShow);
 end;
 
+// Returns the fee
+function GetFee(monto:int64):Int64;
+Begin
+Result := monto div Comisiontrfr;
+if result < MinimunFee then result := MinimunFee;
+End;
+
+// Returns a order hash
+function GetOrderHash(TextLine:string):String;
+Begin
+Result := HashSHA256String(TextLine);
+Result := 'OR'+BMHexTo58(Result,36);
+End;
+
+// Returns a transfer hash
+function GetTransferHash(TextLine:string):String;
+var
+  Resultado : String = '';
+  Sumatoria, clave : string;
+Begin
+Resultado := HashSHA256String(TextLine);
+Resultado := BMHexTo58(Resultado,58);
+sumatoria := BMB58resumen(Resultado);
+clave := BMDecTo58(sumatoria);
+Result := 'tR'+Resultado+clave;
+End;
+
+Function SendFundsFromAddress(Origen, Destino:String; monto, comision:int64; reference,
+  ordertime:String;linea:integer):OrderData;
+var
+  MontoDisponible, Montotrfr, comisionTrfr : int64;
+  OrderInfo : orderdata;
+Begin
+
+MontoDisponible := ARRAY_Addresses[WalletAddressIndex(origen)].Balance-GetAddressPendingPays(Origen);
+if MontoDisponible>comision then ComisionTrfr := Comision
+else comisiontrfr := montodisponible;
+if montodisponible>monto+comision then montotrfr := monto
+else montotrfr := montodisponible-comision;
+if montotrfr <0 then montotrfr := 0;
+OrderInfo := Default(OrderData);
+OrderInfo.OrderID    := '';
+OrderInfo.OrderLines := 1;
+OrderInfo.OrderType  := 'TRFR';
+OrderInfo.TimeStamp  := StrToInt64(OrderTime);
+OrderInfo.reference    := reference;
+OrderInfo.TrxLine    := linea;
+OrderInfo.Sender     := ARRAY_Addresses[WalletAddressIndex(origen)].PublicKey;
+OrderInfo.Address    := ARRAY_Addresses[WalletAddressIndex(origen)].Hash;
+OrderInfo.Receiver   := Destino;
+OrderInfo.AmmountFee := ComisionTrfr;
+OrderInfo.AmmountTrf := montotrfr;
+OrderInfo.Signature  := GetStringSigned(ordertime+origen+destino+IntToStr(montotrfr)+
+                     IntToStr(comisiontrfr)+IntToStr(linea),
+                     ARRAY_Addresses[WalletAddressIndex(origen)].PrivateKey);
+OrderInfo.TrfrID     := GetTransferHash(ordertime+origen+destino+IntToStr(monto)+IntToStr(WO_LastBlock));
+Result := OrderInfo;
+End;
+
+// Returns the header
+function GetPTCEcn(OrderType:String):String;
+Begin
+result := 'NSL'+OrderType+' '+IntToStr(protocol)+' '+ProgramVersion+' '+UTCTime.ToString+' ';
+End;
+
+// Returns an string from a order data
+function GetStringFromOrder(order:orderdata):String;
+Begin
+result:= Order.OrderType+' '+
+         Order.OrderID+' '+
+         IntToStr(order.OrderLines)+' '+
+         order.OrderType+' '+
+         IntToStr(Order.TimeStamp)+' '+
+         Order.reference+' '+
+         IntToStr(order.TrxLine)+' '+
+         order.Sender+' '+
+         Order.Address+' '+
+         Order.Receiver+' '+
+         IntToStr(Order.AmmountFee)+' '+
+         IntToStr(Order.AmmountTrf)+' '+
+         Order.Signature+' '+
+         Order.TrfrID;
+End;
+
+// Verifica si la direccion enviada esta en la cartera del usuario
+function WalletAddressIndex(address:string):integer;
+var
+  counter : integer = 0;
+Begin
+Result := -1;
+for counter := 0 to length(ARRAY_Addresses)-1 do
+   begin
+   if ((ARRAY_Addresses[counter].Hash = address) or (ARRAY_Addresses[counter].Custom = address )) then
+      begin
+      result := counter;
+      break;
+      end;
+   end;
+if ( (not IsValidAddressHash(address)) and (AddressSumaryIndex(address)<0) ) then result := -1;
+End;
 
 END. // END UNIT
 

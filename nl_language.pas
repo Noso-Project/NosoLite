@@ -21,6 +21,7 @@ Resourcestring
   rsError0009 = 'Error: Can not delete only address of the wallet';
   rsError0010 = 'Error: Invalid parameters for sending coins';
   rsError0011 = 'Error: Invalid password for address %s';
+  rsError0012 = 'Error: Insufficient funds';
 
   // GUI interface
   rsGUI0001 = 'Address';

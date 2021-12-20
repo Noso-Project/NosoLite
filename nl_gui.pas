@@ -66,7 +66,6 @@ End;
 Procedure RefreshAddresses();
 var
   counter : integer = 0;
-  AddressBalance : int64;
 Begin
 Int_WalletBalance := 0;
 EnterCriticalSection(CS_ARRAY_Addresses);
@@ -75,12 +74,12 @@ if length(ARRAY_Addresses)>0 then
    begin
    for counter := 0 to length(ARRAY_Addresses)-1 do
       begin
+      ARRAY_Addresses[counter].Balance:=GetAddressBalanceFromSumary(GetAddressToShow(ARRAY_Addresses[counter].Hash));
       form1.SGridAddresses.Cells[0,counter+1] := GetAddressToShow(ARRAY_Addresses[counter].Hash);
       form1.SGridAddresses.Cells[1,counter+1] := Int2Curr(0);
       form1.SGridAddresses.Cells[2,counter+1] := Int2Curr(0);
-      AddressBalance := GetAddressBalanceFromSumary(ARRAY_Addresses[counter].Hash);
-      Int_WalletBalance := Int_WalletBalance+ AddressBalance;
-      form1.SGridAddresses.Cells[3,counter+1] := Int2Curr(AddressBalance);
+      form1.SGridAddresses.Cells[3,counter+1] := Int2Curr(ARRAY_Addresses[counter].Balance);
+      Int_WalletBalance := Int_WalletBalance+ARRAY_Addresses[counter].Balance;
       end;
    end;
 LeaveCriticalSection(CS_ARRAY_Addresses);

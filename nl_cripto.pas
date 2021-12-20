@@ -5,7 +5,8 @@ unit nl_cripto;
 interface
 
 uses
-  Classes, SysUtils, nl_data, nl_signerutils, HlpHashFactory, Base64, nl_language, nl_GUI;
+  Classes, SysUtils, nl_data, nl_signerutils, HlpHashFactory, Base64, nl_language,
+  nl_GUI, nl_network;
 
 Function CreateNewAddress(keysData:string = ''):WalletData;
 function GetAddressFromPublicKey(PubKey:String):String;
@@ -14,7 +15,7 @@ function HashMD160String(StringToHash:string):String;
 function GetStringSigned(StringtoSign, PrivateKey:String):String;
 function VerifySignedString(StringToVerify,SignedHash,PublicKey:String):boolean;
 Procedure ImportKeys(Keysline:String);
-Procedure SendTo(Destination:String;Ammount:int64;Reference:String);
+function SendTo(Destination:String;Ammount:int64;Reference:String):string;
 
 // Big Maths
 function ClearLeadingCeros(numero:string):string;
@@ -133,12 +134,73 @@ if SignProcess then
 End;
 
 // Process a coin sent
-Procedure SendTo(Destination:String;Ammount:int64;Reference:String);
+function SendTo(Destination:String;Ammount:int64;Reference:String):string;
 var
-  CurrTime : int64;
+  CurrTime : String;
+  fee : int64;
+  ShowAmmount, ShowFee : int64;
+  Remaining : int64;
+  CoinsAvailable : int64;
+  KeepProcess : boolean = true;
+  ArrayTrfrs : Array of orderdata;
+  counter : integer;
+  OrderHashString : string;
+  TrxLine : integer = 0;
+  ResultOrderID : String = '';
+  OrderString : string;
+  PreviousRefresh : integer;
 Begin
+PreviousRefresh := WO_Refreshrate;
+result := '';
 if reference = '' then reference := 'null';
-CurrTime := UTCTime;
+CurrTime := UTCTime.ToString;
+fee := GetFee(Ammount);
+ShowAmmount := Ammount;
+ShowFee := fee;
+Remaining := Ammount+fee;
+if WO_Multisend then CoinsAvailable := Int_WalletBalance
+else CoinsAvailable := GetAddressBalanceFromSumary(ARRAY_Addresses[0].Hash);
+if Remaining > CoinsAvailable then
+      begin
+      ToLog(rsError0012);
+      KeepProcess := false;
+      end;
+if KeepProcess then
+   begin
+   Setlength(ArrayTrfrs,0);
+   counter := 0;
+   OrderHashString := currtime;
+   while Ammount > 0 do
+      begin
+      if ARRAY_Addresses[counter].Balance-GetAddressPendingPays(ARRAY_Addresses[counter].Hash) > 0 then
+         begin
+         TrxLine := TrxLine+1;
+         Setlength(ArrayTrfrs,length(arraytrfrs)+1);
+         ArrayTrfrs[length(arraytrfrs)-1]:= SendFundsFromAddress(ARRAY_Addresses[counter].Hash,
+                                            Destination,ammount, fee, reference, CurrTime,TrxLine);
+         fee := fee-ArrayTrfrs[length(arraytrfrs)-1].AmmountFee;
+         ammount := ammount-ArrayTrfrs[length(arraytrfrs)-1].AmmountTrf;
+         OrderHashString := OrderHashString+ArrayTrfrs[length(arraytrfrs)-1].TrfrID;
+         end;
+      counter := counter +1;
+      end;
+   for counter := 0 to length(ArrayTrfrs)-1 do
+      begin
+      ArrayTrfrs[counter].OrderID:=GetOrderHash(IntToStr(trxLine)+OrderHashString);
+      ArrayTrfrs[counter].OrderLines:=trxLine;
+      end;
+   ResultOrderID := GetOrderHash(IntToStr(trxLine)+OrderHashString);
+   result := ResultOrderID;
+   OrderString := GetPTCEcn('ORDER')+'ORDER '+IntToStr(trxLine)+' $';
+   for counter := 0 to length(ArrayTrfrs)-1 do
+      begin
+      OrderString := orderstring+GetStringfromOrder(ArrayTrfrs[counter])+' $';
+      end;
+   Setlength(orderstring,length(orderstring)-2);
+   ToLog(OrderString);
+   ToLog(SendOrder(OrderString));
+   end;
+WO_Refreshrate := PreviousRefresh
 End;
 
 // *****************************************************************************

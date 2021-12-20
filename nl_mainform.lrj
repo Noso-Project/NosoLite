@@ -25,5 +25,9 @@
 {"hash":78392485,"name":"tform1.menuitem7.caption","sourcebytes":[68,101,108,101,116,101],"value":"Delete"},
 {"hash":174379213,"name":"tform1.menuitem8.caption","sourcebytes":[67,111,110,102,105,114,109],"value":"Confirm"},
 {"hash":341403,"name":"tform1.menuitem9.caption","sourcebytes":[76,111,99,107],"value":"Lock"},
-{"hash":96810395,"name":"tform1.menuitem10.caption","sourcebytes":[85,110,108,111,99,107],"value":"Unlock"}
+{"hash":96810395,"name":"tform1.menuitem10.caption","sourcebytes":[85,110,108,111,99,107],"value":"Unlock"},
+{"hash":55015863,"name":"tform1.menuitem11.caption","sourcebytes":[49,53,32,115,101,103],"value":"15 seg"},
+{"hash":3372030,"name":"tform1.menuitem12.caption","sourcebytes":[49,32,109,105,110],"value":"1 min"},
+{"hash":54686718,"name":"tform1.menuitem13.caption","sourcebytes":[49,48,32,109,105,110],"value":"10 min"},
+{"hash":371552,"name":"tform1.menuitem14.caption","sourcebytes":[83,116,111,112],"value":"Stop"}
 ]}
