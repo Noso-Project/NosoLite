@@ -7,8 +7,6 @@ interface
 uses
   Classes, SysUtils, nl_functions, nl_language, nl_data, graphics, DateUtils;
 
-Procedure ResizeSGridAddresses();
-Procedure ResizeSGridNodes();
 Procedure LoadGUIInterface();
 Procedure RefreshAddresses();
 Procedure RefreshNodes();
@@ -19,29 +17,6 @@ implementation
 uses
   nl_mainform;
 
-// Resize the stringgrid containing the addresses
-Procedure ResizeSGridAddresses();
-var
-  GridWidth : integer;
-Begin
-GridWidth := form1.SGridAddresses.Width;
-form1.SGridAddresses.ColWidths[0] := ThisPercent(40,GridWidth);
-form1.SGridAddresses.ColWidths[1] := ThisPercent(18,GridWidth);
-form1.SGridAddresses.ColWidths[2] := ThisPercent(18,GridWidth);
-form1.SGridAddresses.ColWidths[3] := ThisPercent(24,GridWidth,true);
-End;
-
-// Resize the stringgrid containing the nodes
-Procedure ResizeSGridNodes();
-var
-  GridWidth : integer;
-Begin
-GridWidth := form1.SGridNodes.Width;
-form1.SGridNodes.ColWidths[0] := ThisPercent(40,GridWidth);
-form1.SGridNodes.ColWidths[1] := ThisPercent(20,GridWidth);
-form1.SGridNodes.ColWidths[2] := ThisPercent(20,GridWidth);
-form1.SGridNodes.ColWidths[3] := ThisPercent(20,GridWidth,true);
-End;
 
 // Loads all the GUI
 Procedure LoadGUIInterface();

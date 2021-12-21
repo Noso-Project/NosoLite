@@ -86,7 +86,6 @@ type
     procedure EditSCMontKeyPress(Sender: TObject; var Key: char);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure FormResize(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure MenuItem10Click(Sender: TObject);
@@ -117,6 +116,8 @@ type
       aRect: TRect; aState: TGridDrawState);
     procedure SGridAddressesPrepareCanvas(sender: TObject; aCol, aRow: Integer;
       aState: TGridDrawState);
+    procedure SGridAddressesResize(Sender: TObject);
+    procedure SGridNodesResize(Sender: TObject);
   private
 
   public
@@ -175,13 +176,6 @@ if G_FirstRun then
    end;
 End;
 
-// On resize form events
-procedure TForm1.FormResize(Sender: TObject);
-begin
-ResizeSGridAddresses();
-ResizeSGridNodes();
-end;
-
 // On close query form events
 procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: boolean);
 Begin
@@ -214,6 +208,30 @@ if (ACol>0)  then
    (Sender as TStringGrid).Canvas.TextStyle := ts;
    end;
 End;
+
+// Grid addresses on resize
+procedure TForm1.SGridAddressesResize(Sender: TObject);
+var
+  GridWidth : integer;
+Begin
+GridWidth := form1.SGridAddresses.Width;
+form1.SGridAddresses.ColWidths[0] := ThisPercent(40,GridWidth);
+form1.SGridAddresses.ColWidths[1] := ThisPercent(18,GridWidth);
+form1.SGridAddresses.ColWidths[2] := ThisPercent(18,GridWidth);
+form1.SGridAddresses.ColWidths[3] := ThisPercent(24,GridWidth,true);
+end;
+
+// Grid nodes resize
+procedure TForm1.SGridNodesResize(Sender: TObject);
+var
+  GridWidth : integer;
+Begin
+GridWidth := form1.SGridNodes.Width;
+form1.SGridNodes.ColWidths[0] := ThisPercent(40,GridWidth);
+form1.SGridNodes.ColWidths[1] := ThisPercent(20,GridWidth);
+form1.SGridNodes.ColWidths[2] := ThisPercent(20,GridWidth);
+form1.SGridNodes.ColWidths[3] := ThisPercent(20,GridWidth,true);
+end;
 
 // Grid addresses draw cell
 procedure TForm1.SGridAddressesDrawCell(Sender: TObject; aCol, aRow: Integer;
