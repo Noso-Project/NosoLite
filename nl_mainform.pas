@@ -173,6 +173,7 @@ if G_FirstRun then
    THREAD_Update.FreeOnTerminate:=true;
    THREAD_Update.Start;
    G_FirstRun := false;
+   form1.PageControl.ActivePage := form1.TabWallet;
    end;
 End;
 
