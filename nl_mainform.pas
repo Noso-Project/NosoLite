@@ -7,7 +7,8 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, ExtCtrls,
   Grids, Menus, StdCtrls, nl_GUI, nl_disk, nl_data, nl_functions, IdTCPClient,
-  nl_language, nl_cripto, Clipbrd, Buttons, Spin, nl_explorer, IdComponent, strutils, Types;
+  nl_language, nl_cripto, Clipbrd, Buttons, Spin, nl_explorer, IdComponent,
+  strutils, Types, nl_qrcode;
 
 type
 
@@ -30,6 +31,7 @@ type
     LabelCLock: TLabel;
     LBalance: TLabel;
     LSCTop: TLabel;
+    LSCTop1: TLabel;
     MainMenu: TMainMenu;
     MemoLog: TMemo;
     MemoSCCon: TMemo;
@@ -39,6 +41,8 @@ type
     MenuItem12: TMenuItem;
     MenuItem13: TMenuItem;
     MenuItem14: TMenuItem;
+    MenuItem15: TMenuItem;
+    MenuItem16: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
@@ -49,6 +53,7 @@ type
     MenuItem9: TMenuItem;
     MM_File: TMenuItem;
     PageControl: TPageControl;
+    PanelDirectory: TPanel;
     PanelDown: TPanel;
     PanelBlockInfo: TPanel;
     PanelBalance: TPanel;
@@ -89,6 +94,8 @@ type
     procedure MenuItem12Click(Sender: TObject);
     procedure MenuItem13Click(Sender: TObject);
     procedure MenuItem14Click(Sender: TObject);
+    procedure MenuItem15Click(Sender: TObject);
+    procedure MenuItem16Click(Sender: TObject);
     procedure MenuItem2Click(Sender: TObject);
     procedure MenuItem3Click(Sender: TObject);
     procedure MenuItem4Click(Sender: TObject);
@@ -141,6 +148,7 @@ InitCriticalSection(CS_LOG);
 setlength(ARRAY_Addresses,0);
 setlength(ARRAY_Nodes,0);
 setlength(ARRAY_Sumary,0);
+Setlength(ARRAY_Pending,0);
 LogLines :=TStringList.create;
 
 LoadSeedNodes();
@@ -154,6 +162,7 @@ End;
 procedure TForm1.FormShow(Sender: TObject);
 Begin
 LoadGUIInterface();
+UpdateWalletFromSumary();
 RefreshAddresses();
 RefreshNodes();
 RefreshStatus();
@@ -371,8 +380,6 @@ else
    end;
 End;
 
-
-
 // Unlock address
 procedure TForm1.MenuItem10Click(Sender: TObject);
 var
@@ -413,6 +420,37 @@ else
    end;
 end;
 
+// Certificate
+procedure TForm1.MenuItem15Click(Sender: TObject);
+var
+  currpos : integer;
+  currtime, address : string;
+Begin
+currtime := UTCTime.ToString;
+CurrPos := SGridAddresses.Row-1;
+if isAddressLocked(ARRAY_Addresses[currpos]) then
+   ToLog(rsError0013)
+else
+   begin
+   address := GetAddressToShow(ARRAY_Addresses[currpos].Hash);
+   Clipboard.AsText := ARRAY_Addresses[currpos].PublicKey+':'+currtime+':'+
+      GetStringSigned('I OWN THIS ADDRESS '+address+currtime,ARRAY_Addresses[currpos].PrivateKey);
+   end;
+End;
+
+// QR code
+procedure TForm1.MenuItem16Click(Sender: TObject);
+var
+  currpos : integer;
+  ToShow: string;
+Begin
+CurrPos := SGridAddresses.Row-1;
+ToShow := GetAddressToShow(ARRAY_Addresses[CurrPos].Hash);
+form2.BarcodeQR1.Text:=ToShow;
+form2.Labelqrcode.Caption:=ToShow;
+form2.show;
+End;
+
 // Import addresses from file
 procedure TForm1.MenuItem2Click(Sender: TObject);
 begin
@@ -444,21 +482,25 @@ WO_Refreshrate := 15;
 SaveOptions;
 End;
 
+// 1 min
 procedure TForm1.MenuItem12Click(Sender: TObject);
 begin
 WO_Refreshrate := 60;
 SaveOptions;
 end;
 
+//10 mins
 procedure TForm1.MenuItem13Click(Sender: TObject);
 begin
 WO_Refreshrate := 600;
 SaveOptions;
 end;
 
+// Disabled
 procedure TForm1.MenuItem14Click(Sender: TObject);
 begin
 WO_Refreshrate := 0;
+Wallet_Synced := false;
 SaveOptions;
 end;
 

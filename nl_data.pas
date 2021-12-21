@@ -80,6 +80,11 @@ SumaryData = Packed Record
    LastOP : int64;// tiempo de la ultima operacion en UnixTime.
    end;
 
+PendingData = Packed Record
+   incoming : int64;
+   outgoing : int64;
+   end;
+
 CONST
   WalletDirectory = 'wallet'+directoryseparator;  // Wallet folder
   DataDirectory   = 'data'+directoryseparator;
@@ -106,6 +111,7 @@ var
   ARRAY_Addresses : array of WalletData;
   ARRAY_Nodes : array of NodeData;
   ARRAY_Sumary : array of SumaryData;
+  ARRAY_Pending : array of PendingData;
 
   THREAD_Update : TUpdateThread;
 
@@ -116,9 +122,12 @@ var
                                  '107.172.5.8:8080 '+
                                  '185.239.239.184:8080 '+
                                  '109.230.238.240:8080';
+
   Int_LastThreadExecution : int64 = 0;
   Int_WalletBalance       : int64 = 0;
   Int_SumarySize          : int64 = 0;
+  Int_LastPendingCount    : int64 = 0;
+    Pendings_String       : string = '';
 
   WO_LastBlock : integer = 0;
   WO_LastSumary : string = '';
@@ -238,7 +247,9 @@ While not terminated do
             begin
             LoadSumary;
             REF_Addresses := true;
-            Wallet_Synced := true;
+            if ARRAY_Sumary[0].LastOP = WO_LastBlock then
+               Wallet_Synced := true
+            else Wallet_Synced := false;
             REF_Status := true;
             end;
          Synchronize(@hidedownload);

@@ -22,6 +22,7 @@ Resourcestring
   rsError0010 = 'Error: Invalid parameters for sending coins';
   rsError0011 = 'Error: Invalid password for address %s';
   rsError0012 = 'Error: Insufficient funds';
+  rsError0013 = 'Error: Can not generate certificates from locked addresses';
 
   // GUI interface
   rsGUI0001 = 'Address';
@@ -40,6 +41,7 @@ Resourcestring
   rsGUI0014 = 'Destination';
   rsGUI0015 = 'Ammount';
   rsGUI0016 = 'Reference';
+  rsGUI0017 = 'Downloading summary %s';
 
   // Dialogs
   rsDIA0001 = 'Import address keys';

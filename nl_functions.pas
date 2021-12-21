@@ -32,11 +32,14 @@ Function SendFundsFromAddress(Origen, Destino:String; monto, comision:int64; ref
 function GetPTCEcn(OrderType:String):String;
 function GetStringFromOrder(order:orderdata):String;
 function WalletAddressIndex(address:string):integer;
+function isAddressLocked(address:walletdata):boolean;
+Procedure UpdateWalletFromSumary();
+Procedure ProcessPendings();
 
 implementation
 
 uses
-  nl_cripto;
+  nl_cripto, nl_network;
 
 // Returns the X percentage of a specified number
 function ThisPercent(percent, thiswidth : integer;RestarBarra : boolean = false):integer;
@@ -139,6 +142,7 @@ var
   ArrT : array of ConsensusData;
   CBlock : integer = 0;
   CBranch : string = '';
+  cPending : integer = 0;
 
    function GetHighest():string;
    var
@@ -197,19 +201,31 @@ For counter := 0 to length (ARRAY_Nodes)-1 do
    CBranch := GetHighest;
    End;
 
-if ((CBlock=WO_LastBlock) and (CBranch=WO_LastSumary) and (not Wallet_Synced)) then
+// Get the consensus pendings
+SetLength(ArrT,0);
+For counter := 0 to length (ARRAY_Nodes)-1 do
    Begin
-   Wallet_Synced := true;
-   REF_Status := true;
+   AddValue(ARRAY_Nodes[counter].Pending.ToString);
+   cPending := GetHighest.ToInteger;
    End;
+
+if ((CBlock=WO_LastBlock) and (CBranch=WO_LastSumary) and (not Wallet_Synced)) then
+   Wallet_Synced := true;
 
 if (CBlock>WO_LastBlock) then
    begin
    result := true;
    WO_LastBlock := CBlock;
    WO_LastSumary := CBranch;
+   Int_LastPendingCount := 0;
    end;
 
+if cPending>Int_LastPendingCount  then
+   begin
+   Pendings_String := GetPendings();
+   ProcessPendings();
+   Int_LastPendingCount := cPending;
+   end;
 End;
 
 // Return the summary balance for the specified address
@@ -438,7 +454,7 @@ OrderInfo.OrderID    := '';
 OrderInfo.OrderLines := 1;
 OrderInfo.OrderType  := 'TRFR';
 OrderInfo.TimeStamp  := StrToInt64(OrderTime);
-OrderInfo.reference    := reference;
+OrderInfo.reference  := reference;
 OrderInfo.TrxLine    := linea;
 OrderInfo.Sender     := ARRAY_Addresses[WalletAddressIndex(origen)].PublicKey;
 OrderInfo.Address    := ARRAY_Addresses[WalletAddressIndex(origen)].Hash;
@@ -477,7 +493,7 @@ result:= Order.OrderType+' '+
          Order.TrfrID;
 End;
 
-// Verifica si la direccion enviada esta en la cartera del usuario
+// Returns the wallet index of the specified address
 function WalletAddressIndex(address:string):integer;
 var
   counter : integer = 0;
@@ -492,6 +508,68 @@ for counter := 0 to length(ARRAY_Addresses)-1 do
       end;
    end;
 if ( (not IsValidAddressHash(address)) and (AddressSumaryIndex(address)<0) ) then result := -1;
+End;
+
+// Return if a wallet is locked
+function isAddressLocked(address:walletdata):boolean;
+Begin
+if copy(address.PrivateKey,1,1) = '*' then result := true
+else result := false;
+End;
+
+// Updates the wallet balances from the available sumary file
+Procedure UpdateWalletFromSumary();
+var
+  counter : integer;
+Begin
+EnterCriticalSection(CS_ARRAY_Addresses);
+for counter := 0 to length(ARRAY_Addresses)-1 do
+   begin
+   ARRAY_Addresses[counter].Balance:=GetAddressBalanceFromSumary(ARRAY_Addresses[counter].Hash);
+   end;
+LeaveCriticalSection(CS_ARRAY_Addresses);
+setlength(ARRAY_Pending,length(ARRAY_Addresses));
+End;
+
+Procedure ProcessPendings();
+var
+  ThisOrder : String;
+  Counter : integer = 0;
+  TO_type, TO_sender, TO_Receiver : string;
+  TO_ammount, TO_fee : int64;
+  add_Index : integer;
+Begin
+{
+setlength(ARRAY_Pending,0);
+setlength(ARRAY_Pending,length(ARRAY_Addresses));
+repeat
+   begin
+   thisorder := parameter(Pendings_String,counter);
+   if thisorder <> '' then
+      begin
+      thisorder :=StringReplace(thisorder,',',' ',[rfReplaceAll, rfIgnoreCase]);
+      TO_type := parameter(thisorder,0);
+      TO_sender := parameter(thisorder,1);
+      TO_Receiver := parameter(thisorder,2);
+      TO_ammount := parameter(thisorder,3).ToInt64;
+      TO_fee := parameter(thisorder,4).ToInt64;
+      if TO_type = 'TRFR' then
+         begin
+         {
+         add_Index := WalletAddressIndex(TO_sender);
+         if add_Index >= 0 then
+            ARRAY_Pending[add_Index].outgoing:=ARRAY_Pending[add_Index].outgoing+TO_ammount+TO_fee;
+         add_Index := WalletAddressIndex(TO_Receiver);
+         if add_Index >= 0 then
+            ARRAY_Pending[add_Index].incoming:=ARRAY_Pending[add_Index].incoming+TO_ammount;
+         }
+         end;
+      end;
+   counter := counter+1;
+   end;
+until thisorder = '';
+}
+tolog(Pendings_String);
 End;
 
 END. // END UNIT

@@ -74,10 +74,9 @@ if length(ARRAY_Addresses)>0 then
    begin
    for counter := 0 to length(ARRAY_Addresses)-1 do
       begin
-      ARRAY_Addresses[counter].Balance:=GetAddressBalanceFromSumary(GetAddressToShow(ARRAY_Addresses[counter].Hash));
       form1.SGridAddresses.Cells[0,counter+1] := GetAddressToShow(ARRAY_Addresses[counter].Hash);
-      form1.SGridAddresses.Cells[1,counter+1] := Int2Curr(0);
-      form1.SGridAddresses.Cells[2,counter+1] := Int2Curr(0);
+      form1.SGridAddresses.Cells[1,counter+1] := Int2Curr(ARRAY_Pending[counter].incoming);
+      form1.SGridAddresses.Cells[2,counter+1] := Int2Curr(ARRAY_Pending[counter].outgoing);
       form1.SGridAddresses.Cells[3,counter+1] := Int2Curr(ARRAY_Addresses[counter].Balance);
       Int_WalletBalance := Int_WalletBalance+ARRAY_Addresses[counter].Balance;
       end;

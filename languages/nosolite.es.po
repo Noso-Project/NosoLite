@@ -80,6 +80,10 @@ msgstr ""
 msgid "Error: Insufficient funds"
 msgstr ""
 
+#: nl_language.rserror0013
+msgid "Error: Can not generate certificates from locked addresses"
+msgstr ""
+
 #: nl_language.rsexp0001
 msgid "Name"
 msgstr ""
@@ -148,6 +152,10 @@ msgstr "Ammount"
 msgid "Reference"
 msgstr "Referencia"
 
+#: nl_language.rsgui0017
+msgid "Downloading summary %s"
+msgstr ""
+
 #: tform1.caption
 msgid "Nosolite"
 msgstr ""
@@ -163,6 +171,10 @@ msgstr ""
 #: tform1.lsctop.caption
 msgid "Send coins"
 msgstr "Enviar fondos"
+
+#: tform1.lsctop1.caption
+msgid "Directory"
+msgstr ""
 
 #: tform1.menuitem1.caption
 msgid "Import"
@@ -186,6 +198,14 @@ msgstr ""
 
 #: tform1.menuitem14.caption
 msgid "Stop"
+msgstr ""
+
+#: tform1.menuitem15.caption
+msgid "Certificate"
+msgstr ""
+
+#: tform1.menuitem16.caption
+msgid "QR code"
 msgstr ""
 
 #: tform1.menuitem2.caption
@@ -277,6 +297,10 @@ msgstr "Nodos"
 #: tform1.tabwallet.caption
 msgid "Wallet"
 msgstr "Cartera"
+
+#: tform2.caption
+msgid "Nosolite QR code"
+msgstr ""
 
 #: tformexplorer.butaccept.hint
 msgctxt "tformexplorer.butaccept.hint"

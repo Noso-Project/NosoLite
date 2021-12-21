@@ -1,0 +1,55 @@
+object Form2: TForm2
+  Left = 1120
+  Height = 275
+  Top = 226
+  Width = 250
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsDialog
+  Caption = 'Nosolite QR code'
+  ClientHeight = 275
+  ClientWidth = 250
+  Constraints.MinHeight = 200
+  Constraints.MinWidth = 200
+  Position = poOwnerFormCenter
+  ShowInTaskBar = stAlways
+  LCLVersion = '2.0.10.0'
+  object PanelQRcode: TPanel
+    Left = 0
+    Height = 275
+    Top = 0
+    Width = 250
+    Align = alClient
+    BevelOuter = bvNone
+    ClientHeight = 275
+    ClientWidth = 250
+    Color = clWhite
+    ParentColor = False
+    TabOrder = 0
+    object BarcodeQR1: TBarcodeQR
+      Left = 0
+      Height = 250
+      Top = 0
+      Width = 250
+      StrictSize = True
+      Text = 'TBarcodeQR'
+    end
+    object Labelqrcode: TLabel
+      Left = 0
+      Height = 1
+      Top = 274
+      Width = 250
+      Align = alBottom
+      Alignment = taCenter
+      Font.CharSet = ANSI_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'Consolas'
+      Font.Pitch = fpFixed
+      Font.Quality = fqDraft
+      Font.Style = [fsBold]
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+    end
+  end
+end

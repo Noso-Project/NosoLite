@@ -8,7 +8,7 @@ uses
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, nl_mainform, nl_language, nl_GUI, nl_data, nl_functions, nl_disk,
-  nl_cripto, nl_network, nl_signerUtils, indylaz, nl_explorer;
+  nl_cripto, nl_network, nl_signerUtils, indylaz, nl_explorer, nl_qrcode;
 
 {$R *.res}
 
@@ -18,6 +18,7 @@ begin
   Application.Initialize;
   Application.CreateForm(TForm1, Form1);
   Application.CreateForm(TFormExplorer, FormExplorer);
+  Application.CreateForm(TForm2, Form2);
   Application.Run;
 end.
 

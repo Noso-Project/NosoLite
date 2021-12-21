@@ -11,6 +11,7 @@ uses
 function GetNodeStatus(Host,Port:String):string;
 function GetSumary():boolean;
 function SendOrder(OrderString:String):String;
+function GetPendings():string;
 
 implementation
 
@@ -62,6 +63,7 @@ function GetSumary():boolean;
 var
   AFileStream : TFileStream;
   DownloadedFile : Boolean = false;
+  HashLine : string;
 Begin
 result := false;
 form1.ClientChannel.Host:='192.210.226.118';
@@ -73,7 +75,8 @@ TRY
 form1.ClientChannel.Connect;
 form1.ClientChannel.IOHandler.WriteLn('GETZIPSUMARY');
    TRY
-   form1.ClientChannel.IOHandler.ReadLn(IndyTextEncoding_UTF8);
+   HashLine := form1.ClientChannel.IOHandler.ReadLn(IndyTextEncoding_UTF8);
+   ToLog(format(rsGUI0017,[parameter(HashLine,1)]));
    form1.ClientChannel.IOHandler.ReadStream(AFileStream);
    result := true;
    DownloadedFile := true;
@@ -92,6 +95,7 @@ AFileStream.Free;
 if DownloadedFile then UnZipSumary();
 End;
 
+// Sends a order to the mainnet
 function SendOrder(OrderString:String):String;
 var
   Client : TidTCPClient;
@@ -105,6 +109,27 @@ Client.ReadTimeout:=500;
 TRY
 Client.Connect;
 Client.IOHandler.WriteLn(OrderString);
+Result := Client.IOHandler.ReadLn(IndyTextEncoding_UTF8);
+if result = 'ok' then REF_Addresses := true;
+FINALLY
+Client.Disconnect();
+END{Try};
+client.Free;
+End;
+
+function GetPendings():string;
+var
+  Client : TidTCPClient;
+Begin
+Result := '';
+Client := TidTCPClient.Create(nil);
+Client.Host:='192.210.226.118';
+Client.Port:=8080;
+Client.ConnectTimeout:= 1000;
+Client.ReadTimeout:=1500;
+TRY
+Client.Connect;
+Client.IOHandler.WriteLn('NSLPEND');
 Result := Client.IOHandler.ReadLn(IndyTextEncoding_UTF8);
 FINALLY
 Client.Disconnect();
