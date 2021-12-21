@@ -84,6 +84,14 @@ msgstr ""
 msgid "Error: Can not generate certificates from locked addresses"
 msgstr ""
 
+#: nl_language.rserror0014
+msgid "Error: Retrieving pendings -> %s"
+msgstr ""
+
+#: nl_language.rserror0015
+msgid "Error: Sending order -> %s"
+msgstr ""
+
 #: nl_language.rsexp0001
 msgid "Name"
 msgstr ""

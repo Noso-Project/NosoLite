@@ -539,7 +539,6 @@ var
   TO_ammount, TO_fee : int64;
   add_Index : integer;
 Begin
-{
 setlength(ARRAY_Pending,0);
 setlength(ARRAY_Pending,length(ARRAY_Addresses));
 repeat
@@ -555,20 +554,19 @@ repeat
       TO_fee := parameter(thisorder,4).ToInt64;
       if TO_type = 'TRFR' then
          begin
-         {
+
          add_Index := WalletAddressIndex(TO_sender);
          if add_Index >= 0 then
             ARRAY_Pending[add_Index].outgoing:=ARRAY_Pending[add_Index].outgoing+TO_ammount+TO_fee;
          add_Index := WalletAddressIndex(TO_Receiver);
          if add_Index >= 0 then
             ARRAY_Pending[add_Index].incoming:=ARRAY_Pending[add_Index].incoming+TO_ammount;
-         }
+
          end;
       end;
    counter := counter+1;
    end;
 until thisorder = '';
-}
 tolog(Pendings_String);
 End;
 

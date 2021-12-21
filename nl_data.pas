@@ -143,6 +143,7 @@ var
   REF_Status : Boolean = false;
   LogLines : TStringList;
   G_UTCTime : int64;
+  G_FirstRun : boolean = true;
 
   // Critical Sections
   CS_ARRAY_Addresses: TRTLCriticalSection;

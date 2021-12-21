@@ -161,15 +161,18 @@ End;
 // On show form events
 procedure TForm1.FormShow(Sender: TObject);
 Begin
-LoadGUIInterface();
-UpdateWalletFromSumary();
-RefreshAddresses();
-RefreshNodes();
-RefreshStatus();
-
-THREAD_Update := TUpdateThread.Create(true);
-THREAD_Update.FreeOnTerminate:=true;
-THREAD_Update.Start;
+if G_FirstRun then
+   begin
+   LoadGUIInterface();
+   UpdateWalletFromSumary();
+   RefreshAddresses();
+   RefreshNodes();
+   RefreshStatus();
+   THREAD_Update := TUpdateThread.Create(true);
+   THREAD_Update.FreeOnTerminate:=true;
+   THREAD_Update.Start;
+   G_FirstRun := false;
+   end;
 End;
 
 // On resize form events

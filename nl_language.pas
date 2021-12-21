@@ -23,6 +23,8 @@ Resourcestring
   rsError0011 = 'Error: Invalid password for address %s';
   rsError0012 = 'Error: Insufficient funds';
   rsError0013 = 'Error: Can not generate certificates from locked addresses';
+  rsError0014 = 'Error: Retrieving pendings -> %s';
+  rsError0015 = 'Error: Sending order -> %s';
 
   // GUI interface
   rsGUI0001 = 'Address';

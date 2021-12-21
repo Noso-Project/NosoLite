@@ -77,8 +77,8 @@ if length(ARRAY_Addresses)>0 then
       form1.SGridAddresses.Cells[0,counter+1] := GetAddressToShow(ARRAY_Addresses[counter].Hash);
       form1.SGridAddresses.Cells[1,counter+1] := Int2Curr(ARRAY_Pending[counter].incoming);
       form1.SGridAddresses.Cells[2,counter+1] := Int2Curr(ARRAY_Pending[counter].outgoing);
-      form1.SGridAddresses.Cells[3,counter+1] := Int2Curr(ARRAY_Addresses[counter].Balance);
-      Int_WalletBalance := Int_WalletBalance+ARRAY_Addresses[counter].Balance;
+      form1.SGridAddresses.Cells[3,counter+1] := Int2Curr(ARRAY_Addresses[counter].Balance-ARRAY_Pending[counter].outgoing);
+      Int_WalletBalance := Int_WalletBalance+ARRAY_Addresses[counter].Balance-ARRAY_Pending[counter].outgoing;
       end;
    end;
 LeaveCriticalSection(CS_ARRAY_Addresses);

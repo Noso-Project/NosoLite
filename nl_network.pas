@@ -111,9 +111,12 @@ Client.Connect;
 Client.IOHandler.WriteLn(OrderString);
 Result := Client.IOHandler.ReadLn(IndyTextEncoding_UTF8);
 if result = 'ok' then REF_Addresses := true;
-FINALLY
-Client.Disconnect();
+EXCEPT on E:Exception do
+   begin
+   ToLog(Format(rsError0015,[E.Message]));
+   end;
 END{Try};
+if client.Connected then Client.Disconnect();
 client.Free;
 End;
 
@@ -131,9 +134,14 @@ TRY
 Client.Connect;
 Client.IOHandler.WriteLn('NSLPEND');
 Result := Client.IOHandler.ReadLn(IndyTextEncoding_UTF8);
-FINALLY
-Client.Disconnect();
-END{Try};
+REF_Addresses := true;
+EXCEPT on E:Exception do
+   begin
+   ToLog(Format(rsError0014,[E.Message]));
+   Int_LastPendingCount := 0;
+   end;
+END;{Try}
+if client.Connected then Client.Disconnect();
 client.Free;
 End;
 
