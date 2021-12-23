@@ -4,7 +4,7 @@ object Form1: TForm1
   Top = 154
   Width = 640
   Caption = 'Nosolite'
-  ClientHeight = 460
+  ClientHeight = 480
   ClientWidth = 640
   Constraints.MinHeight = 480
   Constraints.MinWidth = 640
@@ -14,10 +14,9 @@ object Form1: TForm1
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '2.0.10.0'
   object PageControl: TPageControl
     Left = 0
-    Height = 424
+    Height = 444
     Top = 0
     Width = 640
     ActivePage = TabNodes
@@ -26,8 +25,8 @@ object Form1: TForm1
     TabOrder = 0
     object TabWallet: TTabSheet
       Caption = 'Wallet'
-      ClientHeight = 396
-      ClientWidth = 632
+      ClientHeight = 413
+      ClientWidth = 630
       object PanelBalance: TPanel
         Left = 0
         Height = 50
@@ -93,8 +92,8 @@ object Form1: TForm1
         AutoSize = True
         BevelOuter = bvNone
         BorderStyle = bsSingle
-        ClientHeight = 127
-        ClientWidth = 628
+        ClientHeight = 129
+        ClientWidth = 630
         TabOrder = 2
         object PanelSend: TPanel
           Left = 0
@@ -568,13 +567,13 @@ object Form1: TForm1
     end
     object TabNodes: TTabSheet
       Caption = 'Nodes'
-      ClientHeight = 396
-      ClientWidth = 632
+      ClientHeight = 413
+      ClientWidth = 630
       object SGridNodes: TStringGrid
         Left = 0
-        Height = 396
+        Height = 413
         Top = 0
-        Width = 632
+        Width = 630
         Align = alClient
         ColCount = 4
         FixedCols = 0
@@ -587,8 +586,8 @@ object Form1: TForm1
     end
     object TabLog: TTabSheet
       Caption = 'Log'
-      ClientHeight = 265
-      ClientWidth = 632
+      ClientHeight = 413
+      ClientWidth = 630
       object MemoLog: TMemo
         Left = 0
         Height = 265
@@ -613,21 +612,21 @@ object Form1: TForm1
   object PanelStatus: TPanel
     Left = 0
     Height = 36
-    Top = 424
+    Top = 444
     Width = 640
     Align = alBottom
     BevelOuter = bvNone
     BevelWidth = 4
     BorderWidth = 1
     BorderStyle = bsSingle
-    ClientHeight = 32
-    ClientWidth = 636
+    ClientHeight = 34
+    ClientWidth = 638
     Color = clSilver
     ParentColor = False
     TabOrder = 1
     object LabelCLock: TLabel
-      Left = 634
-      Height = 30
+      Left = 636
+      Height = 32
       Top = 1
       Width = 1
       Align = alRight
@@ -644,7 +643,7 @@ object Form1: TForm1
     end
     object PanelBlockInfo: TPanel
       Left = 1
-      Height = 30
+      Height = 32
       Hint = 'Last block'
       Top = 1
       Width = 111
@@ -652,8 +651,8 @@ object Form1: TForm1
       BevelOuter = bvNone
       BorderWidth = 1
       BorderStyle = bsSingle
-      ClientHeight = 26
-      ClientWidth = 107
+      ClientHeight = 30
+      ClientWidth = 109
       Color = clRed
       ParentColor = False
       ParentShowHint = False
@@ -663,7 +662,7 @@ object Form1: TForm1
       OnContextPopup = PanelBlockInfoContextPopup
       object ImageBlockInfo: TImage
         Left = 6
-        Height = 19
+        Height = 23
         Top = 6
         Width = 16
         Align = alLeft
@@ -690,8 +689,8 @@ object Form1: TForm1
         }
       end
       object LabelBlockInfo: TLabel
-        Left = 100
-        Height = 24
+        Left = 102
+        Height = 28
         Top = 1
         Width = 1
         Align = alRight
@@ -711,7 +710,7 @@ object Form1: TForm1
     end
     object PanelSync: TPanel
       Left = 112
-      Height = 30
+      Height = 32
       Hint = 'Synchronizing'
       Top = 1
       Width = 32
@@ -719,8 +718,8 @@ object Form1: TForm1
       BevelOuter = bvNone
       BorderWidth = 1
       BorderStyle = bsSingle
-      ClientHeight = 26
-      ClientWidth = 28
+      ClientHeight = 30
+      ClientWidth = 30
       Color = clLime
       ParentColor = False
       ParentShowHint = False
@@ -729,7 +728,7 @@ object Form1: TForm1
       Visible = False
       object ImageSync: TImage
         Left = 6
-        Height = 19
+        Height = 23
         Top = 6
         Width = 16
         Align = alLeft
@@ -764,7 +763,7 @@ object Form1: TForm1
     end
     object PanelDownload: TPanel
       Left = 144
-      Height = 30
+      Height = 32
       Hint = 'Downloading summary'
       Top = 1
       Width = 88
@@ -772,8 +771,8 @@ object Form1: TForm1
       BevelOuter = bvNone
       BorderWidth = 1
       BorderStyle = bsSingle
-      ClientHeight = 26
-      ClientWidth = 84
+      ClientHeight = 30
+      ClientWidth = 86
       Color = clLime
       ParentColor = False
       ParentShowHint = False
@@ -782,7 +781,7 @@ object Form1: TForm1
       Visible = False
       object ImageDownload: TImage
         Left = 2
-        Height = 24
+        Height = 28
         Top = 1
         Width = 24
         Align = alLeft
@@ -846,8 +845,8 @@ object Form1: TForm1
         }
       end
       object LabelDownload: TLabel
-        Left = 77
-        Height = 24
+        Left = 79
+        Height = 28
         Top = 1
         Width = 1
         Align = alRight
@@ -865,8 +864,8 @@ object Form1: TForm1
       end
     end
     object LabelTime: TLabel
-      Left = 628
-      Height = 30
+      Left = 630
+      Height = 32
       Top = 1
       Width = 1
       Align = alRight
@@ -888,6 +887,10 @@ object Form1: TForm1
     Top = 512
     object MM_File: TMenuItem
       Caption = 'File'
+      object MM_File_Exit: TMenuItem
+        Caption = 'E&xit'
+        OnClick = MM_File_ExitClick
+      end
     end
   end
   object PUMAddressess: TPopupMenu

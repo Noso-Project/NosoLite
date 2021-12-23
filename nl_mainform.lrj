@@ -17,6 +17,7 @@
 {"hash":257266087,"name":"tform1.panelsync.hint","sourcebytes":[83,121,110,99,104,114,111,110,105,122,105,110,103],"value":"Synchronizing"},
 {"hash":109191929,"name":"tform1.paneldownload.hint","sourcebytes":[68,111,119,110,108,111,97,100,105,110,103,32,115,117,109,109,97,114,121],"value":"Downloading summary"},
 {"hash":315429,"name":"tform1.mm_file.caption","sourcebytes":[70,105,108,101],"value":"File"},
+{"hash":4710148,"name":"tform1.mm_file_exit.caption","sourcebytes":[69,38,120,105,116],"value":"E&xit"},
 {"hash":21703,"name":"tform1.menuitem5.caption","sourcebytes":[78,101,119],"value":"New"},
 {"hash":114953444,"name":"tform1.menuitem6.caption","sourcebytes":[83,101,116,32,97,115,32,68,101,102,97,117,108,116],"value":"Set as Default"},
 {"hash":304761,"name":"tform1.menuitem4.caption","sourcebytes":[67,111,112,121],"value":"Copy"},

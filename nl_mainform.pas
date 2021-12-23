@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, ExtCtrls,
   Grids, Menus, StdCtrls, nl_GUI, nl_disk, nl_data, nl_functions, IdTCPClient,
   nl_language, nl_cripto, Clipbrd, Buttons, Spin, nl_explorer, IdComponent,
-  strutils, Types, nl_qrcode;
+  strutils, Types, nl_qrcode, DefaultTranslator;
 
 type
 
@@ -43,6 +43,7 @@ type
     MenuItem14: TMenuItem;
     MenuItem15: TMenuItem;
     MenuItem16: TMenuItem;
+    MM_File_Exit: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
@@ -102,6 +103,7 @@ type
     procedure MenuItem6Click(Sender: TObject);
     procedure MenuItem8Click(Sender: TObject);
     procedure MenuItem9Click(Sender: TObject);
+    procedure MM_File_ExitClick(Sender: TObject);
     procedure PanelBlockInfoContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
     procedure SBSCMaxClick(Sender: TObject);
@@ -131,6 +133,9 @@ var
 
 implementation
 
+uses
+  LCLType;
+
 {$R *.lfm}
 
 { TForm1 }
@@ -142,6 +147,14 @@ implementation
 // On create form events
 procedure TForm1.FormCreate(Sender: TObject);
 Begin
+// Initialize exit menu shortcuts
+{$IFDEF LINUX}
+  MM_File_Exit.ShortCut := KeyToShortCut(VK_Q, [ssCtrl]);
+{$ENDIF}
+{$IFDEF WINDOWS}
+  MM_File_Exit.ShortCut := KeyToShortCut(VK_X, [ssAlt]);
+{$ENDIF}
+
 // Initializae Critical sections
 InitCriticalSection(CS_ARRAY_Addresses);
 InitCriticalSection(CS_LOG);
@@ -401,6 +414,11 @@ else
       end
    end;
 End;
+
+procedure TForm1.MM_File_ExitClick(Sender: TObject);
+begin
+  Close;
+end;
 
 // Unlock address
 procedure TForm1.MenuItem10Click(Sender: TObject);

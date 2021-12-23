@@ -245,6 +245,10 @@ msgctxt "tform1.mm_file.caption"
 msgid "File"
 msgstr ""
 
+#: tform1.mm_file_exit.caption
+msgid "E&xit"
+msgstr ""
+
 #: tform1.panelblockinfo.hint
 msgid "Last block"
 msgstr ""
