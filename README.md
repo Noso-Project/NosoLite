@@ -20,6 +20,8 @@ You just need to download the appropriate Windows or Linux(Beta) version, uncomp
 To build from source you'll need a working installation of [Lazarus](https://www.lazarus-ide.org/index.php?page=downloads) and the following packages:
 
 - Indy 10
+- HashLib4PascalPackage
+- SimpleBaseLib4PascalPackage
 - CryptoLib4PascalPackage
 - LazBarcodes
 
