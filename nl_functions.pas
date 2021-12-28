@@ -302,6 +302,7 @@ if not IsAddressOnWallet(Address.Hash) then
    result := true;
    SAVE_Wallet := true;
    REF_Addresses := true;
+   insert(Default(PendingData),ARRAY_Pending,length(ARRAY_Pending));
    ToLog(Format(rsGUI0012,[GetAddressToShow(Address.Hash)]));
    end
 else

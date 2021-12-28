@@ -205,6 +205,7 @@ for Counter := 0 to Filesize(FILE_Sumary)-1 do
    read(FILE_Sumary,ARRAY_Sumary[Counter]);
    end;
 CloseFile(FILE_Sumary);
+UpdateWalletFromSumary();
 EXCEPT on E:Exception do
    begin
    end;
@@ -225,6 +226,7 @@ UnZipper := TUnZipper.Create;
    UnZipper.UnZipAllFiles;
    finally
    UnZipper.Free;
+   tolog(HashMD5File(SumaryFilename));
    end;
 //if delfile then Trydeletefile(ZipSumaryFilename);
 EXCEPT on E:Exception do

@@ -6,10 +6,11 @@ interface
 
 uses
   Classes, SysUtils, nl_data, nl_signerutils, HlpHashFactory, Base64, nl_language,
-  nl_GUI, nl_network;
+  nl_GUI, nl_network, MD5;
 
 Function CreateNewAddress(keysData:string = ''):WalletData;
 function GetAddressFromPublicKey(PubKey:String):String;
+Function HashMD5File(FileToHash:String):String;
 function HashSha256String(StringToHash:string):string;
 function HashMD160String(StringToHash:string):String;
 function GetStringSigned(StringtoSign, PrivateKey:String):String;
@@ -72,6 +73,12 @@ sumatoria := BMB58resumen(Hash1);
 clave := BMDecTo58(sumatoria);
 hash2 := hash1+clave;
 Result := 'N'+hash2;
+End;
+
+// Returns the MD5 hash of a file
+Function HashMD5File(FileToHash:String):String;
+Begin
+result := UpperCase(MD5Print(MD5File(FileToHash)));
 End;
 
 // Returns the SHA256 of a estring

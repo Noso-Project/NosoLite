@@ -348,3 +348,4 @@ msgstr "*.*"
 #: tformexplorer.labadd.caption
 msgid "Select addresses to be imported"
 msgstr "Selecionar contas a serem importadas"
+
