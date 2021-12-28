@@ -568,7 +568,7 @@ repeat
    counter := counter+1;
    end;
 until thisorder = '';
-tolog(Pendings_String);
+//tolog(Pendings_String);
 End;
 
 END. // END UNIT

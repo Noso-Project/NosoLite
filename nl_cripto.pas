@@ -204,7 +204,7 @@ if KeepProcess then
       OrderString := orderstring+GetStringfromOrder(ArrayTrfrs[counter])+' $';
       end;
    Setlength(orderstring,length(orderstring)-2);
-   ToLog(OrderString);
+   //ToLog(OrderString);
    ToLog(SendOrder(OrderString));
    end;
 WO_Refreshrate := PreviousRefresh

@@ -164,7 +164,7 @@ setlength(ARRAY_Nodes,0);
 setlength(ARRAY_Sumary,0);
 Setlength(ARRAY_Pending,0);
 LogLines :=TStringList.create;
-
+form1.Caption:='Nosolite '+ProgramVersion;
 LoadSeedNodes();
 
 // Verify files structure
