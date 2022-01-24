@@ -40,9 +40,30 @@ object Form1: TForm1
         Color = clBlack
         ParentColor = False
         TabOrder = 0
-        object LBalance: TLabel
+        object LabelLocked: TLabel
+          Left = 0
+          Height = 50
+          Hint = 'Locked balance'
+          Top = 0
+          Width = 195
+          Align = alLeft
+          BorderSpacing.Right = 6
+          Caption = '0.00000000 NOSO'
+          Font.CharSet = ANSI_CHARSET
+          Font.Color = clMaroon
+          Font.Height = -24
+          Font.Name = 'Consolas'
+          Font.Pitch = fpFixed
+          Font.Quality = fqDraft
+          ParentColor = False
+          ParentFont = False
+          ParentShowHint = False
+          ShowHint = True
+        end
+        object LBalance1: TLabel
           Left = 386
           Height = 50
+          Hint = 'Available balance'
           Top = 0
           Width = 240
           Align = alRight
@@ -57,6 +78,8 @@ object Form1: TForm1
           Layout = tlCenter
           ParentColor = False
           ParentFont = False
+          ParentShowHint = False
+          ShowHint = True
         end
       end
       object SGridAddresses: TStringGrid
@@ -576,22 +599,23 @@ object Form1: TForm1
         Top = 0
         Width = 632
         Align = alClient
-        ColCount = 4
+        ColCount = 6
         FixedCols = 0
         Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goSmoothScroll]
         RowCount = 1
         ScrollBars = ssVertical
         TabOrder = 0
+        OnPrepareCanvas = SGridNodesPrepareCanvas
         OnResize = SGridNodesResize
       end
     end
     object TabLog: TTabSheet
       Caption = 'Log'
-      ClientHeight = 413
-      ClientWidth = 630
+      ClientHeight = 396
+      ClientWidth = 632
       object MemoLog: TMemo
         Left = 0
-        Height = 265
+        Height = 396
         Top = 0
         Width = 632
         Align = alClient
@@ -730,6 +754,7 @@ object Form1: TForm1
       object ImageSync: TImage
         Left = 6
         Height = 19
+        Hint = 'Checking nodes'
         Top = 6
         Width = 16
         Align = alLeft
@@ -922,6 +947,7 @@ object Form1: TForm1
     end
     object MenuItem7: TMenuItem
       Caption = 'Delete'
+      OnClick = MenuItem7Click
       object MenuItem8: TMenuItem
         Caption = 'Confirm'
         OnClick = MenuItem8Click
@@ -942,6 +968,10 @@ object Form1: TForm1
     object MenuItem16: TMenuItem
       Caption = 'QR code'
       OnClick = MenuItem16Click
+    end
+    object MenuItem17: TMenuItem
+      Caption = 'Customize'
+      OnClick = MenuItem17Click
     end
   end
   object ClientChannel: TIdTCPClient

@@ -97,6 +97,7 @@ msgid "Name"
 msgstr "Nome"
 
 #: nl_language.rsgui0001
+msgctxt "nl_language.rsgui0001"
 msgid "Address"
 msgstr "Conta"
 
@@ -164,7 +165,38 @@ msgstr "Referencia"
 msgid "Downloading summary %s"
 msgstr "Baixando sumario %s"
 
+#: nl_language.rsgui0018
+msgid "MNsHash"
+msgstr ""
+
+#: nl_language.rsgui0019
+msgid "MNs #"
+msgstr ""
+
+#: nl_language.rsgui0020
+msgid "Certificate for address : %s"
+msgstr ""
+
+#: nl_language.rsgui0021
+msgid "Processing..."
+msgstr ""
+
+#: nl_language.rsgui0022
+msgid ""
+"Send %s Noso to %s\n"
+"Reference: %s\n"
+msgstr ""
+
+#: nl_language.rsgui0023
+msgid "Failed"
+msgstr ""
+
+#: nl_language.rsgui0024
+msgid "Successful: %s"
+msgstr ""
+
 #: tform1.caption
+msgctxt "tform1.caption"
 msgid "Nosolite"
 msgstr "Nosolite"
 
@@ -172,9 +204,29 @@ msgstr "Nosolite"
 msgid "0.00000000"
 msgstr "0.00000000"
 
-#: tform1.lbalance.caption
+#: tform1.imagesync.hint
+msgid "Checking nodes"
+msgstr ""
+
+#: tform1.labellocked.caption
+#, fuzzy
+msgctxt "tform1.labellocked.caption"
 msgid "0.00000000 NOSO"
 msgstr "0.00000000 NOSO"
+
+#: tform1.labellocked.hint
+msgid "Locked balance"
+msgstr ""
+
+#: tform1.lbalance1.caption
+#, fuzzy
+msgctxt "tform1.lbalance1.caption"
+msgid "0.00000000 NOSO"
+msgstr "0.00000000 NOSO"
+
+#: tform1.lbalance1.hint
+msgid "Available balance"
+msgstr ""
 
 #: tform1.lsctop.caption
 msgid "Send coins"
@@ -216,12 +268,17 @@ msgstr "Certificado"
 msgid "QR code"
 msgstr "Código QR"
 
+#: tform1.menuitem17.caption
+msgid "Customize"
+msgstr ""
+
 #: tform1.menuitem2.caption
 msgctxt "tform1.menuitem2.caption"
 msgid "File"
 msgstr "Ficheiro"
 
 #: tform1.menuitem3.caption
+msgctxt "tform1.menuitem3.caption"
 msgid "Keys"
 msgstr "Chaves"
 
@@ -310,9 +367,33 @@ msgstr "Nós"
 msgid "Wallet"
 msgstr "Carteira"
 
+#: tform2.button1.caption
+#, fuzzy
+msgctxt "tform2.button1.caption"
+msgid "Address"
+msgstr "Conta"
+
+#: tform2.button2.caption
+#, fuzzy
+msgctxt "tform2.button2.caption"
+msgid "Keys"
+msgstr "Chaves"
+
 #: tform2.caption
 msgid "Nosolite QR code"
 msgstr "Código QR Nosolite"
+
+#: tform3.caption
+msgid "Info"
+msgstr ""
+
+#: tform3.label1.caption
+msgid "Result"
+msgstr ""
+
+#: tform3.label2.caption
+msgid "Request"
+msgstr ""
 
 #: tformexplorer.butaccept.hint
 msgctxt "tformexplorer.butaccept.hint"

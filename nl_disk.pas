@@ -208,7 +208,7 @@ CloseFile(FILE_Sumary);
 UpdateWalletFromSumary();
 EXCEPT on E:Exception do
    begin
-   end;
+   end
 END{Try};
 End;
 

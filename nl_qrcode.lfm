@@ -1,7 +1,7 @@
 object Form2: TForm2
-  Left = 1120
+  Left = 714
   Height = 275
-  Top = 226
+  Top = 213
   Width = 250
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
@@ -10,17 +10,19 @@ object Form2: TForm2
   ClientWidth = 250
   Constraints.MinHeight = 200
   Constraints.MinWidth = 200
+  OnClose = FormClose
+  OnShow = FormShow
   Position = poOwnerFormCenter
   ShowInTaskBar = stAlways
   LCLVersion = '2.0.10.0'
   object PanelQRcode: TPanel
     Left = 0
-    Height = 275
+    Height = 249
     Top = 0
     Width = 250
     Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 275
+    ClientHeight = 249
     ClientWidth = 250
     Color = clWhite
     ParentColor = False
@@ -36,7 +38,7 @@ object Form2: TForm2
     object Labelqrcode: TLabel
       Left = 0
       Height = 1
-      Top = 274
+      Top = 248
       Width = 250
       Align = alBottom
       Alignment = taCenter
@@ -50,6 +52,37 @@ object Form2: TForm2
       Layout = tlCenter
       ParentColor = False
       ParentFont = False
+    end
+  end
+  object PnaelQRbuttons: TPanel
+    Left = 0
+    Height = 26
+    Top = 249
+    Width = 250
+    Align = alBottom
+    BevelOuter = bvNone
+    ClientHeight = 26
+    ClientWidth = 250
+    TabOrder = 1
+    object Button1: TButton
+      Left = 0
+      Height = 26
+      Top = 0
+      Width = 75
+      Align = alLeft
+      Caption = 'Address'
+      OnClick = Button1Click
+      TabOrder = 0
+    end
+    object Button2: TButton
+      Left = 175
+      Height = 26
+      Top = 0
+      Width = 75
+      Align = alRight
+      Caption = 'Keys'
+      OnClick = Button2Click
+      TabOrder = 1
     end
   end
 end

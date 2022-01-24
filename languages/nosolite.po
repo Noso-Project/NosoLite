@@ -87,6 +87,7 @@ msgid "Name"
 msgstr ""
 
 #: nl_language.rsgui0001
+msgctxt "nl_language.rsgui0001"
 msgid "Address"
 msgstr ""
 
@@ -154,7 +155,38 @@ msgstr ""
 msgid "Downloading summary %s"
 msgstr ""
 
+#: nl_language.rsgui0018
+msgid "MNsHash"
+msgstr ""
+
+#: nl_language.rsgui0019
+msgid "MNs #"
+msgstr ""
+
+#: nl_language.rsgui0020
+msgid "Certificate for address : %s"
+msgstr ""
+
+#: nl_language.rsgui0021
+msgid "Processing..."
+msgstr ""
+
+#: nl_language.rsgui0022
+msgid ""
+"Send %s Noso to %s\n"
+"Reference: %s\n"
+msgstr ""
+
+#: nl_language.rsgui0023
+msgid "Failed"
+msgstr ""
+
+#: nl_language.rsgui0024
+msgid "Successful: %s"
+msgstr ""
+
 #: tform1.caption
+msgctxt "tform1.caption"
 msgid "Nosolite"
 msgstr ""
 
@@ -162,8 +194,26 @@ msgstr ""
 msgid "0.00000000"
 msgstr ""
 
-#: tform1.lbalance.caption
+#: tform1.imagesync.hint
+msgid "Checking nodes"
+msgstr ""
+
+#: tform1.labellocked.caption
+msgctxt "tform1.labellocked.caption"
 msgid "0.00000000 NOSO"
+msgstr ""
+
+#: tform1.labellocked.hint
+msgid "Locked balance"
+msgstr ""
+
+#: tform1.lbalance1.caption
+msgctxt "tform1.lbalance1.caption"
+msgid "0.00000000 NOSO"
+msgstr ""
+
+#: tform1.lbalance1.hint
+msgid "Available balance"
 msgstr ""
 
 #: tform1.lsctop.caption
@@ -206,12 +256,17 @@ msgstr ""
 msgid "QR code"
 msgstr ""
 
+#: tform1.menuitem17.caption
+msgid "Customize"
+msgstr ""
+
 #: tform1.menuitem2.caption
 msgctxt "tform1.menuitem2.caption"
 msgid "File"
 msgstr ""
 
 #: tform1.menuitem3.caption
+msgctxt "tform1.menuitem3.caption"
 msgid "Keys"
 msgstr ""
 
@@ -300,8 +355,30 @@ msgstr ""
 msgid "Wallet"
 msgstr ""
 
+#: tform2.button1.caption
+msgctxt "tform2.button1.caption"
+msgid "Address"
+msgstr ""
+
+#: tform2.button2.caption
+msgctxt "tform2.button2.caption"
+msgid "Keys"
+msgstr ""
+
 #: tform2.caption
 msgid "Nosolite QR code"
+msgstr ""
+
+#: tform3.caption
+msgid "Info"
+msgstr ""
+
+#: tform3.label1.caption
+msgid "Result"
+msgstr ""
+
+#: tform3.label2.caption
+msgid "Request"
 msgstr ""
 
 #: tformexplorer.butaccept.hint

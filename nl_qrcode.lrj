@@ -1,3 +1,5 @@
 {"version":1,"strings":[
-{"hash":7566421,"name":"tform2.caption","sourcebytes":[78,111,115,111,108,105,116,101,32,81,82,32,99,111,100,101],"value":"Nosolite QR code"}
+{"hash":7566421,"name":"tform2.caption","sourcebytes":[78,111,115,111,108,105,116,101,32,81,82,32,99,111,100,101],"value":"Nosolite QR code"},
+{"hash":128683235,"name":"tform2.button1.caption","sourcebytes":[65,100,100,114,101,115,115],"value":"Address"},
+{"hash":335107,"name":"tform2.button2.caption","sourcebytes":[75,101,121,115],"value":"Keys"}
 ]}

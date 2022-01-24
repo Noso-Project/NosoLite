@@ -263,7 +263,6 @@ for cont := 0 to length(ARRAY_Sumary)-1 do
       break;
       end;
    end;
-
 End;
 
 // Returns if an address exists in the wallet

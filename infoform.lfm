@@ -1,0 +1,103 @@
+object Form3: TForm3
+  Left = 546
+  Height = 240
+  Top = 293
+  Width = 465
+  BorderIcons = []
+  BorderStyle = bsSingle
+  Caption = 'Info'
+  ClientHeight = 240
+  ClientWidth = 465
+  OnClose = FormClose
+  LCLVersion = '2.0.10.0'
+  object Panelresult: TPanel
+    Left = 0
+    Height = 150
+    Top = 90
+    Width = 465
+    Align = alBottom
+    BevelOuter = bvNone
+    ClientHeight = 150
+    ClientWidth = 465
+    TabOrder = 0
+    object memoresult: TMemo
+      Left = 0
+      Height = 120
+      Top = 30
+      Width = 465
+      Align = alClient
+      BorderStyle = bsNone
+      Color = clBlack
+      Font.CharSet = ANSI_CHARSET
+      Font.Color = clWhite
+      Font.Height = -12
+      Font.Name = 'Consolas'
+      Font.Pitch = fpFixed
+      Font.Quality = fqDraft
+      ParentFont = False
+      ReadOnly = True
+      TabOrder = 0
+    end
+    object Label1: TLabel
+      Left = 0
+      Height = 30
+      Top = 0
+      Width = 465
+      Align = alTop
+      Caption = 'Result'
+      Font.CharSet = ANSI_CHARSET
+      Font.Color = clBlack
+      Font.Height = -21
+      Font.Name = 'Segoe UI'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      ParentColor = False
+      ParentFont = False
+    end
+  end
+  object Panelrequest: TPanel
+    Left = 0
+    Height = 90
+    Top = 0
+    Width = 465
+    Align = alClient
+    BevelOuter = bvNone
+    ClientHeight = 90
+    ClientWidth = 465
+    TabOrder = 1
+    object memorequest: TMemo
+      Left = 0
+      Height = 60
+      Top = 30
+      Width = 465
+      Align = alClient
+      BorderStyle = bsNone
+      Color = clBlack
+      Font.CharSet = ANSI_CHARSET
+      Font.Color = clWhite
+      Font.Height = -12
+      Font.Name = 'Consolas'
+      Font.Pitch = fpFixed
+      Font.Quality = fqDraft
+      ParentFont = False
+      ReadOnly = True
+      TabOrder = 0
+    end
+    object Label2: TLabel
+      Left = 0
+      Height = 30
+      Top = 0
+      Width = 465
+      Align = alTop
+      Caption = 'Request'
+      Font.CharSet = ANSI_CHARSET
+      Font.Color = clBlack
+      Font.Height = -21
+      Font.Name = 'Segoe UI'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      ParentColor = False
+      ParentFont = False
+    end
+  end
+end

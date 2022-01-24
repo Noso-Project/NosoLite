@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, nl_data, nl_signerutils, HlpHashFactory, Base64, nl_language,
-  nl_GUI, nl_network, MD5;
+  nl_GUI, nl_network, MD5, infoform, forms;
 
 Function CreateNewAddress(keysData:string = ''):WalletData;
 function GetAddressFromPublicKey(PubKey:String):String;
@@ -205,9 +205,9 @@ if KeepProcess then
       end;
    Setlength(orderstring,length(orderstring)-2);
    //ToLog(OrderString);
-   ToLog(SendOrder(OrderString));
+   Result := SendOrder(OrderString);
    end;
-WO_Refreshrate := PreviousRefresh
+WO_Refreshrate := PreviousRefresh;
 End;
 
 // *****************************************************************************

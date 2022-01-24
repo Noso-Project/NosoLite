@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, ExtCtrls,
   Grids, Menus, StdCtrls, nl_GUI, nl_disk, nl_data, nl_functions, IdTCPClient,
   nl_language, nl_cripto, Clipbrd, Buttons, Spin, nl_explorer, IdComponent,
-  strutils, Types, nl_qrcode, DefaultTranslator;
+  strutils, Types, nl_qrcode, DefaultTranslator, infoform;
 
 type
 
@@ -29,7 +29,8 @@ type
     LabelDownload: TLabel;
     LabelBlockInfo: TLabel;
     LabelCLock: TLabel;
-    LBalance: TLabel;
+    LabelLocked: TLabel;
+    LBalance1: TLabel;
     LSCTop: TLabel;
     LSCTop1: TLabel;
     MainMenu: TMainMenu;
@@ -43,6 +44,7 @@ type
     MenuItem14: TMenuItem;
     MenuItem15: TMenuItem;
     MenuItem16: TMenuItem;
+    MenuItem17: TMenuItem;
     MM_File_Exit: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
@@ -96,11 +98,13 @@ type
     procedure MenuItem14Click(Sender: TObject);
     procedure MenuItem15Click(Sender: TObject);
     procedure MenuItem16Click(Sender: TObject);
+    procedure MenuItem17Click(Sender: TObject);
     procedure MenuItem2Click(Sender: TObject);
     procedure MenuItem3Click(Sender: TObject);
     procedure MenuItem4Click(Sender: TObject);
     procedure MenuItem5Click(Sender: TObject);
     procedure MenuItem6Click(Sender: TObject);
+    procedure MenuItem7Click(Sender: TObject);
     procedure MenuItem8Click(Sender: TObject);
     procedure MenuItem9Click(Sender: TObject);
     procedure MM_File_ExitClick(Sender: TObject);
@@ -119,6 +123,8 @@ type
     procedure SGridAddressesPrepareCanvas(sender: TObject; aCol, aRow: Integer;
       aState: TGridDrawState);
     procedure SGridAddressesResize(Sender: TObject);
+    procedure SGridNodesPrepareCanvas(sender: TObject; aCol, aRow: Integer;
+      aState: TGridDrawState);
     procedure SGridNodesResize(Sender: TObject);
   private
 
@@ -235,16 +241,32 @@ form1.SGridAddresses.ColWidths[2] := ThisPercent(18,GridWidth);
 form1.SGridAddresses.ColWidths[3] := ThisPercent(24,GridWidth,true);
 end;
 
+// Set nodes grid prepare canvas
+procedure TForm1.SGridNodesPrepareCanvas(sender: TObject; aCol, aRow: Integer;
+  aState: TGridDrawState);
+var
+  ts: TTextStyle;
+Begin
+ts := (Sender as TStringGrid).Canvas.TextStyle;
+if aRow > 0 then
+   begin
+   if ARRAY_Nodes[aRow-1].Updated then (Sender as TStringGrid).Canvas.Brush.Color :=  clmoneygreen
+   else (Sender as TStringGrid).Canvas.Brush.Color :=  clRed;
+   end;
+End;
+
 // Grid nodes resize
 procedure TForm1.SGridNodesResize(Sender: TObject);
 var
   GridWidth : integer;
 Begin
 GridWidth := form1.SGridNodes.Width;
-form1.SGridNodes.ColWidths[0] := ThisPercent(40,GridWidth);
-form1.SGridNodes.ColWidths[1] := ThisPercent(20,GridWidth);
-form1.SGridNodes.ColWidths[2] := ThisPercent(20,GridWidth);
-form1.SGridNodes.ColWidths[3] := ThisPercent(20,GridWidth,true);
+form1.SGridNodes.ColWidths[0] := ThisPercent(25,GridWidth);
+form1.SGridNodes.ColWidths[1] := ThisPercent(15,GridWidth);
+form1.SGridNodes.ColWidths[2] := ThisPercent(15,GridWidth);
+form1.SGridNodes.ColWidths[3] := ThisPercent(15,GridWidth);
+form1.SGridNodes.ColWidths[4] := ThisPercent(15,GridWidth);
+form1.SGridNodes.ColWidths[5] := ThisPercent(15,GridWidth,true);
 end;
 
 // Grid addresses draw cell
@@ -308,7 +330,8 @@ End;
 // On context pop up; before showing the menu
 procedure TForm1.SGridAddressesContextPopup(Sender: TObject; MousePos: TPoint;
   var Handled: Boolean);
-begin
+Begin
+// Show lock/unlock proprely
 if copy(ARRAY_Addresses[SGridAddresses.Row-1].PrivateKey,1,1) = '*' then
    begin
    menuitem9.Visible:=false;
@@ -319,7 +342,26 @@ else
    menuitem9.Visible:=true;
    menuitem10.Visible:=false;
    end;
-end;
+// if address is locked disable options
+if ARRAY_Addresses[SGridAddresses.Row-1].PrivateKey[1]='*' then
+   begin
+   menuitem7.enabled:=false;
+   menuitem6.enabled:=false;
+   menuitem15.enabled:=false;
+   end
+else
+   begin
+   menuitem7.enabled:=true;
+   menuitem6.enabled:=true;
+   menuitem15.enabled:=true;
+   end;
+if ((ARRAY_Addresses[SGridAddresses.Row-1].custom<>'') or (ARRAY_Addresses[SGridAddresses.Row-1].Balance<=Customfee) or
+   (ARRAY_Addresses[SGridAddresses.Row-1].PrivateKey[1]='*') ) then
+   menuitem17.Enabled:=false
+else menuitem17.Enabled:=true;
+if ARRAY_Addresses[SGridAddresses.Row-1].Custom='' then menuitem17.visible:=true
+else menuitem17.visible:=false;
+End;
 
 // Import address from keys
 procedure TForm1.MenuItem3Click(Sender: TObject);
@@ -362,6 +404,11 @@ if SGridAddresses.Row > 1 then
    SAVE_Wallet := true;
    end;
 End;
+
+procedure TForm1.MenuItem7Click(Sender: TObject);
+begin
+
+end;
 
 // Delete address
 procedure TForm1.MenuItem8Click(Sender: TObject);
@@ -415,16 +462,11 @@ else
    end;
 End;
 
-procedure TForm1.MM_File_ExitClick(Sender: TObject);
-begin
-  Close;
-end;
-
 // Unlock address
 procedure TForm1.MenuItem10Click(Sender: TObject);
 var
   CurrPos : integer;
-  pass1: string;
+  pass1: string= '';
   PassHash : String;
   crypted, decrypted : string;
   Signature : String;
@@ -465,6 +507,7 @@ procedure TForm1.MenuItem15Click(Sender: TObject);
 var
   currpos : integer;
   currtime, address : string;
+  Certificate : string;
 Begin
 currtime := UTCTime.ToString;
 CurrPos := SGridAddresses.Row-1;
@@ -473,8 +516,13 @@ if isAddressLocked(ARRAY_Addresses[currpos]) then
 else
    begin
    address := GetAddressToShow(ARRAY_Addresses[currpos].Hash);
-   Clipboard.AsText := ARRAY_Addresses[currpos].PublicKey+':'+currtime+':'+
+   Certificate := ARRAY_Addresses[currpos].PublicKey+':'+currtime+':'+
       GetStringSigned('I OWN THIS ADDRESS '+address+currtime,ARRAY_Addresses[currpos].PrivateKey);
+   //Clipboard.AsText
+   form3.BorderIcons:=form3.BorderIcons+[bisystemmenu];
+   form3.memorequest.Text:=format(rsGUI0020,[address]);
+   form3.memoresult.Text:=format('%s',[Certificate]);
+   form3.ShowModal;
    end;
 End;
 
@@ -484,17 +532,44 @@ var
   currpos : integer;
   ToShow: string;
 Begin
+if form2.Visible then form2.Close;
 CurrPos := SGridAddresses.Row-1;
 ToShow := GetAddressToShow(ARRAY_Addresses[CurrPos].Hash);
-form2.BarcodeQR1.Text:=ToShow;
-form2.Labelqrcode.Caption:=ToShow;
+QRAddress := ToShow;
+if ARRAY_Addresses[CurrPos].PrivateKey[1]='*' then
+  begin
+  QRKeys := '';
+  form2.Button2.Visible:=false;
+  end
+else
+   begin
+   QRKeys := ARRAY_Addresses[CurrPos].PublicKey+' '+ARRAY_Addresses[CurrPos].PrivateKey;
+   form2.Button2.Visible:=true;
+   end;
 form2.show;
+End;
+
+// Customize
+procedure TForm1.MenuItem17Click(Sender: TObject);
+var
+  alias : string = '';
+Begin
+alias := InputBox(ARRAY_Addresses[SGridAddresses.Row-1].hash,'Enter a custom alias', '');
 End;
 
 // Import addresses from file
 procedure TForm1.MenuItem2Click(Sender: TObject);
 begin
 ShowExplorer(GetCurrentDir,rsGUI0010,'*.pkw',true);
+end;
+
+//******************************************************************************
+// Main menu
+//******************************************************************************
+
+procedure TForm1.MM_File_ExitClick(Sender: TObject);
+begin
+  Close;
 end;
 
 //******************************************************************************
@@ -587,9 +662,25 @@ End;
 procedure TForm1.SCBitConfClick(Sender: TObject);
 var
   ammount : int64;
+  TextAmmount : string;
+  OperResult : String = '';
 Begin
-ammount := StrToInt64Def(StringReplace(EditSCMont.Text,'.','',[rfReplaceAll, rfIgnoreCase]),-1);
-SendTo(EditSCDest.Text,ammount,MemoSCCon.Text);
+TextAmmount:= StringReplace(EditSCMont.Text,'.','',[rfReplaceAll, rfIgnoreCase]);
+ammount := StrToInt64Def(TextAmmount,-1);
+form3.BorderIcons:=form3.BorderIcons+[bisystemmenu];
+form3.memorequest.Text:=format(rsGUI0022,[Int2Curr(ammount),EditSCDest.Text,MemoSCCon.Text]);
+form3.memoresult.Text:=rsGUI0021;
+form1.Enabled:=false;
+form3.Show;
+application.ProcessMessages;
+OperResult :=SendTo(EditSCDest.Text,ammount,MemoSCCon.Text);
+if OperResult <>'' then
+   begin
+   form3.memoresult.Text:=format(rsGUI0024,[OperResult]);
+   tolog('Order: '+OperResult);
+   end
+else form3.memoresult.Text:= rsGUI0023;
+application.ProcessMessages;
 SCBitCleaClick(nil);
 End;
 

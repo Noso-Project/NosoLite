@@ -48,6 +48,9 @@ NodeData = packed record
    block : integer;
    Pending: integer;
    Branch : String[40];
+   MNsHash : string[5];
+   MNsCount : integer;
+   Updated : boolean;
    end;
 
 ConsensusData = packed record
@@ -96,11 +99,12 @@ CONST
   Comisiontrfr = 10000;
   MinimunFee = 10;
   Protocol = 1;
-  ProgramVersion = '0.1';
+  ProgramVersion = '1.0';
 
   HexAlphabet : string = '0123456789ABCDEF';
   B58Alphabet : string = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
   B36Alphabet : string = '0123456789abcdefghijklmnopqrstuvwxyz';
+  Customfee   = 25000;
 
 var
   FILE_Wallet : File of WalletData; // Wallet file pointer
@@ -116,15 +120,16 @@ var
   THREAD_Update : TUpdateThread;
 
   STR_SeedNodes : String = 'DefNodes '+
+                                 '23.94.21.83:8080 '+
                                  '45.146.252.103:8080 '+
-                                 '194.156.88.117:8080 '+
-                                 '192.210.226.118:8080 '+
                                  '107.172.5.8:8080 '+
-                                 '185.239.239.184:8080 '+
-                                 '109.230.238.240:8080';
-
+                                 '109.230.238.240:8080 '+
+                                 '172.245.52.208:8080 '+
+                                 '192.210.226.118:8080 '+
+                                 '194.156.88.117:8080';
   Int_LastThreadExecution : int64 = 0;
   Int_WalletBalance       : int64 = 0;
+  Int_LockedBalance       : int64 = 0;
   Int_SumarySize          : int64 = 0;
   Int_LastPendingCount    : int64 = 0;
     Pendings_String       : string = '';
@@ -232,12 +237,18 @@ While not terminated do
             ARRAY_Nodes[counter].block:=Parameter(LLine,2).ToInteger();
             ARRAY_Nodes[counter].Pending:=Parameter(LLine,3).ToInteger();
             ARRAY_Nodes[counter].Branch:=Parameter(LLine,5);
+            ARRAY_Nodes[counter].MNsHash:=Parameter(LLine,8);
+            ARRAY_Nodes[counter].MNsCount:= StrToIntDef(Parameter(LLine,9),0);
+            ARRAY_Nodes[counter].Updated:=true;
             end
          else
             begin
             ARRAY_Nodes[counter].block:=0;
             ARRAY_Nodes[counter].Pending:=0;
             ARRAY_Nodes[counter].Branch:=rsError0003;
+            ARRAY_Nodes[counter].MNsHash:='';
+            ARRAY_Nodes[counter].MNsCount:=0;
+            ARRAY_Nodes[counter].Updated:=false;
             end;
          end;
       Synchronize(@hidesync);

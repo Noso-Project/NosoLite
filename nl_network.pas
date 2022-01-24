@@ -106,11 +106,12 @@ Client.Host:='192.210.226.118';
 Client.Port:=8080;
 Client.ConnectTimeout:= 1000;
 Client.ReadTimeout:=500;
+//Tolog(OrderString);
 TRY
 Client.Connect;
 Client.IOHandler.WriteLn(OrderString);
 Result := Client.IOHandler.ReadLn(IndyTextEncoding_UTF8);
-if result = 'ok' then REF_Addresses := true;
+if result <> '' then REF_Addresses := true;
 EXCEPT on E:Exception do
    begin
    ToLog(Format(rsError0015,[E.Message]));
