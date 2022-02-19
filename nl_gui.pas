@@ -33,6 +33,7 @@ form1.SGridNodes.Cells[2,0] := rsGUI0007;
 form1.SGridNodes.Cells[3,0] := rsGUI0008;
 form1.SGridNodes.Cells[4,0] := rsGUI0018;
 form1.SGridNodes.Cells[5,0] := rsGUI0019;
+form1.SGridNodes.Cells[6,0] := rsGUI0029;
 Form1.SGridSC.Cells[0,0]:=rsGUI0014;
 Form1.SGridSC.Cells[0,1]:=rsGUI0015;
 Form1.SGridSC.Cells[0,2]:=rsGUI0016;
@@ -48,6 +49,7 @@ Int_WalletBalance := 0;
 Int_LockedBalance := 0;
 EnterCriticalSection(CS_ARRAY_Addresses);
 form1.SGridAddresses.RowCount:=length(ARRAY_Addresses)+1;
+
 if length(ARRAY_Addresses)>0 then
    begin
    for counter := 0 to length(ARRAY_Addresses)-1 do
@@ -82,17 +84,28 @@ if length(ARRAY_Nodes)>0 then
       form1.SGridNodes.Cells[3,counter+1] := ARRAY_Nodes[counter].Branch;
       form1.SGridNodes.Cells[4,counter+1] := ARRAY_Nodes[counter].MNsHash;
       form1.SGridNodes.Cells[5,counter+1] := ARRAY_Nodes[counter].MNsCount.ToString;
+      form1.SGridNodes.Cells[6,counter+1] := Copy(ARRAY_Nodes[counter].NMSDiff,1,10);
       end;
    end;
 End;
 
 // Refresh the status bar
 Procedure RefreshStatus();
+var
+  Supply : extended;
 Begin
+Int_TotalSupply := (WO_LastBlock*50)+10303;
+supply := Int_TotalSupply/1000000;
+Int_StakeSize  := (Int_TotalSupply div 500)+1;
+supply := (((WO_LastBlock*50)+10303)/1000000);
 if Wallet_Synced then form1.PanelBlockInfo.Color:=clGreen
 else form1.PanelBlockInfo.Color:=clRed;
 form1.LabelBlockInfo.Caption:=WO_LastBlock.ToString;
+Form1.Labelsupply.Caption:=FormatFloat('0.00', Supply)+'M';
+Form1.Labelsupply.Hint:=format(rsGUI0025,[FormatFloat('0.00', Supply)]);
 form1.LabelTime.Caption:=TimestampToDate(G_UTCTime);
+form1.labelstake.Caption:=IntToStr(Int_StakeSize)+' NOSO';
+form1.Labelsummary.Caption:=FormatFloat('0.00', (length(ARRAY_Sumary)+1)/1000)+'k';
 End;
 
 END. // END UNIT

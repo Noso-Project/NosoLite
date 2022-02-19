@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, nl_data, nl_signerutils, HlpHashFactory, Base64, nl_language,
-  nl_GUI, nl_network, MD5, infoform, forms;
+  nl_GUI, nl_network, MD5, infoform, forms, StrUtils;
 
 Function CreateNewAddress(keysData:string = ''):WalletData;
 function GetAddressFromPublicKey(PubKey:String):String;
@@ -17,6 +17,9 @@ function GetStringSigned(StringtoSign, PrivateKey:String):String;
 function VerifySignedString(StringToVerify,SignedHash,PublicKey:String):boolean;
 Procedure ImportKeys(Keysline:String);
 function SendTo(Destination:String;Ammount:int64;Reference:String):string;
+Function EncodeCertificate(certificate:string):string;
+Function DecodeCertificate(certificate:string):string;
+Function NosoHash(source:string):string;
 
 // Big Maths
 function ClearLeadingCeros(numero:string):string;
@@ -26,9 +29,11 @@ Function BMMultiplicar(Numero1,Numero2:string):string;
 Function BMDividir(Numero1,Numero2:string):DivResult;
 Function BMExponente(Numero1,Numero2:string):string;
 function BMHexToDec(numerohex:string):string;
+Function BM58ToDec(number58:string):String;
 function BMHexTo58(numerohex:string;alphabetnumber:integer):string;
 function BMB58resumen(numero58:string):string;
 function BMDecTo58(numero:string):string;
+function BMDecToHex(numero:string):string;
 
 implementation
 
@@ -204,10 +209,129 @@ if KeepProcess then
       OrderString := orderstring+GetStringfromOrder(ArrayTrfrs[counter])+' $';
       end;
    Setlength(orderstring,length(orderstring)-2);
-   //ToLog(OrderString);
+   ToLog(OrderString);
    Result := SendOrder(OrderString);
    end;
 WO_Refreshrate := PreviousRefresh;
+End;
+
+Function EncodeCertificate(certificate:string):string;
+
+   Function SplitCertificate(TextData:String):String;
+   var
+     InpuntLength, Tramos, counter: integer;
+     ThisTramo, This58 : string;
+   Begin
+   result :='';
+   InpuntLength := length(TextData);
+   if InpuntLength < 100 then exit;
+   Tramos := InpuntLength div 32;
+   if InpuntLength mod 32 > 0 then tramos := tramos+1;
+   for counter := 0 to tramos-1 do
+      begin
+      ThisTramo := '1'+Copy(TextData,1+(counter*32),32);
+      This58 := BMHexTo58(ThisTramo,58);
+      Result := Result+This58+'0';
+      end;
+   End;
+
+Begin
+Certificate := UPPERCASE(XorEncode(HashSha256String('noso'),certificate));
+result := SplitCertificate(certificate);
+End;
+
+Function DecodeCertificate(certificate:string):string;
+
+   Function UnSplitCertificate(TextData:String):String;
+   var
+     counter:integer;
+     Tramo : integer = 1;
+     Thistramo :string = '';
+     ToDec, ToHex : string;
+   Begin
+   result := '';
+   for counter := 1 to length(TextData) do
+      begin
+      if TextData[counter]<>'0' then Thistramo := thistramo+TextData[counter]
+      else
+         begin
+         ToDec := BM58Todec(Thistramo);
+         ToHex := BMDecToHex(ToDec);
+         Delete(ToHex,1,1);
+         Result := result+ToHex;
+         ThisTramo := ''; Tramo := tramo+1;
+         end;
+      end;
+   End;
+
+Begin
+Certificate := UnSplitCertificate(certificate);
+result := XorDecode(HashSha256String('noso'), Certificate);
+End;
+
+Function NosoHash(source:string):string;
+var
+  counter : integer;
+  FirstChange : array[1..256] of string;
+  finalHASH : string;
+  ThisSum : integer;
+  charA,charB,charC,charD:integer;
+  Filler : string = '%)+/5;=CGIOSYaegk';
+
+  Function GetClean(number:integer):integer;
+  Begin
+  result := number;
+  if result > 126 then
+     begin
+     repeat
+       result := result-95;
+     until result <= 126;
+     end;
+  End;
+
+  function RebuildHash(incoming : string):string;
+  var
+    counter : integer;
+    resultado2 : string = '';
+    chara,charb, charf : integer;
+  Begin
+  for counter := 1 to length(incoming) do
+     begin
+     chara := Ord(incoming[counter]);
+       if counter < Length(incoming) then charb := Ord(incoming[counter+1])
+       else charb := Ord(incoming[1]);
+     charf := chara+charb; CharF := GetClean(CharF);
+     resultado2 := resultado2+chr(charf);
+     end;
+  result := resultado2
+  End;
+
+Begin
+result := '';
+for counter := 1 to length(source) do
+   if ((Ord(source[counter])>126) or (Ord(source[counter])<33)) then
+      begin
+      source := '';
+      break
+      end;
+if length(source)>63 then source := '';
+repeat source := source+filler;
+until length(source) >= 256;
+source := copy(source,0,256);
+FirstChange[1] := RebuildHash(source);
+for counter := 2 to 256 do FirstChange[counter]:= RebuildHash(firstchange[counter-1]);
+finalHASH := FirstChange[256];
+for counter := 0 to 63 do
+   begin
+   charA := Ord(finalHASH[(counter*4)+1]);
+   charB := Ord(finalHASH[(counter*4)+2]);
+   charC := Ord(finalHASH[(counter*4)+3]);
+   charD := Ord(finalHASH[(counter*4)+4]);
+   thisSum := CharA+charB+charC+charD;
+   ThisSum := GetClean(ThisSum);
+   Thissum := ThisSum mod 16;
+   result := result+IntToHex(ThisSum,1);
+   end;
 End;
 
 // *****************************************************************************
@@ -392,7 +516,33 @@ for counter := 1 to long do
 result := resultado;
 End;
 
-// Hex a base 58
+Function BM58ToDec(number58:string):String;
+var
+  long,counter : integer;
+  Resultado : string = '0';
+  DecValues : array of integer;
+  ExpValues : array of string;
+  MultipliValues : array of string;
+Begin
+Long := length(number58);
+setlength(DecValues,0);
+setlength(ExpValues,0);
+setlength(MultipliValues,0);
+setlength(DecValues,Long);
+setlength(ExpValues,Long);
+setlength(MultipliValues,Long);
+for counter := 1 to Long do
+   DecValues[counter-1] := Pos(number58[counter],B58Alphabet)-1;
+for counter := 1 to long do
+   ExpValues[counter-1] := BMExponente('58',IntToStr(long-counter));
+for counter := 1 to Long do
+   MultipliValues[counter-1] := BMMultiplicar(ExpValues[counter-1],IntToStr(DecValues[counter-1]));
+for counter := 1 to long do
+   Resultado := BMAdicion(resultado,MultipliValues[counter-1]);
+result := resultado;
+End;
+
+// Hex to base 58
 function BMHexTo58(numerohex:string;alphabetnumber:integer):string;
 var
   decimalvalue : string;
@@ -459,6 +609,33 @@ if StrToInt(decimalValue) >= 58 then
    resultado := B58Alphabet[restante+1]+resultado;
    end;
 if StrToInt(decimalvalue) > 0 then resultado := B58Alphabet[StrToInt(decimalvalue)+1]+resultado;
+result := resultado;
+End;
+
+// CONVERTS A DECIMAL VALUE TO A HEX STRING
+function BMDecToHex(numero:string):string;
+var
+  decimalvalue : string;
+  restante : integer;
+  ResultadoDiv : DivResult;
+  Resultado : string = '';
+Begin
+decimalvalue := numero;
+while length(decimalvalue) >= 2 do
+   begin
+   ResultadoDiv := BMDividir(decimalvalue,'16');
+   DecimalValue := Resultadodiv.cociente;
+   restante := StrToInt(ResultadoDiv.residuo);
+   resultado := HexAlphabet[restante+1]+resultado;
+   end;
+if StrToInt(decimalValue) >= 16 then
+   begin
+   ResultadoDiv := BMDividir(decimalvalue,'16');
+   DecimalValue := Resultadodiv.cociente;
+   restante := StrToInt(ResultadoDiv.residuo);
+   resultado := HexAlphabet[restante+1]+resultado;
+   end;
+if StrToInt(decimalvalue) > 0 then resultado := HexAlphabet[StrToInt(decimalvalue)+1]+resultado;
 result := resultado;
 End;
 

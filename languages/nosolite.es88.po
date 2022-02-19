@@ -166,7 +166,7 @@ msgid "Downloading summary %s"
 msgstr ""
 
 #: nl_language.rsgui0018
-msgid "MNsHash"
+msgid "Masternodes"
 msgstr ""
 
 #: nl_language.rsgui0019
@@ -195,6 +195,26 @@ msgstr ""
 msgid "Successful: %s"
 msgstr ""
 
+#: nl_language.rsgui0025
+msgid "Noso total supply is %s millions"
+msgstr ""
+
+#: nl_language.rsgui0026
+msgid "Check certificate"
+msgstr ""
+
+#: nl_language.rsgui0027
+msgid "%s verified %s ago"
+msgstr ""
+
+#: nl_language.rsgui0028
+msgid "Invalid certificate"
+msgstr ""
+
+#: nl_language.rsgui0029
+msgid "BestHash"
+msgstr ""
+
 #: tform1.caption
 msgctxt "tform1.caption"
 msgid "Nosolite"
@@ -208,6 +228,14 @@ msgstr "0.00000000"
 msgid "Checking nodes"
 msgstr ""
 
+#: tform1.label1.caption
+msgid "Minning address"
+msgstr ""
+
+#: tform1.label2.caption
+msgid "CPU to mine"
+msgstr ""
+
 #: tform1.labellocked.caption
 msgctxt "tform1.labellocked.caption"
 msgid "0.00000000 NOSO"
@@ -215,6 +243,34 @@ msgstr ""
 
 #: tform1.labellocked.hint
 msgid "Locked balance"
+msgstr ""
+
+#: tform1.labelstake.caption
+msgctxt "tform1.labelstake.caption"
+msgid "Stake"
+msgstr ""
+
+#: tform1.labelstake.hint
+msgctxt "tform1.labelstake.hint"
+msgid "Required Noso for staked address"
+msgstr ""
+
+#: tform1.labelsummary.caption
+msgid "Summary"
+msgstr ""
+
+#: tform1.labelsummary.hint
+msgid "Addresses on sumary"
+msgstr ""
+
+#: tform1.labelsupply.caption
+msgctxt "tform1.labelsupply.caption"
+msgid "Supply"
+msgstr ""
+
+#: tform1.labelsupply.hint
+msgctxt "tform1.labelsupply.hint"
+msgid "Total noso supply"
 msgstr ""
 
 #: tform1.lbalance1.caption
@@ -270,10 +326,22 @@ msgstr ""
 msgid "Customize"
 msgstr ""
 
+#: tform1.menuitem18.caption
+msgid "Check Certificate"
+msgstr ""
+
+#: tform1.menuitem19.caption
+msgid "Wallet folder"
+msgstr ""
+
 #: tform1.menuitem2.caption
 msgctxt "tform1.menuitem2.caption"
 msgid "File"
 msgstr "Archivo"
+
+#: tform1.menuitem20.caption
+msgid "ZIP Backup"
+msgstr ""
 
 #: tform1.menuitem3.caption
 msgctxt "tform1.menuitem3.caption"
@@ -360,6 +428,10 @@ msgstr "Historial"
 #: tform1.tabnodes.caption
 msgid "Nodes"
 msgstr "Nodos"
+
+#: tform1.tabsheet1.caption
+msgid "Miner"
+msgstr ""
 
 #: tform1.tabwallet.caption
 msgid "Wallet"

@@ -69,7 +69,7 @@ result := false;
 form1.ClientChannel.Host:='192.210.226.118';
 form1.ClientChannel.Port:=8080;
 form1.ClientChannel.ConnectTimeout:= 1000;
-form1.ClientChannel.ReadTimeout:=500;
+form1.ClientChannel.ReadTimeout:=800;
 AFileStream := TFileStream.Create(ZipSumaryFilename, fmCreate);
 TRY
 form1.ClientChannel.Connect;
@@ -105,7 +105,7 @@ Client := TidTCPClient.Create(nil);
 Client.Host:='192.210.226.118';
 Client.Port:=8080;
 Client.ConnectTimeout:= 1000;
-Client.ReadTimeout:=500;
+Client.ReadTimeout:=800;
 //Tolog(OrderString);
 TRY
 Client.Connect;

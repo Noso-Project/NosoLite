@@ -43,5 +43,5 @@ begin
 form1.enabled := true;
 end;
 
-end.
+END. // END UNIT
 

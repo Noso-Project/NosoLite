@@ -17,6 +17,8 @@ type
   TForm1 = class(TForm)
     CBMultisend: TCheckBox;
     ClientChannel: TIdTCPClient;
+    ComboBox1: TComboBox;
+    ComboBox2: TComboBox;
     EditSCDest: TEdit;
     EditSCMont: TEdit;
     ImageBlockInfo: TImage;
@@ -25,6 +27,11 @@ type
     ImageDownload: TImage;
     ImgSCDest: TImage;
     ImgSCMont: TImage;
+    Label1: TLabel;
+    Label2: TLabel;
+    Labelsupply: TLabel;
+    Labelstake: TLabel;
+    Labelsummary: TLabel;
     LabelTime: TLabel;
     LabelDownload: TLabel;
     LabelBlockInfo: TLabel;
@@ -45,6 +52,9 @@ type
     MenuItem15: TMenuItem;
     MenuItem16: TMenuItem;
     MenuItem17: TMenuItem;
+    MenuItem18: TMenuItem;
+    MenuItem19: TMenuItem;
+    MenuItem20: TMenuItem;
     MM_File_Exit: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
@@ -56,11 +66,16 @@ type
     MenuItem9: TMenuItem;
     MM_File: TMenuItem;
     PageControl: TPageControl;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    PanelSupply: TPanel;
     PanelDirectory: TPanel;
     PanelDown: TPanel;
     PanelBlockInfo: TPanel;
     PanelBalance: TPanel;
     PanelSend: TPanel;
+    Panelstake: TPanel;
+    Panelsummary: TPanel;
     PanelSync: TPanel;
     PanelStatus: TPanel;
     PanelDownload: TPanel;
@@ -77,6 +92,7 @@ type
     SGridSC: TStringGrid;
     TabNodes: TTabSheet;
     TabLog: TTabSheet;
+    TabSheet1: TTabSheet;
     TabWallet: TTabSheet;
     procedure CBMultisendChange(Sender: TObject);
     procedure ClientChannelWork(ASender: TObject; AWorkMode: TWorkMode;
@@ -99,6 +115,9 @@ type
     procedure MenuItem15Click(Sender: TObject);
     procedure MenuItem16Click(Sender: TObject);
     procedure MenuItem17Click(Sender: TObject);
+    procedure MenuItem18Click(Sender: TObject);
+    procedure MenuItem19Click(Sender: TObject);
+    procedure MenuItem20Click(Sender: TObject);
     procedure MenuItem2Click(Sender: TObject);
     procedure MenuItem3Click(Sender: TObject);
     procedure MenuItem4Click(Sender: TObject);
@@ -126,6 +145,7 @@ type
     procedure SGridNodesPrepareCanvas(sender: TObject; aCol, aRow: Integer;
       aState: TGridDrawState);
     procedure SGridNodesResize(Sender: TObject);
+    procedure TabSheet1Show(Sender: TObject);
   private
 
   public
@@ -152,6 +172,8 @@ uses
 
 // On create form events
 procedure TForm1.FormCreate(Sender: TObject);
+var
+  counter:integer;
 Begin
 // Initialize exit menu shortcuts
 {$IFDEF LINUX}
@@ -172,7 +194,10 @@ Setlength(ARRAY_Pending,0);
 LogLines :=TStringList.create;
 form1.Caption:='Nosolite '+ProgramVersion;
 LoadSeedNodes();
-
+MaxCPU:= {$IFDEF UNIX}GetSystemThreadCount{$ELSE}GetCPUCount{$ENDIF};
+For counter := 1 to MaxCPU do
+   Combobox2.Items.Add(counter.ToString);
+ComboBox2.ItemIndex:=0;
 // Verify files structure
 VerifyFilesStructure;
 
@@ -250,8 +275,9 @@ Begin
 ts := (Sender as TStringGrid).Canvas.TextStyle;
 if aRow > 0 then
    begin
-   if ARRAY_Nodes[aRow-1].Updated then (Sender as TStringGrid).Canvas.Brush.Color :=  clmoneygreen
-   else (Sender as TStringGrid).Canvas.Brush.Color :=  clRed;
+   if ARRAY_Nodes[aRow-1].Updated=0 then (Sender as TStringGrid).Canvas.Brush.Color :=  clgreen;
+   if ((ARRAY_Nodes[aRow-1].Updated>0) and (ARRAY_Nodes[aRow-1].Updated<6)) then (Sender as TStringGrid).Canvas.Brush.Color :=  clyellow;
+   if ARRAY_Nodes[aRow-1].Updated>5 then (Sender as TStringGrid).Canvas.Brush.Color := clRed;
    end;
 End;
 
@@ -261,12 +287,13 @@ var
   GridWidth : integer;
 Begin
 GridWidth := form1.SGridNodes.Width;
-form1.SGridNodes.ColWidths[0] := ThisPercent(25,GridWidth);
-form1.SGridNodes.ColWidths[1] := ThisPercent(15,GridWidth);
-form1.SGridNodes.ColWidths[2] := ThisPercent(15,GridWidth);
+form1.SGridNodes.ColWidths[0] := ThisPercent(20,GridWidth);
+form1.SGridNodes.ColWidths[1] := ThisPercent(8,GridWidth);
+form1.SGridNodes.ColWidths[2] := ThisPercent(10,GridWidth);
 form1.SGridNodes.ColWidths[3] := ThisPercent(15,GridWidth);
 form1.SGridNodes.ColWidths[4] := ThisPercent(15,GridWidth);
-form1.SGridNodes.ColWidths[5] := ThisPercent(15,GridWidth,true);
+form1.SGridNodes.ColWidths[5] := ThisPercent(8,GridWidth);
+form1.SGridNodes.ColWidths[6] := ThisPercent(15,GridWidth,true);
 end;
 
 // Grid addresses draw cell
@@ -291,6 +318,21 @@ if ((CurrPos >=0) and (Acol = 0)) then
       myRect.Right := ColWidth-4;
       myrect.top:=myrect.Top+2;
       myrect.Bottom:=myrect.Top+18;
+      (sender as TStringGrid).Canvas.StretchDraw(myRect,bitmap);
+      Bitmap.free
+      end;
+   end;
+if ((CurrPos>=0) and (Acol = 3)) then
+   begin
+   if (ARRAY_Addresses[CurrPos].Balance div 100000000) > Int_StakeSize then
+      begin
+      ColWidth := (sender as TStringGrid).ColWidths[3];
+      Bitmap:=TBitmap.Create;
+      ImageList.GetBitmap(3,Bitmap);
+      myRect := Arect;
+      myrect.Left:=myRect.Left+4;
+      myRect.Right := myrect.Left+20;
+      myrect.Bottom:=myrect.Top+20;
       (sender as TStringGrid).Canvas.StretchDraw(myRect,bitmap);
       Bitmap.free
       end;
@@ -462,6 +504,7 @@ else
    end;
 End;
 
+
 // Unlock address
 procedure TForm1.MenuItem10Click(Sender: TObject);
 var
@@ -518,7 +561,7 @@ else
    address := GetAddressToShow(ARRAY_Addresses[currpos].Hash);
    Certificate := ARRAY_Addresses[currpos].PublicKey+':'+currtime+':'+
       GetStringSigned('I OWN THIS ADDRESS '+address+currtime,ARRAY_Addresses[currpos].PrivateKey);
-   //Clipboard.AsText
+   Certificate := EncodeCertificate(Certificate);
    form3.BorderIcons:=form3.BorderIcons+[bisystemmenu];
    form3.memorequest.Text:=format(rsGUI0020,[address]);
    form3.memoresult.Text:=format('%s',[Certificate]);
@@ -552,9 +595,10 @@ End;
 // Customize
 procedure TForm1.MenuItem17Click(Sender: TObject);
 var
-  alias : string = '';
+  Newalias : string = '';
 Begin
-alias := InputBox(ARRAY_Addresses[SGridAddresses.Row-1].hash,'Enter a custom alias', '');
+Newalias := InputBox(ARRAY_Addresses[SGridAddresses.Row-1].hash,'Enter a custom alias', '');
+If ( (NewAlias = '') or (length(newalias)<5) ) then exit;
 End;
 
 // Import addresses from file
@@ -564,13 +608,75 @@ ShowExplorer(GetCurrentDir,rsGUI0010,'*.pkw',true);
 end;
 
 //******************************************************************************
+// Miner
+//******************************************************************************
+
+// Miner tab is shown
+procedure TForm1.TabSheet1Show(Sender: TObject);
+var
+  counter : integer;
+Begin
+if not Miner_Active then
+   begin
+   ComboBox1.Items.clear;
+   For counter := 0 to length(ARRAY_Addresses)-1 do
+      ComboBox1.Items.Add(ARRAY_Addresses[counter].Hash);
+   ComboBox1.ItemIndex:=0;
+   end;
+end;
+
+
+//******************************************************************************
 // Main menu
 //******************************************************************************
 
+// Check certificate
+procedure TForm1.MenuItem18Click(Sender: TObject);
+var
+  InString : string = '';
+  PubKey,SignTime,Signhash, Address : string;
+Begin
+InString := InputBox('Check certificate','Enter certificate','');
+if InString = '' then exit;
+InString := DecodeCertificate(InString);
+InString := StringReplace(InString,':',' ',[rfReplaceAll, rfIgnoreCase]);
+pubkey := Parameter(InString,0);
+SignTime := Parameter(InString,1);
+Signhash := Parameter(InString,2);
+Address := GetAddressFromPublicKey(pubkey);
+if ARRAY_Sumary[AddressSumaryIndex(Address)].custom <> '' then Address := ARRAY_Sumary[AddressSumaryIndex(Address)].custom;
+if VerifySignedString('I OWN THIS ADDRESS '+Address+SignTime,Signhash,pubkey) then
+   begin
+   form3.BorderIcons:=form3.BorderIcons+[bisystemmenu];
+   form3.memorequest.Text:=rsGUI0026;
+   form3.memoresult.Text:=format(rsGUI0027,[address,TimeSinceStamp(StrToInt64(SignTime))]);
+   form3.ShowModal;
+   end
+else
+   begin
+   form3.BorderIcons:=form3.BorderIcons+[bisystemmenu];
+   form3.memorequest.Text:=rsGUI0026;
+   form3.memoresult.Text:=rsGUI0028;
+   form3.ShowModal;
+   end;
+End;
+
+// Open wallet folder
+procedure TForm1.MenuItem19Click(Sender: TObject);
+Begin
+SysUtils.ExecuteProcess('explorer.exe', GetCurrentDir+directoryseparator+'wallet', []);
+End;
+
+procedure TForm1.MenuItem20Click(Sender: TObject);
+Begin
+
+End;
+
+// Close app
 procedure TForm1.MM_File_ExitClick(Sender: TObject);
-begin
+Begin
   Close;
-end;
+End;
 
 //******************************************************************************
 // Refresh PoP Up menu

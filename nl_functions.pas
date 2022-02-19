@@ -35,6 +35,7 @@ function WalletAddressIndex(address:string):integer;
 function isAddressLocked(address:walletdata):boolean;
 Procedure UpdateWalletFromSumary();
 Procedure ProcessPendings();
+function TimeSinceStamp(value:int64):string;
 
 implementation
 
@@ -76,6 +77,7 @@ Repeat
       ThisNode.port:=StrToIntDef(Parameter(ThisParam,1),8080);
       ThisNode.block:=0;
       ThisNode.Pending:=0;
+      ThisNode.updated:=0;
       ThisNode.Branch:='';
       Insert(ThisNode,ARRAY_Nodes,length(ARRAY_Nodes));
       counter := counter+1;
@@ -569,6 +571,22 @@ repeat
 until thisorder = '';
 //tolog(Pendings_String);
 End;
+
+// Muestra el tiempo transcurrido desde el timestamp proporcionado
+function TimeSinceStamp(value:int64):string;
+var
+CurrStamp : Int64 = 0;
+Diferencia : Int64 = 0;
+Begin
+CurrStamp := UTCTime;
+Diferencia := CurrStamp - value;
+if diferencia div 60 < 1 then result := '<1m'
+else if diferencia div 3600 < 1 then result := IntToStr(diferencia div 60)+'m'
+else if diferencia div 86400 < 1 then result := IntToStr(diferencia div 3600)+'h'
+else if diferencia div 2592000 < 1 then result := IntToStr(diferencia div 86400)+'d'
+else if diferencia div 31536000 < 1 then result := IntToStr(diferencia div 2592000)+'M'
+else result := IntToStr(diferencia div 31536000)+' Y'
+end;
 
 END. // END UNIT
 

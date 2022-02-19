@@ -125,7 +125,7 @@
         <PackageName Value="LCL"/>
       </Item4>
     </RequiredPackages>
-    <Units Count="13">
+    <Units Count="14">
       <Unit0>
         <Filename Value="nosolite.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -192,6 +192,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit12>
+      <Unit13>
+        <Filename Value="nosocoreunit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="NosoCoreUnit"/>
+      </Unit13>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

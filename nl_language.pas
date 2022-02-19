@@ -44,13 +44,18 @@ Resourcestring
   rsGUI0015 = 'Ammount';
   rsGUI0016 = 'Reference';
   rsGUI0017 = 'Downloading summary %s';
-  rsGUI0018 = 'MNsHash';
+  rsGUI0018 = 'Masternodes';
   rsGUI0019 = 'MNs #';
   rsGUI0020 = 'Certificate for address : %s';
   rsGUI0021 = 'Processing...';
   rsGUI0022 = 'Send %s Noso to %s'+slinebreak+'Reference: %s';
   rsGUI0023 = 'Failed';
   rsGUI0024 = 'Successful: %s';
+  rsGUI0025 = 'Noso total supply is %s millions';
+  rsGUI0026 = 'Check certificate';
+  rsGUI0027 = '%s verified %s ago';
+  rsGUI0028 = 'Invalid certificate';
+  rsGUI0029 = 'BestHash';
   // Dialogs
   rsDIA0001 = 'Import address keys';
   rsDIA0002 = 'Paste here the address keys';

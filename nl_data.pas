@@ -50,7 +50,10 @@ NodeData = packed record
    Branch : String[40];
    MNsHash : string[5];
    MNsCount : integer;
-   Updated : boolean;
+   Updated : integer;
+   LBHash : String[32];
+   NMSDiff : String[32];
+   LBTimeEnd : Int64;
    end;
 
 ConsensusData = packed record
@@ -133,6 +136,8 @@ var
   Int_SumarySize          : int64 = 0;
   Int_LastPendingCount    : int64 = 0;
     Pendings_String       : string = '';
+  Int_TotalSupply         : integer = 0;
+  Int_StakeSize           : integer = 0;
 
   WO_LastBlock : integer = 0;
   WO_LastSumary : string = '';
@@ -149,6 +154,10 @@ var
   LogLines : TStringList;
   G_UTCTime : int64;
   G_FirstRun : boolean = true;
+
+  // Miner
+  Miner_Active : boolean = false;
+  MaxCPU : integer;
 
   // Critical Sections
   CS_ARRAY_Addresses: TRTLCriticalSection;
@@ -239,7 +248,10 @@ While not terminated do
             ARRAY_Nodes[counter].Branch:=Parameter(LLine,5);
             ARRAY_Nodes[counter].MNsHash:=Parameter(LLine,8);
             ARRAY_Nodes[counter].MNsCount:= StrToIntDef(Parameter(LLine,9),0);
-            ARRAY_Nodes[counter].Updated:=true;
+            ARRAY_Nodes[counter].Updated:=0;
+            ARRAY_Nodes[counter].LBHash:=Parameter(LLine,10);
+            ARRAY_Nodes[counter].NMSDiff:=Parameter(LLine,11);
+            ARRAY_Nodes[counter].LBTimeEnd:=StrToIntDef(Parameter(LLine,12),0);
             end
          else
             begin
@@ -248,7 +260,7 @@ While not terminated do
             ARRAY_Nodes[counter].Branch:=rsError0003;
             ARRAY_Nodes[counter].MNsHash:='';
             ARRAY_Nodes[counter].MNsCount:=0;
-            ARRAY_Nodes[counter].Updated:=false;
+            ARRAY_Nodes[counter].Updated:=ARRAY_Nodes[counter].Updated+1;
             end;
          end;
       Synchronize(@hidesync);
