@@ -228,14 +228,6 @@ msgstr "0.00000000"
 msgid "Checking nodes"
 msgstr ""
 
-#: tform1.label1.caption
-msgid "Minning address"
-msgstr ""
-
-#: tform1.label2.caption
-msgid "CPU to mine"
-msgstr ""
-
 #: tform1.labellocked.caption
 msgctxt "tform1.labellocked.caption"
 msgid "0.00000000 NOSO"
@@ -421,6 +413,14 @@ msgstr "Confirmar"
 msgid "Send"
 msgstr "Enviar"
 
+#: tform1.tabapps.caption
+msgid "Apps"
+msgstr ""
+
+#: tform1.tabliqpool.caption
+msgid "Liq-Pool"
+msgstr ""
+
 #: tform1.tablog.caption
 msgid "Log"
 msgstr "Historial"
@@ -428,10 +428,6 @@ msgstr "Historial"
 #: tform1.tabnodes.caption
 msgid "Nodes"
 msgstr "Nodos"
-
-#: tform1.tabsheet1.caption
-msgid "Miner"
-msgstr ""
 
 #: tform1.tabwallet.caption
 msgid "Wallet"

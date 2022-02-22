@@ -155,10 +155,6 @@ var
   G_UTCTime : int64;
   G_FirstRun : boolean = true;
 
-  // Miner
-  Miner_Active : boolean = false;
-  MaxCPU : integer;
-
   // Critical Sections
   CS_ARRAY_Addresses: TRTLCriticalSection;
   CS_LOG            : TRTLCriticalSection;

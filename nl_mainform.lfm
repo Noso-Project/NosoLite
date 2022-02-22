@@ -20,9 +20,9 @@ object Form1: TForm1
     Height = 424
     Top = 0
     Width = 640
-    ActivePage = TabSheet1
+    ActivePage = TabApps
     Align = alClient
-    TabIndex = 3
+    TabIndex = 1
     TabOrder = 0
     object TabWallet: TTabSheet
       Caption = 'Wallet'
@@ -595,6 +595,36 @@ object Form1: TForm1
         end
       end
     end
+    object TabApps: TTabSheet
+      Caption = 'Apps'
+      ClientHeight = 396
+      ClientWidth = 632
+      TabVisible = False
+      object PC_Apps: TPageControl
+        Left = 0
+        Height = 396
+        Top = 0
+        Width = 632
+        ActivePage = TabLiqPool
+        Align = alClient
+        TabIndex = 0
+        TabOrder = 0
+        object TabLiqPool: TTabSheet
+          Caption = 'Liq-Pool'
+          ClientHeight = 368
+          ClientWidth = 624
+          object PanelLiqPoolAccount: TPanel
+            Left = 0
+            Height = 124
+            Top = 0
+            Width = 624
+            Align = alTop
+            BevelOuter = bvNone
+            TabOrder = 0
+          end
+        end
+      end
+    end
     object TabNodes: TTabSheet
       Caption = 'Nodes'
       ClientHeight = 396
@@ -637,81 +667,6 @@ object Form1: TForm1
         ReadOnly = True
         ScrollBars = ssAutoVertical
         TabOrder = 0
-      end
-    end
-    object TabSheet1: TTabSheet
-      Caption = 'Miner'
-      ClientHeight = 396
-      ClientWidth = 632
-      OnShow = TabSheet1Show
-      TabVisible = False
-      object Panel1: TPanel
-        Left = 0
-        Height = 23
-        Top = 0
-        Width = 632
-        Align = alTop
-        AutoSize = True
-        BevelOuter = bvNone
-        ClientHeight = 23
-        ClientWidth = 632
-        ParentColor = False
-        TabOrder = 0
-        object ComboBox1: TComboBox
-          Left = 208
-          Height = 23
-          Top = 0
-          Width = 424
-          Align = alRight
-          ItemHeight = 15
-          Style = csDropDownList
-          TabOrder = 0
-        end
-        object Label1: TLabel
-          Left = 10
-          Height = 23
-          Top = 0
-          Width = 88
-          Align = alLeft
-          BorderSpacing.Left = 10
-          Caption = 'Minning address'
-          Layout = tlCenter
-          ParentColor = False
-        end
-      end
-      object Panel2: TPanel
-        Left = 0
-        Height = 23
-        Top = 23
-        Width = 632
-        Align = alTop
-        AutoSize = True
-        BevelOuter = bvNone
-        ClientHeight = 23
-        ClientWidth = 632
-        ParentColor = False
-        TabOrder = 1
-        object ComboBox2: TComboBox
-          Left = 208
-          Height = 23
-          Top = 0
-          Width = 424
-          Align = alRight
-          ItemHeight = 15
-          Style = csDropDownList
-          TabOrder = 0
-        end
-        object Label2: TLabel
-          Left = 10
-          Height = 23
-          Top = 0
-          Width = 67
-          Align = alLeft
-          BorderSpacing.Left = 10
-          Caption = 'CPU to mine'
-          Layout = tlCenter
-          ParentColor = False
-        end
       end
     end
   end

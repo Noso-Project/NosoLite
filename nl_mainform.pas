@@ -17,8 +17,6 @@ type
   TForm1 = class(TForm)
     CBMultisend: TCheckBox;
     ClientChannel: TIdTCPClient;
-    ComboBox1: TComboBox;
-    ComboBox2: TComboBox;
     EditSCDest: TEdit;
     EditSCMont: TEdit;
     ImageBlockInfo: TImage;
@@ -27,8 +25,6 @@ type
     ImageDownload: TImage;
     ImgSCDest: TImage;
     ImgSCMont: TImage;
-    Label1: TLabel;
-    Label2: TLabel;
     Labelsupply: TLabel;
     Labelstake: TLabel;
     Labelsummary: TLabel;
@@ -66,8 +62,8 @@ type
     MenuItem9: TMenuItem;
     MM_File: TMenuItem;
     PageControl: TPageControl;
-    Panel1: TPanel;
-    Panel2: TPanel;
+    PC_Apps: TPageControl;
+    PanelLiqPoolAccount: TPanel;
     PanelSupply: TPanel;
     PanelDirectory: TPanel;
     PanelDown: TPanel;
@@ -92,7 +88,8 @@ type
     SGridSC: TStringGrid;
     TabNodes: TTabSheet;
     TabLog: TTabSheet;
-    TabSheet1: TTabSheet;
+    TabApps: TTabSheet;
+    TabLiqPool: TTabSheet;
     TabWallet: TTabSheet;
     procedure CBMultisendChange(Sender: TObject);
     procedure ClientChannelWork(ASender: TObject; AWorkMode: TWorkMode;
@@ -145,7 +142,6 @@ type
     procedure SGridNodesPrepareCanvas(sender: TObject; aCol, aRow: Integer;
       aState: TGridDrawState);
     procedure SGridNodesResize(Sender: TObject);
-    procedure TabSheet1Show(Sender: TObject);
   private
 
   public
@@ -194,10 +190,6 @@ Setlength(ARRAY_Pending,0);
 LogLines :=TStringList.create;
 form1.Caption:='Nosolite '+ProgramVersion;
 LoadSeedNodes();
-MaxCPU:= {$IFDEF UNIX}GetSystemThreadCount{$ELSE}GetCPUCount{$ENDIF};
-For counter := 1 to MaxCPU do
-   Combobox2.Items.Add(counter.ToString);
-ComboBox2.ItemIndex:=0;
 // Verify files structure
 VerifyFilesStructure;
 
@@ -606,25 +598,6 @@ procedure TForm1.MenuItem2Click(Sender: TObject);
 begin
 ShowExplorer(GetCurrentDir,rsGUI0010,'*.pkw',true);
 end;
-
-//******************************************************************************
-// Miner
-//******************************************************************************
-
-// Miner tab is shown
-procedure TForm1.TabSheet1Show(Sender: TObject);
-var
-  counter : integer;
-Begin
-if not Miner_Active then
-   begin
-   ComboBox1.Items.clear;
-   For counter := 0 to length(ARRAY_Addresses)-1 do
-      ComboBox1.Items.Add(ARRAY_Addresses[counter].Hash);
-   ComboBox1.ItemIndex:=0;
-   end;
-end;
-
 
 //******************************************************************************
 // Main menu
