@@ -43,7 +43,7 @@ msgstr "Erro: Carregando carteira do ficheiro -> %s"
 #: nl_language.rserror0003
 #, fuzzy
 #| msgid "FAILED"
-msgid "-Error-"
+msgid "Error"
 msgstr "FALHOU"
 
 #: nl_language.rserror0004

@@ -43,7 +43,7 @@ msgstr ""
 #: nl_language.rserror0003
 #, fuzzy
 #| msgid "FAILED"
-msgid "-Error-"
+msgid "Error"
 msgstr "FALLO"
 
 #: nl_language.rserror0004

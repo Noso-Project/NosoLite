@@ -31,7 +31,7 @@ msgid "Error: loading wallet from file-> %s"
 msgstr ""
 
 #: nl_language.rserror0003
-msgid "-Error-"
+msgid "Error"
 msgstr ""
 
 #: nl_language.rserror0004

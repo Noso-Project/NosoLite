@@ -48,7 +48,7 @@ NodeData = packed record
    block : integer;
    Pending: integer;
    Branch : String[40];
-   MNsHash : string[5];
+   MNsHash : string[32];
    MNsCount : integer;
    Updated : integer;
    LBHash : String[32];
