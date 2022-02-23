@@ -5,7 +5,7 @@ unit nl_data;
 interface
 
 uses
-  Classes, SysUtils, IdTCPClient, dateutils;
+  Classes, SysUtils, IdTCPClient, dateutils, strutils;
 
 Type
 
@@ -241,12 +241,12 @@ While not terminated do
             begin
             ARRAY_Nodes[counter].block:=Parameter(LLine,2).ToInteger();
             ARRAY_Nodes[counter].Pending:=Parameter(LLine,3).ToInteger();
-            ARRAY_Nodes[counter].Branch:=Parameter(LLine,5);
-            ARRAY_Nodes[counter].MNsHash:=Parameter(LLine,8);
+            ARRAY_Nodes[counter].Branch:=AddCharR(' ',(Parameter(LLine,5)),5);
+            ARRAY_Nodes[counter].MNsHash:=AddCharR(' ',(Parameter(LLine,8)),5);
             ARRAY_Nodes[counter].MNsCount:= StrToIntDef(Parameter(LLine,9),0);
             ARRAY_Nodes[counter].Updated:=0;
-            ARRAY_Nodes[counter].LBHash:=Parameter(LLine,10);
-            ARRAY_Nodes[counter].NMSDiff:=Parameter(LLine,11);
+            ARRAY_Nodes[counter].LBHash:=AddCharR(' ',(Parameter(LLine,10)),5);
+            ARRAY_Nodes[counter].NMSDiff:=AddCharR(' ',(Parameter(LLine,11)),5);
             ARRAY_Nodes[counter].LBTimeEnd:=StrToIntDef(Parameter(LLine,12),0);
             end
          else
@@ -254,9 +254,10 @@ While not terminated do
             ARRAY_Nodes[counter].block:=0;
             ARRAY_Nodes[counter].Pending:=0;
             ARRAY_Nodes[counter].Branch:=rsError0003;
-            ARRAY_Nodes[counter].MNsHash:='';
+            ARRAY_Nodes[counter].MNsHash:=rsError0003;
             ARRAY_Nodes[counter].MNsCount:=0;
             ARRAY_Nodes[counter].Updated:=ARRAY_Nodes[counter].Updated+1;
+            ARRAY_Nodes[counter].NMSDiff:=rsError0003;
             end;
          end;
       Synchronize(@hidesync);

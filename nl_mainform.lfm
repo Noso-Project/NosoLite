@@ -20,7 +20,7 @@ object Form1: TForm1
     Height = 424
     Top = 0
     Width = 640
-    ActivePage = TabApps
+    ActivePage = TabNodes
     Align = alClient
     TabIndex = 1
     TabOrder = 0
@@ -97,7 +97,6 @@ object Form1: TForm1
         ColCount = 4
         FixedCols = 0
         Font.CharSet = ANSI_CHARSET
-        Font.Color = clBlack
         Font.Height = -13
         Font.Name = 'Consolas'
         Font.Pitch = fpFixed
@@ -595,36 +594,6 @@ object Form1: TForm1
         end
       end
     end
-    object TabApps: TTabSheet
-      Caption = 'Apps'
-      ClientHeight = 396
-      ClientWidth = 632
-      TabVisible = False
-      object PC_Apps: TPageControl
-        Left = 0
-        Height = 396
-        Top = 0
-        Width = 632
-        ActivePage = TabLiqPool
-        Align = alClient
-        TabIndex = 0
-        TabOrder = 0
-        object TabLiqPool: TTabSheet
-          Caption = 'Liq-Pool'
-          ClientHeight = 368
-          ClientWidth = 624
-          object PanelLiqPoolAccount: TPanel
-            Left = 0
-            Height = 124
-            Top = 0
-            Width = 624
-            Align = alTop
-            BevelOuter = bvNone
-            TabOrder = 0
-          end
-        end
-      end
-    end
     object TabNodes: TTabSheet
       Caption = 'Nodes'
       ClientHeight = 396
@@ -667,6 +636,36 @@ object Form1: TForm1
         ReadOnly = True
         ScrollBars = ssAutoVertical
         TabOrder = 0
+      end
+    end
+    object TabApps: TTabSheet
+      Caption = 'Apps'
+      ClientHeight = 396
+      ClientWidth = 632
+      TabVisible = False
+      object PC_Apps: TPageControl
+        Left = 0
+        Height = 396
+        Top = 0
+        Width = 632
+        ActivePage = TabLiqPool
+        Align = alClient
+        TabIndex = 0
+        TabOrder = 0
+        object TabLiqPool: TTabSheet
+          Caption = 'Liq-Pool'
+          ClientHeight = 368
+          ClientWidth = 624
+          object PanelLiqPoolAccount: TPanel
+            Left = 0
+            Height = 124
+            Top = 0
+            Width = 624
+            Align = alTop
+            BevelOuter = bvNone
+            TabOrder = 0
+          end
+        end
       end
     end
   end
@@ -914,7 +913,7 @@ object Form1: TForm1
         Align = alClient
         Alignment = taCenter
         Caption = 'Summary'
-        Color = clHotLight
+        Color = clNavy
         Font.CharSet = ANSI_CHARSET
         Font.Color = clWhite
         Font.Height = -13

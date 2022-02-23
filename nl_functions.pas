@@ -72,6 +72,7 @@ Repeat
    if ThisParam = '' then IsParamEmpty := true
    else
       begin
+      ThisNode := Default(NodeData);
       ThisParam := StringReplace(ThisParam,':',' ',[rfReplaceAll, rfIgnoreCase]);
       ThisNode.host:=Parameter(ThisParam,0);
       ThisNode.port:=StrToIntDef(Parameter(ThisParam,1),8080);

@@ -279,13 +279,13 @@ var
   GridWidth : integer;
 Begin
 GridWidth := form1.SGridNodes.Width;
-form1.SGridNodes.ColWidths[0] := ThisPercent(20,GridWidth);
-form1.SGridNodes.ColWidths[1] := ThisPercent(8,GridWidth);
+form1.SGridNodes.ColWidths[0] := ThisPercent(25,GridWidth);
+form1.SGridNodes.ColWidths[1] := ThisPercent(10,GridWidth);
 form1.SGridNodes.ColWidths[2] := ThisPercent(10,GridWidth);
 form1.SGridNodes.ColWidths[3] := ThisPercent(15,GridWidth);
 form1.SGridNodes.ColWidths[4] := ThisPercent(15,GridWidth);
 form1.SGridNodes.ColWidths[5] := ThisPercent(8,GridWidth);
-form1.SGridNodes.ColWidths[6] := ThisPercent(15,GridWidth,true);
+form1.SGridNodes.ColWidths[6] := ThisPercent(17,GridWidth,true);
 end;
 
 // Grid addresses draw cell

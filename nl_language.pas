@@ -12,7 +12,7 @@ Resourcestring
   //Error messages
   rsError0001 = 'Error: creating new wallet file-> %s';
   rsError0002 = 'Error: loading wallet from file-> %s';
-  rsError0003 = 'FAILED';
+  rsError0003 = '-Error-';
   rsError0004 = 'Error: Saving wallet to disk-> %s';
   rsError0005 = 'Error: Disconnecting client-> %s';
   rsError0006 = 'Error: connecting node %s-> %s';
