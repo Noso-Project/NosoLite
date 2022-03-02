@@ -44,8 +44,8 @@ if not errored then
    form1.ClientChannel.Host:=Host;
    form1.ClientChannel.Port:=StrToIntDef(Port,8080);
       TRY
-      form1.ClientChannel.ConnectTimeout:= 1000;
-      form1.ClientChannel.ReadTimeout:=500;
+      form1.ClientChannel.ConnectTimeout:= 3000;
+      form1.ClientChannel.ReadTimeout:=3000;
       form1.ClientChannel.Connect;
       form1.ClientChannel.IOHandler.WriteLn('NODESTATUS');
       result := form1.ClientChannel.IOHandler.ReadLn(IndyTextEncoding_UTF8);
