@@ -54,6 +54,7 @@ NodeData = packed record
    LBHash : String[32];
    NMSDiff : String[32];
    LBTimeEnd : Int64;
+   Checks   : integer;
    end;
 
 ConsensusData = packed record
@@ -102,7 +103,7 @@ CONST
   Comisiontrfr = 10000;
   MinimunFee = 10;
   Protocol = 1;
-  ProgramVersion = '1.0';
+  ProgramVersion = '1.1';
 
   HexAlphabet : string = '0123456789ABCDEF';
   B58Alphabet : string = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
@@ -240,15 +241,16 @@ While not terminated do
          if not terminated then LLine := GetNodeStatus(ARRAY_Nodes[counter].host,ARRAY_Nodes[counter].port.ToString);
          if LLine <> '' then
             begin
-            ARRAY_Nodes[counter].block:=Parameter(LLine,2).ToInteger();
-            ARRAY_Nodes[counter].Pending:=Parameter(LLine,3).ToInteger();
-            ARRAY_Nodes[counter].Branch:=AddCharR(' ',(Parameter(LLine,5)),5);
-            ARRAY_Nodes[counter].MNsHash:=AddCharR(' ',(Parameter(LLine,8)),5);
-            ARRAY_Nodes[counter].MNsCount:= StrToIntDef(Parameter(LLine,9),0);
-            ARRAY_Nodes[counter].Updated:=0;
-            ARRAY_Nodes[counter].LBHash:=AddCharR(' ',(Parameter(LLine,10)),5);
-            ARRAY_Nodes[counter].NMSDiff:=AddCharR(' ',(Parameter(LLine,11)),5);
-            ARRAY_Nodes[counter].LBTimeEnd:=StrToIntDef(Parameter(LLine,12),0);
+            ARRAY_Nodes[counter].block     :=Parameter(LLine,2).ToInteger();
+            ARRAY_Nodes[counter].Pending   :=Parameter(LLine,3).ToInteger();
+            ARRAY_Nodes[counter].Branch    :=AddCharR(' ',(Parameter(LLine,5)),5);
+            ARRAY_Nodes[counter].MNsHash   :=AddCharR(' ',(Parameter(LLine,8)),5);
+            ARRAY_Nodes[counter].MNsCount  := StrToIntDef(Parameter(LLine,9),0);
+            ARRAY_Nodes[counter].Updated   :=0;
+            ARRAY_Nodes[counter].LBHash    :=AddCharR(' ',(Parameter(LLine,10)),5);
+            ARRAY_Nodes[counter].NMSDiff   :=AddCharR(' ',(Parameter(LLine,11)),5);
+            ARRAY_Nodes[counter].LBTimeEnd :=StrToIntDef(Parameter(LLine,12),0);
+            ARRAY_Nodes[counter].Checks    :=StrToIntDef(Parameter(LLine,14),0);
             end
          else
             begin

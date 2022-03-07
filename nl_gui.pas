@@ -34,6 +34,7 @@ form1.SGridNodes.Cells[3,0] := rsGUI0008;
 form1.SGridNodes.Cells[4,0] := rsGUI0018;
 form1.SGridNodes.Cells[5,0] := rsGUI0019;
 form1.SGridNodes.Cells[6,0] := rsGUI0029;
+form1.SGridNodes.Cells[7,0] := 'MNC';
 Form1.SGridSC.Cells[0,0]:=rsGUI0014;
 Form1.SGridSC.Cells[0,1]:=rsGUI0015;
 Form1.SGridSC.Cells[0,2]:=rsGUI0016;
@@ -85,6 +86,7 @@ if length(ARRAY_Nodes)>0 then
       form1.SGridNodes.Cells[4,counter+1] := ARRAY_Nodes[counter].MNsHash;
       form1.SGridNodes.Cells[5,counter+1] := ARRAY_Nodes[counter].MNsCount.ToString;
       form1.SGridNodes.Cells[6,counter+1] := Copy(ARRAY_Nodes[counter].NMSDiff,1,10);
+      form1.SGridNodes.Cells[7,counter+1] := ARRAY_Nodes[counter].Checks.ToString;
       end;
    end;
 End;

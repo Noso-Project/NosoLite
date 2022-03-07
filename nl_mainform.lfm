@@ -604,7 +604,7 @@ object Form1: TForm1
         Top = 0
         Width = 632
         Align = alClient
-        ColCount = 7
+        ColCount = 8
         FixedCols = 0
         Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goSmoothScroll]
         RowCount = 1
