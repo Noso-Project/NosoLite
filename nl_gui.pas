@@ -11,6 +11,7 @@ Procedure LoadGUIInterface();
 Procedure RefreshAddresses();
 Procedure RefreshNodes();
 Procedure RefreshStatus();
+Function BestHashReadeable(BestDiff:String):string;
 
 implementation
 
@@ -34,7 +35,7 @@ form1.SGridNodes.Cells[3,0] := rsGUI0008;
 form1.SGridNodes.Cells[4,0] := rsGUI0018;
 form1.SGridNodes.Cells[5,0] := rsGUI0019;
 form1.SGridNodes.Cells[6,0] := rsGUI0029;
-form1.SGridNodes.Cells[7,0] := 'MNC';
+form1.SGridNodes.Cells[7,0] := 'Version';
 Form1.SGridSC.Cells[0,0]:=rsGUI0014;
 Form1.SGridSC.Cells[0,1]:=rsGUI0015;
 Form1.SGridSC.Cells[0,2]:=rsGUI0016;
@@ -83,10 +84,10 @@ if length(ARRAY_Nodes)>0 then
       form1.SGridNodes.Cells[1,counter+1] := ARRAY_Nodes[counter].Block.ToString;
       form1.SGridNodes.Cells[2,counter+1] := ARRAY_Nodes[counter].Pending.ToString;
       form1.SGridNodes.Cells[3,counter+1] := ARRAY_Nodes[counter].Branch;
-      form1.SGridNodes.Cells[4,counter+1] := ARRAY_Nodes[counter].MNsHash;
-      form1.SGridNodes.Cells[5,counter+1] := ARRAY_Nodes[counter].MNsCount.ToString;
-      form1.SGridNodes.Cells[6,counter+1] := Copy(ARRAY_Nodes[counter].NMSDiff,1,10);
-      form1.SGridNodes.Cells[7,counter+1] := ARRAY_Nodes[counter].Checks.ToString;
+      form1.SGridNodes.Cells[4,counter+1] := ARRAY_Nodes[counter].MNsHash+'-'+ARRAY_Nodes[counter].MNsCount.ToString+'-'+ARRAY_Nodes[counter].Checks.ToString;
+      form1.SGridNodes.Cells[5,counter+1] := ARRAY_Nodes[counter].Peers.ToString;
+      form1.SGridNodes.Cells[6,counter+1] := BestHashReadeable(ARRAY_Nodes[counter].NMSDiff);
+      form1.SGridNodes.Cells[7,counter+1] := ARRAY_Nodes[counter].version;
       end;
    end;
 End;
@@ -108,6 +109,18 @@ Form1.Labelsupply.Hint:=format(rsGUI0025,[FormatFloat('0.00', Supply)]);
 form1.LabelTime.Caption:=TimestampToDate(G_UTCTime);
 form1.labelstake.Caption:=IntToStr(Int_StakeSize)+' NOSO';
 form1.Labelsummary.Caption:=FormatFloat('0.00', (length(ARRAY_Sumary)+1)/1000)+'k';
+End;
+
+Function BestHashReadeable(BestDiff:String):string;
+var
+  counter :integer = 0;
+Begin
+if bestdiff = '' then BestDiff := 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF';
+repeat
+  counter := counter+1;
+until bestdiff[counter]<> '0';
+Result := (Counter-1).ToString+'.';
+if counter<length(BestDiff) then Result := Result+bestdiff[counter];
 End;
 
 END. // END UNIT

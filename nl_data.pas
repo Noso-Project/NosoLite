@@ -44,6 +44,8 @@ TUpdateThread = class(TThread)
 
 NodeData = packed record
    host : string[60];
+   Peers : integer;
+   Version : string[10];
    port : integer;
    block : integer;
    Pending: integer;
@@ -55,6 +57,7 @@ NodeData = packed record
    NMSDiff : String[32];
    LBTimeEnd : Int64;
    Checks   : integer;
+   Synced   : boolean;
    end;
 
 ConsensusData = packed record
@@ -103,7 +106,7 @@ CONST
   Comisiontrfr = 10000;
   MinimunFee = 10;
   Protocol = 1;
-  ProgramVersion = '1.1';
+  ProgramVersion = '1.2';
 
   HexAlphabet : string = '0123456789ABCDEF';
   B58Alphabet : string = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
@@ -131,7 +134,10 @@ var
                                  '172.245.52.208:8080 '+
                                  '192.210.226.118:8080 '+
                                  '194.156.88.117:8080 '+
-                                 '107.175.59.177:8080';
+                                 '107.175.59.177:8080 '+
+                                 '107.172.193.176:8080 '+
+                                 '107.175.194.151:8080 '+
+                                 '192.3.73.184:8080';
   Int_LastThreadExecution : int64 = 0;
   Int_WalletBalance       : int64 = 0;
   Int_LockedBalance       : int64 = 0;
@@ -241,9 +247,13 @@ While not terminated do
          if not terminated then LLine := GetNodeStatus(ARRAY_Nodes[counter].host,ARRAY_Nodes[counter].port.ToString);
          if LLine <> '' then
             begin
+            //NODESTATUS 1{Peers} 2{LastBlock} 3{Pendings} 4{Delta} 5{headers} 6{version} 7{UTCTime} 8{MNsHash} 9{MNscount}
+            //          10{LasBlockHash} 11{BestHashDiff} 12{LastBlockTimeEnd} 13{LBMiner} 14{ChecksCount}
+            ARRAY_Nodes[counter].Peers     :=Parameter(LLine,1).ToInteger();
             ARRAY_Nodes[counter].block     :=Parameter(LLine,2).ToInteger();
             ARRAY_Nodes[counter].Pending   :=Parameter(LLine,3).ToInteger();
             ARRAY_Nodes[counter].Branch    :=AddCharR(' ',(Parameter(LLine,5)),5);
+            ARRAY_Nodes[counter].Version   :=Parameter(LLine,6);
             ARRAY_Nodes[counter].MNsHash   :=AddCharR(' ',(Parameter(LLine,8)),5);
             ARRAY_Nodes[counter].MNsCount  := StrToIntDef(Parameter(LLine,9),0);
             ARRAY_Nodes[counter].Updated   :=0;

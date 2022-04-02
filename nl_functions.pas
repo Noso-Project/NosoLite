@@ -229,6 +229,13 @@ if cPending>Int_LastPendingCount  then
    ProcessPendings();
    Int_LastPendingCount := cPending;
    end;
+
+For counter := 0 to length (ARRAY_Nodes)-1 do
+   begin
+   if ( (ARRAY_Nodes[counter].block=CBlock) and (ARRAY_Nodes[counter].Branch = CBranch) ) then
+      ARRAY_Nodes[counter].Synced:=true
+   else ARRAY_Nodes[counter].Synced:=false;
+   end;
 End;
 
 // Return the summary balance for the specified address

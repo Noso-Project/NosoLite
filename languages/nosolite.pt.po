@@ -172,7 +172,7 @@ msgid "Masternodes"
 msgstr ""
 
 #: nl_language.rsgui0019
-msgid "MNs #"
+msgid "Peers"
 msgstr ""
 
 #: nl_language.rsgui0020
@@ -214,7 +214,7 @@ msgid "Invalid certificate"
 msgstr ""
 
 #: nl_language.rsgui0029
-msgid "BestHash"
+msgid "BH"
 msgstr ""
 
 #: tform1.caption

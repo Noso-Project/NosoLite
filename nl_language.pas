@@ -45,7 +45,7 @@ Resourcestring
   rsGUI0016 = 'Reference';
   rsGUI0017 = 'Downloading summary %s';
   rsGUI0018 = 'Masternodes';
-  rsGUI0019 = 'MNs #';
+  rsGUI0019 = 'Peers';
   rsGUI0020 = 'Certificate for address : %s';
   rsGUI0021 = 'Processing...';
   rsGUI0022 = 'Send %s Noso to %s'+slinebreak+'Reference: %s';
@@ -55,7 +55,7 @@ Resourcestring
   rsGUI0026 = 'Check certificate';
   rsGUI0027 = '%s verified %s ago';
   rsGUI0028 = 'Invalid certificate';
-  rsGUI0029 = 'BestHash';
+  rsGUI0029 = 'BH';
   // Dialogs
   rsDIA0001 = 'Import address keys';
   rsDIA0002 = 'Paste here the address keys';

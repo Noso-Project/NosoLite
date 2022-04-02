@@ -270,6 +270,7 @@ if aRow > 0 then
    if ARRAY_Nodes[aRow-1].Updated=0 then (Sender as TStringGrid).Canvas.Brush.Color :=  clgreen;
    if ((ARRAY_Nodes[aRow-1].Updated>0) and (ARRAY_Nodes[aRow-1].Updated<6)) then (Sender as TStringGrid).Canvas.Brush.Color :=  clyellow;
    if ARRAY_Nodes[aRow-1].Updated>5 then (Sender as TStringGrid).Canvas.Brush.Color := clRed;
+   if ( (ARRAY_Nodes[aRow-1].Updated=0) and (not ARRAY_Nodes[aRow-1].Synced) ) then (Sender as TStringGrid).Canvas.Brush.Color := clAqua;
    end;
 End;
 
@@ -285,8 +286,8 @@ form1.SGridNodes.ColWidths[2] := ThisPercent(10,GridWidth);
 form1.SGridNodes.ColWidths[3] := ThisPercent(15,GridWidth);
 form1.SGridNodes.ColWidths[4] := ThisPercent(15,GridWidth);
 form1.SGridNodes.ColWidths[5] := ThisPercent(8,GridWidth);
-form1.SGridNodes.ColWidths[6] := ThisPercent(17,GridWidth);
-form1.SGridNodes.ColWidths[7] := ThisPercent(8,GridWidth);
+form1.SGridNodes.ColWidths[6] := ThisPercent(8,GridWidth);
+form1.SGridNodes.ColWidths[7] := ThisPercent(17,GridWidth,true);
 end;
 
 // Grid addresses draw cell
