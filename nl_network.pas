@@ -64,10 +64,14 @@ var
   AFileStream : TFileStream;
   DownloadedFile : Boolean = false;
   HashLine : string;
+  RanNode  : integer;
+  ThisNode : NodeData;
 Begin
 result := false;
-form1.ClientChannel.Host:='192.210.226.118';
-form1.ClientChannel.Port:=8080;
+RanNode := Random(length(ARRAY_Nodes));
+ThisNode := ARRAY_Nodes[RanNode];
+form1.ClientChannel.Host:=ThisNode.host;
+form1.ClientChannel.Port:=ThisNode.port;
 form1.ClientChannel.ConnectTimeout:= 1000;
 form1.ClientChannel.ReadTimeout:=800;
 AFileStream := TFileStream.Create(ZipSumaryFilename, fmCreate);
@@ -99,11 +103,15 @@ End;
 function SendOrder(OrderString:String):String;
 var
   Client : TidTCPClient;
+  RanNode  : integer;
+  ThisNode : NodeData;
 Begin
 Result := '';
+RanNode := Random(length(ARRAY_Nodes));
+ThisNode := ARRAY_Nodes[RanNode];
 Client := TidTCPClient.Create(nil);
-Client.Host:='192.210.226.118';
-Client.Port:=8080;
+Client.Host:=Thisnode.host;
+Client.Port:=thisnode.port;
 Client.ConnectTimeout:= 1000;
 Client.ReadTimeout:=800;
 //Tolog(OrderString);
@@ -124,11 +132,15 @@ End;
 function GetPendings():string;
 var
   Client : TidTCPClient;
+  RanNode  : integer;
+  ThisNode : NodeData;
 Begin
 Result := '';
+RanNode := Random(length(ARRAY_Nodes));
+ThisNode := ARRAY_Nodes[RanNode];
 Client := TidTCPClient.Create(nil);
-Client.Host:='192.210.226.118';
-Client.Port:=8080;
+Client.Host:=Thisnode.host;
+Client.Port:=thisnode.port;
 Client.ConnectTimeout:= 1000;
 Client.ReadTimeout:=1500;
 TRY
