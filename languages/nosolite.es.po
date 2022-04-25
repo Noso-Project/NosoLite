@@ -217,6 +217,10 @@ msgstr ""
 msgid "BH"
 msgstr ""
 
+#: nl_language.rsgui0030
+msgid "Order Failed Error : %s"
+msgstr ""
+
 #: tform1.caption
 msgctxt "tform1.caption"
 msgid "Nosolite"

@@ -56,6 +56,7 @@ Resourcestring
   rsGUI0027 = '%s verified %s ago';
   rsGUI0028 = 'Invalid certificate';
   rsGUI0029 = 'BH';
+  rsGUI0030 = 'Order Failed Error : %s';
   // Dialogs
   rsDIA0001 = 'Import address keys';
   rsDIA0002 = 'Paste here the address keys';

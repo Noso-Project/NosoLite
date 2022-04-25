@@ -745,6 +745,7 @@ var
   ammount : int64;
   TextAmmount : string;
   OperResult : String = '';
+  ErrorCode : integer = 0;
 Begin
 TextAmmount:= StringReplace(EditSCMont.Text,'.','',[rfReplaceAll, rfIgnoreCase]);
 ammount := StrToInt64Def(TextAmmount,-1);
@@ -755,12 +756,17 @@ form1.Enabled:=false;
 form3.Show;
 application.ProcessMessages;
 OperResult :=SendTo(EditSCDest.Text,ammount,MemoSCCon.Text);
-if OperResult <>'' then
+if ( (OperResult <>'') and (Parameter(OperResult,0)<>'ERROR') ) then
    begin
    form3.memoresult.Text:=format(rsGUI0024,[OperResult]);
    tolog('Order: '+OperResult);
    end
-else form3.memoresult.Text:= rsGUI0023;
+else
+   begin
+   ErrorCode := StrToIntDef(Parameter(OperResult,1),0);
+   if errorcode = 0 then form3.memoresult.Text:= format(rsGUI0030,['Unknown'])
+   else form3.memoresult.Text:= format(rsGUI0030,[ErrorCode.ToString])
+   end;
 application.ProcessMessages;
 SCBitCleaClick(nil);
 End;

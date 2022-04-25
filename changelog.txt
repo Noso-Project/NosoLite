@@ -1,0 +1,3 @@
+- Version 1.22
+
+- Parsed error returned on order request.

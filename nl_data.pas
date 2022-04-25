@@ -106,7 +106,7 @@ CONST
   Comisiontrfr = 10000;
   MinimunFee = 10;
   Protocol = 1;
-  ProgramVersion = '1.21';
+  ProgramVersion = '1.22';
 
   HexAlphabet : string = '0123456789ABCDEF';
   B58Alphabet : string = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
@@ -129,15 +129,14 @@ var
   STR_SeedNodes : String = 'DefNodes '+
                                  '23.94.21.83:8080 '+
                                  '45.146.252.103:8080 '+
-                                 {'107.172.5.8:8080 '+}
                                  '109.230.238.240:8080 '+
-                                 {'172.245.52.208:8080 '+}
-                                 {'192.210.226.118:8080 '+}
                                  '194.156.88.117:8080 '+
                                  '107.175.59.177:8080 '+
                                  '107.172.193.176:8080 '+
                                  '107.175.194.151:8080 '+
-                                 '192.3.73.184:8080';
+                                 '192.3.73.184:8080 '+
+                                 '107.175.24.151:8080 '+
+                                 '107.174.137.27:8080';
   Int_LastThreadExecution : int64 = 0;
   Int_WalletBalance       : int64 = 0;
   Int_LockedBalance       : int64 = 0;

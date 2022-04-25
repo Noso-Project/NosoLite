@@ -102,29 +102,35 @@ End;
 // Sends a order to the mainnet
 function SendOrder(OrderString:String):String;
 var
-  Client : TidTCPClient;
-  RanNode  : integer;
-  ThisNode : NodeData;
+  Client    : TidTCPClient;
+  RanNode   : integer;
+  ThisNode  : NodeData;
+  TrysCount : integer = 0;
+  WasOk     : Boolean = false;
 Begin
 Result := '';
+REPEAT
+Inc(TrysCount);
 RanNode := Random(length(ARRAY_Nodes));
 ThisNode := ARRAY_Nodes[RanNode];
 Client := TidTCPClient.Create(nil);
-Client.Host:=Thisnode.host;
+Client.Host:=ThisNode.host;
 Client.Port:=thisnode.port;
-Client.ConnectTimeout:= 1000;
-Client.ReadTimeout:=800;
+Client.ConnectTimeout:= 3000;
+Client.ReadTimeout:=3000;
 //Tolog(OrderString);
 TRY
 Client.Connect;
 Client.IOHandler.WriteLn(OrderString);
 Result := Client.IOHandler.ReadLn(IndyTextEncoding_UTF8);
-if result <> '' then REF_Addresses := true;
+WasOK := True;
 EXCEPT on E:Exception do
    begin
    ToLog(Format(rsError0015,[E.Message]));
    end;
 END{Try};
+UNTIL ( (WasOk) or (TrysCount=3) );
+if result <> '' then REF_Addresses := true;
 if client.Connected then Client.Disconnect();
 client.Free;
 End;
