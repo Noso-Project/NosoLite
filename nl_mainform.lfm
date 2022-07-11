@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 671
+  Left = 495
   Height = 480
-  Top = 167
+  Top = 191
   Width = 640
   Caption = 'Nosolite'
   ClientHeight = 460
@@ -45,10 +45,9 @@ object Form1: TForm1
           Height = 44
           Hint = 'Locked balance'
           Top = 3
-          Width = 195
+          Width = 150
           Align = alLeft
-          Alignment = taCenter
-          AutoSize = False
+          Alignment = taRightJustify
           BorderSpacing.Left = 3
           BorderSpacing.Top = 3
           BorderSpacing.Right = 6
@@ -61,6 +60,7 @@ object Form1: TForm1
           Font.Pitch = fpFixed
           Font.Quality = fqDraft
           Font.Style = [fsBold]
+          Layout = tlCenter
           ParentColor = False
           ParentFont = False
           ParentShowHint = False
@@ -68,12 +68,13 @@ object Form1: TForm1
         end
         object LBalance1: TLabel
           Left = 386
-          Height = 50
+          Height = 45
           Hint = 'Available balance'
           Top = 0
           Width = 240
           Align = alRight
           BorderSpacing.Right = 6
+          BorderSpacing.Bottom = 5
           Caption = '0.00000000 NOSO'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clWhite
@@ -642,28 +643,305 @@ object Form1: TForm1
       Caption = 'Apps'
       ClientHeight = 396
       ClientWidth = 632
+      OnShow = TabAppsShow
       TabVisible = False
-      object PC_Apps: TPageControl
+      object PanelAppConnect: TPanel
         Left = 0
         Height = 396
         Top = 0
         Width = 632
-        ActivePage = TabLiqPool
         Align = alClient
-        TabIndex = 0
+        BevelOuter = bvNone
+        ClientHeight = 396
+        ClientWidth = 632
+        Color = clScrollBar
+        ParentColor = False
         TabOrder = 0
-        object TabLiqPool: TTabSheet
-          Caption = 'Liq-Pool'
-          ClientHeight = 368
-          ClientWidth = 624
-          object PanelLiqPoolAccount: TPanel
-            Left = 0
-            Height = 124
-            Top = 0
-            Width = 624
-            Align = alTop
-            BevelOuter = bvNone
+        object ComboBoxAddressesApp: TComboBox
+          Left = 8
+          Height = 23
+          Top = 72
+          Width = 264
+          ItemHeight = 15
+          Style = csDropDownList
+          TabOrder = 0
+        end
+        object EditNewApp: TEdit
+          Left = 8
+          Height = 23
+          Top = 120
+          Width = 264
+          TabOrder = 1
+          Text = '542A53532D5C5E4A377B780678050B7E0673497171265B4601057C205B402102511015683D7841775E7565780174'
+        end
+        object ComboBoxapps: TComboBox
+          Left = 8
+          Height = 23
+          Top = 24
+          Width = 264
+          ItemHeight = 15
+          Style = csDropDownList
+          TabOrder = 2
+        end
+        object Label1: TLabel
+          Left = 8
+          Height = 15
+          Top = 56
+          Width = 132
+          Caption = 'Select your Noso address'
+          ParentColor = False
+        end
+        object Label2: TLabel
+          Left = 8
+          Height = 15
+          Top = 8
+          Width = 54
+          Caption = 'Select app'
+          ParentColor = False
+        end
+        object Label3: TLabel
+          Left = 8
+          Height = 15
+          Top = 104
+          Width = 106
+          Caption = 'Insert new app code'
+          ParentColor = False
+        end
+        object Button1: TButton
+          Left = 8
+          Height = 25
+          Top = 152
+          Width = 75
+          Caption = 'Connect'
+          OnClick = Button1Click
+          TabOrder = 3
+        end
+      end
+      object PanelApp: TPanel
+        Left = 0
+        Height = 396
+        Top = 0
+        Width = 632
+        Align = alClient
+        BevelOuter = bvNone
+        ClientHeight = 396
+        ClientWidth = 632
+        Color = cl3DLight
+        ParentColor = False
+        TabOrder = 1
+        Visible = False
+        OnResize = PanelAppResize
+        object Panel1: TPanel
+          Left = 0
+          Height = 40
+          Top = 0
+          Width = 632
+          Align = alTop
+          BevelInner = bvLowered
+          ClientHeight = 40
+          ClientWidth = 632
+          TabOrder = 0
+          object LabelAppName: TLabel
+            Left = 12
+            Height = 36
+            Top = 2
+            Width = 118
+            Align = alLeft
+            BorderSpacing.Left = 10
+            BorderSpacing.Right = 10
+            Caption = 'LabelAppName'
+            Font.CharSet = ANSI_CHARSET
+            Font.Color = clBlack
+            Font.Height = -16
+            Font.Name = 'Segoe UI'
+            Font.Pitch = fpVariable
+            Font.Quality = fqDraft
+            Font.Style = [fsBold]
+            Layout = tlCenter
+            ParentColor = False
+            ParentFont = False
+          end
+          object LabelAppUser: TLabel
+            Left = 140
+            Height = 36
+            Top = 2
+            Width = 75
+            Align = alLeft
+            BorderSpacing.Left = 10
+            BorderSpacing.Right = 10
+            Caption = 'LabelUser'
+            Font.CharSet = ANSI_CHARSET
+            Font.Color = clGreen
+            Font.Height = -16
+            Font.Name = 'Segoe UI'
+            Font.Pitch = fpVariable
+            Font.Quality = fqDraft
+            Font.Style = [fsBold]
+            Layout = tlCenter
+            ParentColor = False
+            ParentFont = False
+          end
+          object Button2: TButton
+            Left = 555
+            Height = 36
+            Top = 2
+            Width = 75
+            Align = alRight
+            Caption = 'Close'
             TabOrder = 0
+          end
+        end
+        object PanelAppAccount: TPanel
+          Left = 0
+          Height = 356
+          Top = 40
+          Width = 213
+          Align = alLeft
+          BevelInner = bvLowered
+          ClientHeight = 356
+          ClientWidth = 213
+          TabOrder = 1
+          object LabelPanelAppAccountTitle: TLabel
+            Left = 2
+            Height = 21
+            Top = 2
+            Width = 209
+            Align = alTop
+            Alignment = taCenter
+            Caption = 'User Account'
+            Color = clBlack
+            Font.CharSet = ANSI_CHARSET
+            Font.Color = clWhite
+            Font.Height = -16
+            Font.Name = 'Segoe UI'
+            Font.Pitch = fpVariable
+            Font.Quality = fqDraft
+            ParentColor = False
+            ParentFont = False
+            Transparent = False
+          end
+          object SG_App_Account: TStringGrid
+            Left = 2
+            Height = 331
+            Top = 23
+            Width = 209
+            Align = alClient
+            ColCount = 3
+            FixedRows = 0
+            RowCount = 0
+            ScrollBars = ssVertical
+            TabOrder = 0
+            OnPrepareCanvas = SG_App_AccountPrepareCanvas
+          end
+        end
+        object PanelAppData: TPanel
+          Left = 419
+          Height = 356
+          Top = 40
+          Width = 213
+          Align = alRight
+          BevelInner = bvLowered
+          ClientHeight = 356
+          ClientWidth = 213
+          TabOrder = 2
+          object LabelPanelAppInfoTitle: TLabel
+            Left = 2
+            Height = 21
+            Top = 2
+            Width = 209
+            Align = alTop
+            Alignment = taCenter
+            Caption = 'Information'
+            Color = clBlack
+            Font.CharSet = ANSI_CHARSET
+            Font.Color = clWhite
+            Font.Height = -16
+            Font.Name = 'Segoe UI'
+            Font.Pitch = fpVariable
+            Font.Quality = fqDraft
+            ParentColor = False
+            ParentFont = False
+            Transparent = False
+          end
+          object SG_App_Info: TStringGrid
+            Left = 2
+            Height = 331
+            Top = 23
+            Width = 209
+            Align = alClient
+            ColCount = 3
+            FixedRows = 0
+            RowCount = 0
+            ScrollBars = ssVertical
+            TabOrder = 0
+            OnPrepareCanvas = SG_App_InfoPrepareCanvas
+          end
+        end
+        object PanelAppOper: TPanel
+          Left = 213
+          Height = 356
+          Top = 40
+          Width = 206
+          Align = alClient
+          BevelInner = bvLowered
+          ClientHeight = 356
+          ClientWidth = 206
+          TabOrder = 3
+          object Panel2: TPanel
+            Left = 2
+            Height = 98
+            Top = 2
+            Width = 202
+            Align = alTop
+            BevelInner = bvLowered
+            ClientHeight = 98
+            ClientWidth = 202
+            TabOrder = 0
+            object PageControl1: TPageControl
+              Left = 2
+              Height = 94
+              Top = 2
+              Width = 198
+              ActivePage = TabSheet1
+              Align = alClient
+              TabIndex = 0
+              TabOrder = 0
+              object TabSheet1: TTabSheet
+                Caption = 'Buy'
+                ClientHeight = 66
+                ClientWidth = 190
+                object ComboBox1: TComboBox
+                  Left = 0
+                  Height = 23
+                  Top = 0
+                  Width = 190
+                  Align = alTop
+                  ItemHeight = 15
+                  Style = csDropDownList
+                  TabOrder = 0
+                end
+                object LabeledEdit1: TLabeledEdit
+                  Left = 32
+                  Height = 23
+                  Top = 24
+                  Width = 158
+                  Alignment = taRightJustify
+                  EditLabel.Height = 15
+                  EditLabel.Width = 26
+                  EditLabel.Caption = 'Price'
+                  EditLabel.ParentColor = False
+                  LabelPosition = lpLeft
+                  TabOrder = 1
+                  Text = 'LabeledEdit1'
+                end
+              end
+              object TabSheet2: TTabSheet
+                Caption = 'Sell'
+              end
+              object TabSheet3: TTabSheet
+                Caption = 'More'
+              end
+            end
           end
         end
       end
@@ -1074,6 +1352,10 @@ object Form1: TForm1
       object MenuItem20: TMenuItem
         Caption = 'ZIP Backup'
         OnClick = MenuItem20Click
+      end
+      object MenuItem21: TMenuItem
+        Caption = 'New App'
+        OnClick = MenuItem21Click
       end
       object MM_File_Exit: TMenuItem
         Caption = 'E&xit'

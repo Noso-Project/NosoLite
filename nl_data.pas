@@ -95,6 +95,12 @@ PendingData = Packed Record
    outgoing : int64;
    end;
 
+AppData     = packed record
+   name     : string[20];
+   code     : string[100];
+   RegAddr  : string[40];
+   end;
+
 CONST
   WalletDirectory = 'wallet'+directoryseparator;  // Wallet folder
   DataDirectory   = 'data'+directoryseparator;
@@ -106,7 +112,7 @@ CONST
   Comisiontrfr = 10000;
   MinimunFee = 10;
   Protocol = 1;
-  ProgramVersion = '1.22';
+  ProgramVersion = '1.23';
 
   HexAlphabet : string = '0123456789ABCDEF';
   B58Alphabet : string = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
@@ -127,16 +133,16 @@ var
   THREAD_Update : TUpdateThread;
 
   STR_SeedNodes : String = 'DefNodes '+
-                                 '23.94.21.83:8080 '+
-                                 '45.146.252.103:8080 '+
-                                 '109.230.238.240:8080 '+
-                                 '194.156.88.117:8080 '+
-                                 '107.175.59.177:8080 '+
-                                 '107.172.193.176:8080 '+
-                                 '107.175.194.151:8080 '+
-                                 '192.3.73.184:8080 '+
-                                 '107.175.24.151:8080 '+
-                                 '107.174.137.27:8080';
+                                 //'45.146.252.103 '+
+                                 //'194.156.88.117 '+
+                                 '109.230.238.240 '+
+                                 '198.144.190.194 '+
+                                 '107.175.59.177 '+
+                                 '107.172.193.176 '+
+                                 '66.151.117.247 '+
+                                 '192.3.73.184 '+
+                                 '107.175.24.151 '+
+                                 '107.174.137.27';
   Int_LastThreadExecution : int64 = 0;
   Int_WalletBalance       : int64 = 0;
   Int_LockedBalance       : int64 = 0;
@@ -165,6 +171,9 @@ var
   // Critical Sections
   CS_ARRAY_Addresses: TRTLCriticalSection;
   CS_LOG            : TRTLCriticalSection;
+
+  // Apps Related
+  ArrApps           : array of AppData;
 
 
 implementation

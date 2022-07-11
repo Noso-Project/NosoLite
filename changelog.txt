@@ -1,3 +1,5 @@
-- Version 1.22
+- Version 2.00
 
 - Parsed error returned on order request.
+- Added  TRY blocks to crypto functions.
+- Fixed locked balance label.

@@ -100,15 +100,22 @@ result :=
 THashFactory.TCrypto.CreateRIPEMD160().ComputeString(StringToHash, TEncoding.UTF8).ToString();
 End;
 
-// Returns the signature of a specified string
+// SIGNS A MESSAGE WITH THE GIVEN PRIVATE KEY
 function GetStringSigned(StringtoSign, PrivateKey:String):String;
 var
   Signature, MessageAsBytes: TBytes;
 Begin
+Result := '';
+TRY
 MessageAsBytes :=StrToByte(DecodeStringBase64(StringtoSign));
 Signature := TSignerUtils.SignMessage(MessageAsBytes, StrToByte(DecodeStringBase64(PrivateKey)),
       TKeyType.SECP256K1);
 Result := EncodeStringBase64(ByteToString(Signature));
+EXCEPT ON E:Exception do
+   begin
+   ToLog('ERROR Signing message: '+E.Message);
+   end;
+END{Try};
 End;
 
 // Verify if a signed string is valid
@@ -116,11 +123,17 @@ function VerifySignedString(StringToVerify,SignedHash,PublicKey:String):boolean;
 var
   Signature, MessageAsBytes: TBytes;
 Begin
+Result := false;
+TRY
 MessageAsBytes := StrToByte(DecodeStringBase64(StringToVerify));
 Signature := StrToByte(DecodeStringBase64(SignedHash));
 Result := TSignerUtils.VerifySignature(Signature, MessageAsBytes,
       StrToByte(DecodeStringBase64(PublicKey)), TKeyType.SECP256K1);
-End;
+EXCEPT ON E:Exception do
+   begin
+   ToLog('ERROR Verifying signature: '+E.Message);
+   end;
+END{Try};End;
 
 // Process a keys import
 Procedure ImportKeys(Keysline:String);
@@ -445,7 +458,7 @@ for count := 0 to length(sumandos)-1 do
 result := ClearLeadingCeros(TotalSuma);
 End;
 
-// DIVIDES TO NUMBERS
+// DIVIDES TWO NUMBERS
 Function BMDividir(Numero1,Numero2:string):DivResult;
 var
   counter : integer;

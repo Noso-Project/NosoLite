@@ -221,10 +221,22 @@ msgstr ""
 msgid "Order Failed Error : %s"
 msgstr ""
 
+#: tform1.button1.caption
+msgid "Connect"
+msgstr ""
+
+#: tform1.button2.caption
+msgid "Close"
+msgstr ""
+
 #: tform1.caption
 msgctxt "tform1.caption"
 msgid "Nosolite"
 msgstr "Nosolite"
+
+#: tform1.editnewapp.text
+msgid "542A53532D5C5E4A377B780678050B7E0673497171265B4601057C205B402102511015683D7841775E7565780174"
+msgstr ""
 
 #: tform1.editscmont.text
 msgid "0.00000000"
@@ -232,6 +244,34 @@ msgstr "0.00000000"
 
 #: tform1.imagesync.hint
 msgid "Checking nodes"
+msgstr ""
+
+#: tform1.label1.caption
+msgid "Select your Noso address"
+msgstr ""
+
+#: tform1.label2.caption
+msgid "Select app"
+msgstr ""
+
+#: tform1.label3.caption
+msgid "Insert new app code"
+msgstr ""
+
+#: tform1.labelappname.caption
+msgid "LabelAppName"
+msgstr ""
+
+#: tform1.labelappuser.caption
+msgid "LabelUser"
+msgstr ""
+
+#: tform1.labelededit1.editlabel.caption
+msgid "Price"
+msgstr ""
+
+#: tform1.labelededit1.text
+msgid "LabeledEdit1"
 msgstr ""
 
 #: tform1.labellocked.caption
@@ -242,6 +282,14 @@ msgstr "0.00000000 NOSO"
 
 #: tform1.labellocked.hint
 msgid "Locked balance"
+msgstr ""
+
+#: tform1.labelpanelappaccounttitle.caption
+msgid "User Account"
+msgstr ""
+
+#: tform1.labelpanelappinfotitle.caption
+msgid "Information"
 msgstr ""
 
 #: tform1.labelstake.caption
@@ -343,6 +391,10 @@ msgstr "Ficheiro"
 msgid "ZIP Backup"
 msgstr ""
 
+#: tform1.menuitem21.caption
+msgid "New App"
+msgstr ""
+
 #: tform1.menuitem3.caption
 msgctxt "tform1.menuitem3.caption"
 msgid "Keys"
@@ -425,10 +477,6 @@ msgstr "Enviar"
 msgid "Apps"
 msgstr ""
 
-#: tform1.tabliqpool.caption
-msgid "Liq-Pool"
-msgstr ""
-
 #: tform1.tablog.caption
 msgid "Log"
 msgstr "Diário"
@@ -436,6 +484,18 @@ msgstr "Diário"
 #: tform1.tabnodes.caption
 msgid "Nodes"
 msgstr "Nós"
+
+#: tform1.tabsheet1.caption
+msgid "Buy"
+msgstr ""
+
+#: tform1.tabsheet2.caption
+msgid "Sell"
+msgstr ""
+
+#: tform1.tabsheet3.caption
+msgid "More"
+msgstr ""
 
 #: tform1.tabwallet.caption
 msgid "Wallet"
