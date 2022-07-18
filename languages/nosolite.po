@@ -6,7 +6,7 @@ msgid "Import address keys"
 msgstr ""
 
 #: nl_language.rsdia0002
-msgid "Paste here the address keys"
+msgid "Paste address keys here"
 msgstr ""
 
 #: nl_language.rsdia0003
@@ -23,11 +23,11 @@ msgstr ""
 
 #: nl_language.rserror0001
 msgctxt "nl_language.rserror0001"
-msgid "Error: creating new wallet file-> %s"
+msgid "Error: Creating new wallet file-> %s"
 msgstr ""
 
 #: nl_language.rserror0002
-msgid "Error: loading wallet from file-> %s"
+msgid "Error: Loading wallet from file-> %s"
 msgstr ""
 
 #: nl_language.rserror0003
@@ -43,11 +43,11 @@ msgid "Error: Disconnecting client-> %s"
 msgstr ""
 
 #: nl_language.rserror0006
-msgid "Error: connecting node %s-> %s"
+msgid "Error: Connecting node %s-> %s"
 msgstr ""
 
 #: nl_language.rserror0007
-msgid "Error: Address already exists on wallet-> %s"
+msgid "Error: Address already exists in wallet-> %s"
 msgstr ""
 
 #: nl_language.rserror0008
@@ -55,11 +55,11 @@ msgid "Error: Downloading summary from -> %s"
 msgstr ""
 
 #: nl_language.rserror0009
-msgid "Error: Can not delete only address of the wallet"
+msgid "Error: Cannot delete - at least one address must exists in the wallet"
 msgstr ""
 
 #: nl_language.rserror0010
-msgid "Error: Invalid parameters for sending coins"
+msgid "Error: Invalid input for sending NOSO"
 msgstr ""
 
 #: nl_language.rserror0011
@@ -71,11 +71,11 @@ msgid "Error: Insufficient funds"
 msgstr ""
 
 #: nl_language.rserror0013
-msgid "Error: Can not generate certificates from locked addresses"
+msgid "Error: Cannot generate certificates of locked addresses"
 msgstr ""
 
 #: nl_language.rserror0014
-msgid "Error: Retrieving pendings -> %s"
+msgid "Error: Retrieving pending -> %s"
 msgstr ""
 
 #: nl_language.rserror0015
@@ -136,7 +136,7 @@ msgid "Added new wallet: %s"
 msgstr ""
 
 #: nl_language.rsgui0013
-msgid "Sumary downloaded: %d kb"
+msgid "Summary downloaded: %d kb"
 msgstr ""
 
 #: nl_language.rsgui0014
@@ -144,7 +144,7 @@ msgid "Destination"
 msgstr ""
 
 #: nl_language.rsgui0015
-msgid "Ammount"
+msgid "Amount"
 msgstr ""
 
 #: nl_language.rsgui0016
@@ -164,7 +164,7 @@ msgid "Peers"
 msgstr ""
 
 #: nl_language.rsgui0020
-msgid "Certificate for address : %s"
+msgid "Certificate for address: %s"
 msgstr ""
 
 #: nl_language.rsgui0021
@@ -186,7 +186,7 @@ msgid "Successful: %s"
 msgstr ""
 
 #: nl_language.rsgui0025
-msgid "Noso total supply is %s millions"
+msgid "NOSO circulating supply is %s millions"
 msgstr ""
 
 #: nl_language.rsgui0026
@@ -206,7 +206,7 @@ msgid "BH"
 msgstr ""
 
 #: nl_language.rsgui0030
-msgid "Order Failed Error : %s"
+msgid "Order Failed. Error : %s"
 msgstr ""
 
 #: tform1.button1.caption
