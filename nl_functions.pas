@@ -9,7 +9,7 @@ uses
 
 function ThisPercent(percent, thiswidth : integer;RestarBarra : boolean = false):integer;
 function Int2Curr(Value: int64): string;
-Procedure LoadSeedNodes();
+Procedure LoadSeedNodes(STR_Source:string);
 Function Parameter(LineText:String;ParamNumber:int64):String;
 function Consensus():Boolean;
 function GetAddressBalanceFromSumary(address:string):int64;
@@ -59,23 +59,26 @@ If Value <0 THen Result := '-'+Result;
 End;
 
 // Fill the nodes array with seed nodes data
-Procedure LoadSeedNodes();
+Procedure LoadSeedNodes(STR_Source:string);
 var
-  counter : integer = 1;
+  counter      : integer = 1;
   IsParamEmpty : boolean = false;
-  ThisParam : string = '';
-  ThisNode : NodeData;
+  ThisParam    : string = '';
+  ThisNode     : NodeData;
+  IpAndPort    : string;
 Begin
 Repeat
    begin
-   ThisParam := parameter(STR_SeedNodes,counter);
+   ThisParam := parameter(STR_Source,counter);
    if ThisParam = '' then IsParamEmpty := true
    else
       begin
       ThisNode := Default(NodeData);
       ThisParam := StringReplace(ThisParam,':',' ',[rfReplaceAll, rfIgnoreCase]);
-      ThisNode.host:=Parameter(ThisParam,0);
-      ThisNode.port:=StrToIntDef(Parameter(ThisParam,1),8080);
+      IpAndPort := Parameter(ThisParam,0);
+      IpAndPort :=  StringReplace(ThisParam,';',' ',[rfReplaceAll, rfIgnoreCase]);
+      ThisNode.host:=Parameter(IpAndPort,0);
+      ThisNode.port:=StrToIntDef(Parameter(IpAndPort,1),8080);
       ThisNode.block:=0;
       ThisNode.Pending:=0;
       ThisNode.updated:=0;

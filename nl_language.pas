@@ -51,7 +51,7 @@ Resourcestring
   rsGUI0022 = 'Send %s Noso to %s'+slinebreak+'Reference: %s';
   rsGUI0023 = 'Failed';
   rsGUI0024 = 'Successful: %s';
-  rsGUI0025 = 'Noso total supply is %s millions';
+  rsGUI0025 = 'Noso circulating supply is %s millions';
   rsGUI0026 = 'Check certificate';
   rsGUI0027 = '%s verified %s ago';
   rsGUI0028 = 'Invalid certificate';

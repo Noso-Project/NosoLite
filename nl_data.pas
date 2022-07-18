@@ -101,6 +101,13 @@ AppData     = packed record
    RegAddr  : string[40];
    end;
 
+TMNData     = packed record
+   ip      : string[15];
+   port    : integer;
+   Address : string[32];
+   Count   : integer;
+   end;
+
 CONST
   WalletDirectory = 'wallet'+directoryseparator;  // Wallet folder
   DataDirectory   = 'data'+directoryseparator;
@@ -109,10 +116,11 @@ CONST
   SumaryFilename = DataDirectory+'sumary.psk';
   ZipSumaryFilename = DataDirectory+'sumary.zip';
   OptionsFilename = DataDirectory+'options.nsl';                // Options file
+  MNsFilename     = DataDirectory+'masternodes.txt';
   Comisiontrfr = 10000;
   MinimunFee = 10;
   Protocol = 1;
-  ProgramVersion = '1.23';
+  ProgramVersion = '1.24';
 
   HexAlphabet : string = '0123456789ABCDEF';
   B58Alphabet : string = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
@@ -120,10 +128,11 @@ CONST
   Customfee   = 25000;
 
 var
-  FILE_Wallet : File of WalletData; // Wallet file pointer
-  FILE_Trash  : File of WalletData;
+  FILE_Wallet  : File of WalletData; // Wallet file pointer
+  FILE_Trash   : File of WalletData;
   FILE_Options : textfile;
-  FILE_Sumary : File of SumaryData;
+  FILE_Sumary  : File of SumaryData;
+  FILE_MNs     : TextFile;
 
   ARRAY_Addresses : array of WalletData;
   ARRAY_Nodes : array of NodeData;
@@ -132,17 +141,15 @@ var
 
   THREAD_Update : TUpdateThread;
 
-  STR_SeedNodes : String = 'DefNodes '+
-                                 //'45.146.252.103 '+
-                                 //'194.156.88.117 '+
-                                 '109.230.238.240 '+
-                                 '198.144.190.194 '+
-                                 '107.175.59.177 '+
-                                 '107.172.193.176 '+
-                                 '66.151.117.247 '+
-                                 '192.3.73.184 '+
-                                 '107.175.24.151 '+
-                                 '107.174.137.27';
+  STR_SeedNodes : String = '0 109.230.238.240;8080:N3iEmfEoYhW99Gn6U6EaLfJ3bqmWCD3:114 '+
+                      '198.144.190.194;8080:N4DixvMj1ZEBhm1xbxmCNursoZxPeH1:114 '+
+                      '107.175.59.177;8080:N4VJxLRtbvngmThBJohq7aHd5BwKbFf:76 '+
+                      '107.172.193.176;8080:N3sb23UXr23Som3B11u5q7qR9FvsDC7:114 '+
+                      '66.151.117.247;8080:NUhcAdqnVDHtd8NmMMo6sLK3bmYFE5:56 '+
+                      '192.3.73.184;8080:N2RJi7FYf76UBH9RyhndTofskzHKuEe:114 '+
+                      '107.175.24.151;8080:N4HrfiM6YVw2g4oAmWGKCvU5PXpZ2DM:126 '+
+                      '149.57.137.108;8080:N46PiNk7chSURJJZoMSRdwsDh8FAbDa:114 '+
+                      '3.111.137.132;58445:N4PeJyqj8diSXnfhxSQdLpo8ddXTaGd:176';
   Int_LastThreadExecution : int64 = 0;
   Int_WalletBalance       : int64 = 0;
   Int_LockedBalance       : int64 = 0;
