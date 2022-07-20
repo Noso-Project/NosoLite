@@ -19,6 +19,9 @@ Procedure LoadOptions();
 Procedure CreateSumary();
 Procedure LoadSumary();
 Procedure UnZipSumary();
+Procedure CreateMNsFile();
+Procedure LoadMNsFromFile();
+Function GetVerificators(LineText:String):String;
 
 
 implementation
@@ -32,6 +35,8 @@ if not FileExists(WalletFileName) then CreateNewWallet() else LoadWallet();
 if not FileExists(TrashFilename) then CreateTrashWallet();
 if not FileExists(OptionsFilename) then SaveOptions() else LoadOptions();
 if not FileExists(SumaryFilename) then CreateSumary() else LoadSumary();
+if not FileExists(MNsFilename) then CreateMNsFile() else LoadMNsFromFile();
+
 End;
 
 //******************************************************************************
@@ -242,6 +247,86 @@ EXCEPT on E:Exception do
    tolog ('Error unzipping block file');
    end;
 END{Try};
+End;
+
+//******************************************************************************
+// MASTERNODES
+//******************************************************************************
+
+// Creates a new default empty masternodes file
+Procedure CreateMNsFile();
+Begin
+assignfile(FILE_MNs,MNsFilename);
+Rewrite(FILE_MNs);
+write(FILE_MNs,STR_SeedNodes);
+CloseFile(FILE_MNs);
+LoadSeedNodes(STR_SeedNodes);
+End;
+
+Procedure LoadMNsFromFile();
+var
+  LineText : String;
+Begin
+assignfile(FILE_MNs,MNsFilename);
+Reset(FILE_MNs);
+ReadLn(FILE_MNs,LineText);
+CloseFile(FILE_MNs);
+if LineText = STR_SeedNodes then LoadSeedNodes(STR_SeedNodes)
+else LoadSeedNodes(STR_SeedNodes); //LoadSeedNodes(GetVerificators(LineText));
+End;
+
+Function GetVerificators(LineText:String):String;
+var
+  counter   : integer = 1;
+  count2    : integer;
+  ThisParam : string;
+  ThisMN    : TMnData;
+  Ip        : string;
+  Port      : integer;
+  Address   : string;
+  Count     : integer;
+  ArrNodes  : array of TMnData;
+  Added     : boolean;
+  VersCount : integer;
+Begin
+result := '';
+SetLEngth(ArrNodes,0);
+repeat
+  thisParam := Parameter(LineText,counter);
+  if ThisParam <>'' then
+     begin
+     Added := false;
+     ThisParam := StringReplace(ThisParam,':',' ',[rfReplaceAll, rfIgnoreCase]);
+     ThisParam := StringReplace(ThisParam,';',' ',[rfReplaceAll, rfIgnoreCase]);
+     ThisMN.Ip := Parameter(ThisParam,0);
+     ThisMN.Port := StrToIntDef(Parameter(ThisParam,1),8080);
+     ThisMN.Address := Parameter(ThisParam,2);
+     ThisMN.Count   := StrToIntDef(Parameter(ThisParam,3),1);
+     if Length(ArrNodes) = 0 then Insert(ThisMN,ArrNodes,0)
+     else
+        begin
+        for count2 := 0 to length(ArrNodes)-1 do
+           begin
+           if ThisMN.count > ArrNodes[count2].count then
+              begin
+              Insert(ThisMN,ArrNodes,count2);
+              Added := true;
+              Break;
+              end;
+           end;
+        if not Added then Insert(ThisMN,ArrNodes,length(ArrNodes));
+        end;
+     end;
+  Inc(Counter);
+until thisParam = '';
+VersCount := (length(ArrNodes) div 10)+3;
+Delete(ArrNodes,VersCount,Length(ArrNodes));
+for counter := 0 to length(ArrNodes)-1 do
+   begin
+   Result := Result+ ArrNodes[counter].ip+';'+IntToStr(ArrNodes[counter].port)+':'+ArrNodes[counter].address+':'+
+             IntToStr(ArrNodes[counter].count)+' ';
+   end;
+Result := Trim(Result);
 End;
 
 END. // END UNIT

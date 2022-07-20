@@ -15,14 +15,9 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
-    Button1: TButton;
-    Button2: TButton;
     CBMultisend: TCheckBox;
     ClientChannel: TIdTCPClient;
     ComboBox1: TComboBox;
-    ComboBoxAddressesApp: TComboBox;
-    ComboBoxapps: TComboBox;
-    EditNewApp: TEdit;
     EditSCDest: TEdit;
     EditSCMont: TEdit;
     ImageBlockInfo: TImage;
@@ -33,12 +28,6 @@ type
     ImgSCMont: TImage;
     Label1: TLabel;
     Label2: TLabel;
-    Label3: TLabel;
-    LabeledEdit1: TLabeledEdit;
-    LabelPanelAppAccountTitle: TLabel;
-    LabelAppUser: TLabel;
-    LabelAppName: TLabel;
-    LabelPanelAppInfoTitle: TLabel;
     Labelsupply: TLabel;
     Labelstake: TLabel;
     Labelsummary: TLabel;
@@ -77,14 +66,7 @@ type
     MenuItem9: TMenuItem;
     MM_File: TMenuItem;
     PageControl: TPageControl;
-    PageControl1: TPageControl;
     Panel1: TPanel;
-    Panel2: TPanel;
-    PanelAppOper: TPanel;
-    PanelAppAccount: TPanel;
-    PanelApp: TPanel;
-    PanelAppConnect: TPanel;
-    PanelAppData: TPanel;
     PanelSupply: TPanel;
     PanelDirectory: TPanel;
     PanelDown: TPanel;
@@ -107,16 +89,10 @@ type
     SGridAddresses: TStringGrid;
     SGridNodes: TStringGrid;
     SGridSC: TStringGrid;
-    SG_App_Account: TStringGrid;
-    SG_App_Info: TStringGrid;
     TabNodes: TTabSheet;
     TabLog: TTabSheet;
     TabApps: TTabSheet;
-    TabSheet1: TTabSheet;
-    TabSheet2: TTabSheet;
-    TabSheet3: TTabSheet;
     TabWallet: TTabSheet;
-    procedure Button1Click(Sender: TObject);
     procedure CBMultisendChange(Sender: TObject);
     procedure ClientChannelWork(ASender: TObject; AWorkMode: TWorkMode;
       AWorkCount: Int64);
@@ -151,7 +127,6 @@ type
     procedure MenuItem8Click(Sender: TObject);
     procedure MenuItem9Click(Sender: TObject);
     procedure MM_File_ExitClick(Sender: TObject);
-    procedure PanelAppResize(Sender: TObject);
     procedure PanelBlockInfoContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
     procedure SBSCMaxClick(Sender: TObject);
@@ -170,11 +145,7 @@ type
     procedure SGridNodesPrepareCanvas(sender: TObject; aCol, aRow: Integer;
       aState: TGridDrawState);
     procedure SGridNodesResize(Sender: TObject);
-    procedure SG_App_AccountPrepareCanvas(sender: TObject; aCol, aRow: Integer;
-      aState: TGridDrawState);
-    procedure SG_App_InfoPrepareCanvas(sender: TObject; aCol, aRow: Integer;
-      aState: TGridDrawState);
-    procedure TabAppsShow(Sender: TObject);
+
   private
 
   public
@@ -223,7 +194,6 @@ Setlength(ARRAY_Pending,0);
 Setlength(ArrApps,0);
 LogLines :=TStringList.create;
 form1.Caption:='Nosolite '+ProgramVersion;
-LoadSeedNodes();
 // Verify files structure
 VerifyFilesStructure;
 
@@ -949,96 +919,7 @@ End;
 // App panel
 //******************************************************************************
 
-// Refresh when show the app
-procedure TForm1.TabAppsShow(Sender: TObject);
-var
-  counter : integer;
-Begin
-ComboBoxAddressesApp.Items.Clear;
-for counter := 0 to length(ARRAY_Addresses)-1 do
-   ComboBoxAddressesApp.Items.Add(GetAddressToShow(ARRAY_Addresses[counter].Hash));
-ComboBoxAddressesApp.ItemIndex:=0;
-ComboBoxapps.Items.Clear;
-ComboBoxapps.Items.Add('New app...');
-for counter := 0 to length(arrapps)-1 do
-   begin
-   ComboBoxapps.Items.Add(ArrApps[counter].name);
-   end;
-ComboBoxapps.ItemIndex:=0;
-End;
 
-// Connect button
-procedure TForm1.Button1Click(Sender: TObject);
-var
-  AppPin    : string = '';
-  Resultado : string = '';
-  Address   : string = '';
-Begin
-if ComboBoxapps.ItemIndex=0 then
-   begin
-   Address := ComboBoxAddressesApp.Items[ComboBoxAddressesApp.ItemIndex];
-   AppPin  := EditNewApp.Text;
-   AppPin  := XorDecode(HashSha256String('nosoapp'), AppPin);
-   AppPin := StringReplace(AppPin,':',' ',[rfReplaceAll, rfIgnoreCase]);
-   Resultado := PostMessageToHost(parameter(apppin,0),StrToIntDef(parameter(apppin,1),9797),'REGISTER '+Address+' <END>');
-   // test code = 542A53532D5C5E4A377B780678050B7E0673497171265B4601057C205B402102511015683D7841775E7565780174
-   ToLog(Resultado);
-   if Parameter(Resultado,0) = 'ERROR' then exit;
-   if ( (Parameter(Resultado,0)='REGISTEROK') or  (Parameter(Resultado,0)='ALREADYREGISTERED') ) then
-      begin
-      Resultado := PostMessageToHost(parameter(apppin,0),StrToIntDef(parameter(apppin,1),9797),'GETSCRIPT '+Address+' <END>');
-      ToLog(Resultado);
-      if Parameter(Resultado,0) = 'SCRIPTINFO' then
-         begin
-         ToLog(Parameter(Resultado,1));
-         PanelAppConnect.Visible:=false;
-         PanelApp.Visible := true;
-         LoadAppToPanel(Parameter(Resultado,1),Address);
-         end;
-      end;
-   end;
-End;
-
-// Resize the PanelApp
-procedure TForm1.PanelAppResize(Sender: TObject);
-begin
-PanelAppAccount.Width:=PanelApp.ClientWidth div 3;
-PanelAppData.Width:=PanelApp.ClientWidth div 3;
-PanelAppOper.Width:=PanelApp.ClientWidth div 3;
-SG_App_Account.ColWidths[0]:=(PanelAppAccount.ClientWidth div 2)-13;
-SG_App_Account.ColWidths[1]:=(PanelAppAccount.ClientWidth div 2)-13;
-SG_App_Account.ColWidths[2]:=0;
-SG_App_Info.ColWidths[0]:=(PanelAppData.ClientWidth div 2)-13;
-SG_App_Info.ColWidths[1]:=(PanelAppData.ClientWidth div 2)-13;
-SG_App_Info.ColWidths[2]:=0;
-end;
-
-// Align text on panel account stringgrid
-procedure TForm1.SG_App_AccountPrepareCanvas(sender: TObject; aCol,
-  aRow: Integer; aState: TGridDrawState);
-var
-  ts: TTextStyle;
-Begin
-if (ACol=1)  then
-   begin
-   ts := (Sender as TStringGrid).Canvas.TextStyle;
-   ts.Alignment := taRightJustify;
-   (Sender as TStringGrid).Canvas.TextStyle := ts;
-   end;
-End;
-
-procedure TForm1.SG_App_InfoPrepareCanvas(sender: TObject; aCol, aRow: Integer;
-  aState: TGridDrawState);
-var
-  ts: TTextStyle;
-Begin
-if (ACol=1)  then
-   begin
-   ts := (Sender as TStringGrid).Canvas.TextStyle;
-   ts.Alignment := taRightJustify;
-   (Sender as TStringGrid).Canvas.TextStyle := ts;
-   end;
-End;
 
 
 

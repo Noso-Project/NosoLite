@@ -198,7 +198,7 @@ msgid "Successful: %s"
 msgstr ""
 
 #: nl_language.rsgui0025
-msgid "Noso total supply is %s millions"
+msgid "Noso circulating supply is %s millions"
 msgstr ""
 
 #: nl_language.rsgui0026
@@ -221,21 +221,13 @@ msgstr ""
 msgid "Order Failed Error : %s"
 msgstr ""
 
-#: tform1.button1.caption
-msgid "Connect"
-msgstr ""
-
-#: tform1.button2.caption
-msgid "Close"
-msgstr ""
-
 #: tform1.caption
 msgctxt "tform1.caption"
 msgid "Nosolite"
 msgstr "Nosolite"
 
-#: tform1.editnewapp.text
-msgid "542A53532D5C5E4A377B780678050B7E0673497171265B4601057C205B402102511015683D7841775E7565780174"
+#: tform1.combobox1.text
+msgid "ComboBox1"
 msgstr ""
 
 #: tform1.editscmont.text
@@ -247,31 +239,11 @@ msgid "Checking nodes"
 msgstr ""
 
 #: tform1.label1.caption
-msgid "Select your Noso address"
+msgid "Liquidity pool"
 msgstr ""
 
 #: tform1.label2.caption
-msgid "Select app"
-msgstr ""
-
-#: tform1.label3.caption
-msgid "Insert new app code"
-msgstr ""
-
-#: tform1.labelappname.caption
-msgid "LabelAppName"
-msgstr ""
-
-#: tform1.labelappuser.caption
-msgid "LabelUser"
-msgstr ""
-
-#: tform1.labelededit1.editlabel.caption
-msgid "Price"
-msgstr ""
-
-#: tform1.labelededit1.text
-msgid "LabeledEdit1"
+msgid "Working address: "
 msgstr ""
 
 #: tform1.labellocked.caption
@@ -282,14 +254,6 @@ msgstr "0.00000000 NOSO"
 
 #: tform1.labellocked.hint
 msgid "Locked balance"
-msgstr ""
-
-#: tform1.labelpanelappaccounttitle.caption
-msgid "User Account"
-msgstr ""
-
-#: tform1.labelpanelappinfotitle.caption
-msgid "Information"
 msgstr ""
 
 #: tform1.labelstake.caption
@@ -474,7 +438,7 @@ msgid "Send"
 msgstr "Enviar"
 
 #: tform1.tabapps.caption
-msgid "Apps"
+msgid "Liqpool"
 msgstr ""
 
 #: tform1.tablog.caption
@@ -484,18 +448,6 @@ msgstr "Diário"
 #: tform1.tabnodes.caption
 msgid "Nodes"
 msgstr "Nós"
-
-#: tform1.tabsheet1.caption
-msgid "Buy"
-msgstr ""
-
-#: tform1.tabsheet2.caption
-msgid "Sell"
-msgstr ""
-
-#: tform1.tabsheet3.caption
-msgid "More"
-msgstr ""
 
 #: tform1.tabwallet.caption
 msgid "Wallet"
