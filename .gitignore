@@ -14,4 +14,4 @@ options.nsl
 *.res
 *.lps
 *.mo
-
+.DS_Store
