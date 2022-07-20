@@ -141,15 +141,15 @@ var
 
   THREAD_Update : TUpdateThread;
 
-  STR_SeedNodes : String = '0 109.230.238.240;8080:N3iEmfEoYhW99Gn6U6EaLfJ3bqmWCD3:114 '+
-                      '198.144.190.194;8080:N4DixvMj1ZEBhm1xbxmCNursoZxPeH1:114 '+
-                      '107.175.59.177;8080:N4VJxLRtbvngmThBJohq7aHd5BwKbFf:76 '+
-                      '107.172.193.176;8080:N3sb23UXr23Som3B11u5q7qR9FvsDC7:114 '+
-                      '66.151.117.247;8080:NUhcAdqnVDHtd8NmMMo6sLK3bmYFE5:56 '+
-                      '192.3.73.184;8080:N2RJi7FYf76UBH9RyhndTofskzHKuEe:114 '+
-                      '107.175.24.151;8080:N4HrfiM6YVw2g4oAmWGKCvU5PXpZ2DM:126 '+
-                      '149.57.137.108;8080:N46PiNk7chSURJJZoMSRdwsDh8FAbDa:114 '+
-                      '3.111.137.132;58445:N4PeJyqj8diSXnfhxSQdLpo8ddXTaGd:176';
+  STR_SeedNodes : String = '0 109.230.238.240;8080:X:X '+
+                             '198.144.190.194;8080:X:X '+
+                             '149.57.226.244;8080:X:X '+
+                             '107.172.193.176;8080:X:X '+
+                             '66.151.117.247;8080:X:X '+
+                             '192.3.73.184;8080:X:X '+
+                             '107.175.24.151;8080:X:X '+
+                             '149.57.137.108;8080:X:X';
+
   Int_LastThreadExecution : int64 = 0;
   Int_WalletBalance       : int64 = 0;
   Int_LockedBalance       : int64 = 0;
