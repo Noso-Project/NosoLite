@@ -186,7 +186,7 @@ msgid "Successful: %s"
 msgstr ""
 
 #: nl_language.rsgui0025
-msgid "NOSO circulating supply is %s millions"
+msgid "Noso circulating supply is %s millions"
 msgstr ""
 
 #: nl_language.rsgui0026
