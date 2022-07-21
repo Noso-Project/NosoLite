@@ -6,7 +6,7 @@ msgid "Import address keys"
 msgstr ""
 
 #: nl_language.rsdia0002
-msgid "Paste address keys here"
+msgid "Paste the address keys here"
 msgstr ""
 
 #: nl_language.rsdia0003
@@ -55,11 +55,11 @@ msgid "Error: Downloading summary from -> %s"
 msgstr ""
 
 #: nl_language.rserror0009
-msgid "Error: Cannot delete - at least one address must exists in the wallet"
+msgid "Error: Cannot delete - only one address in wallet"
 msgstr ""
 
 #: nl_language.rserror0010
-msgid "Error: Invalid input for sending NOSO"
+msgid "Error: Invalid parameters for sending coins"
 msgstr ""
 
 #: nl_language.rserror0011
@@ -71,7 +71,7 @@ msgid "Error: Insufficient funds"
 msgstr ""
 
 #: nl_language.rserror0013
-msgid "Error: Cannot generate certificates of locked addresses"
+msgid "Error: Cannot generate certificates from locked addresses"
 msgstr ""
 
 #: nl_language.rserror0014
@@ -173,7 +173,7 @@ msgstr ""
 
 #: nl_language.rsgui0022
 msgid ""
-"Send %s Noso to %s\n"
+"Send %s NOSO to %s\n"
 "Reference: %s\n"
 msgstr ""
 
@@ -206,7 +206,7 @@ msgid "BH"
 msgstr ""
 
 #: nl_language.rsgui0030
-msgid "Order Failed. Error : %s"
+msgid "Order Failed Error: %s"
 msgstr ""
 
 #: tform1.caption
@@ -339,10 +339,6 @@ msgstr ""
 
 #: tform1.menuitem20.caption
 msgid "ZIP Backup"
-msgstr ""
-
-#: tform1.menuitem21.caption
-msgid "New App"
 msgstr ""
 
 #: tform1.menuitem3.caption

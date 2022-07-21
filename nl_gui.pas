@@ -83,7 +83,7 @@ if length(ARRAY_Nodes)>0 then
       form1.SGridNodes.Cells[0,counter+1] := ARRAY_Nodes[counter].Host;
       form1.SGridNodes.Cells[1,counter+1] := ARRAY_Nodes[counter].Block.ToString;
       form1.SGridNodes.Cells[2,counter+1] := ARRAY_Nodes[counter].Pending.ToString;
-      form1.SGridNodes.Cells[3,counter+1] := ARRAY_Nodes[counter].Branch;
+      form1.SGridNodes.Cells[3,counter+1] := ARRAY_Nodes[counter].Branch+'/'+ARRAY_Nodes[counter].SumHash;
       form1.SGridNodes.Cells[4,counter+1] := ARRAY_Nodes[counter].MNsHash+'-'+ARRAY_Nodes[counter].MNsCount.ToString+'-'+ARRAY_Nodes[counter].Checks.ToString;
       form1.SGridNodes.Cells[5,counter+1] := ARRAY_Nodes[counter].Peers.ToString;
       form1.SGridNodes.Cells[6,counter+1] := BestHashReadeable(ARRAY_Nodes[counter].NMSDiff);

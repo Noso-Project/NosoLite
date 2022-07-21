@@ -7,10 +7,21 @@ interface
 uses
   Classes, SysUtils,strutils, nl_data, nl_language, dateutils;
 
+// General functions
 function ThisPercent(percent, thiswidth : integer;RestarBarra : boolean = false):integer;
 function Int2Curr(Value: int64): string;
-Procedure LoadSeedNodes(STR_Source:string);
 Function Parameter(LineText:String;ParamNumber:int64):String;
+
+// Array nodes functions
+Procedure LoadSeedNodes(STR_Source:string);
+Function GetNodeIndex(Index:integer):NodeData;
+Function ArrayNodesLength():integer;
+
+// Time related
+function UTCTime():int64;
+function TimestampToDate(timestamp:int64):String;
+function TimeSinceStamp(value:int64):string;
+
 function Consensus():Boolean;
 function GetAddressBalanceFromSumary(address:string):int64;
 function GetAddressPendingPays(address : string):int64;
@@ -22,8 +33,8 @@ function GetMaximunToSend(ammount:int64):int64;
 function IsValidAddressHash(Address:String):boolean;
 function IsValid58(base58text:string):boolean;
 function AddressSumaryIndex(Address:string):integer;
-function UTCTime():int64;
-function TimestampToDate(timestamp:int64):String;
+
+
 function GetFee(monto:int64):Int64;
 function GetOrderHash(TextLine:string):String;
 function GetTransferHash(TextLine:string):String;
@@ -35,12 +46,16 @@ function WalletAddressIndex(address:string):integer;
 function isAddressLocked(address:walletdata):boolean;
 Procedure UpdateWalletFromSumary();
 Procedure ProcessPendings();
-function TimeSinceStamp(value:int64):string;
+
 
 implementation
 
 uses
   nl_cripto, nl_network;
+
+// ***************
+// *** GENERAL ***
+// ***************
 
 // Returns the X percentage of a specified number
 function ThisPercent(percent, thiswidth : integer;RestarBarra : boolean = false):integer;
@@ -56,38 +71,6 @@ Result := IntTostr(Abs(Value));
 result :=  AddChar('0',Result, 9);
 Insert('.',Result, Length(Result)-7);
 If Value <0 THen Result := '-'+Result;
-End;
-
-// Fill the nodes array with seed nodes data
-Procedure LoadSeedNodes(STR_Source:string);
-var
-  counter      : integer = 1;
-  IsParamEmpty : boolean = false;
-  ThisParam    : string = '';
-  ThisNode     : NodeData;
-  IpAndPort    : string;
-Begin
-Repeat
-   begin
-   ThisParam := parameter(STR_Source,counter);
-   if ThisParam = '' then IsParamEmpty := true
-   else
-      begin
-      ThisNode := Default(NodeData);
-      ThisParam := StringReplace(ThisParam,':',' ',[rfReplaceAll, rfIgnoreCase]);
-      IpAndPort := Parameter(ThisParam,0);
-      IpAndPort :=  StringReplace(ThisParam,';',' ',[rfReplaceAll, rfIgnoreCase]);
-      ThisNode.host:=Parameter(IpAndPort,0);
-      ThisNode.port:=StrToIntDef(Parameter(IpAndPort,1),8080);
-      ThisNode.block:=0;
-      ThisNode.Pending:=0;
-      ThisNode.updated:=0;
-      ThisNode.Branch:='';
-      Insert(ThisNode,ARRAY_Nodes,length(ARRAY_Nodes));
-      counter := counter+1;
-      end;
-   end;
-until IsParamEmpty;
 End;
 
 // Returs parameters from a string
@@ -140,6 +123,109 @@ while contador <= Length(LineText) do
 if temp = ' ' then temp := '';
 Result := Temp;
 End;
+
+// ******************
+// *** ARRAY NODES ***
+// ******************
+
+// Fill the nodes array with nodes data
+Procedure LoadSeedNodes(STR_Source:string);
+var
+  counter      : integer = 1;
+  IsParamEmpty : boolean = false;
+  ThisParam    : string = '';
+  ThisNode     : NodeData;
+  IpAndPort    : string;
+Begin
+EnterCriticalSection(CS_ArrayNodes);
+Repeat
+   begin
+   ThisParam := parameter(STR_Source,counter);
+   if ThisParam = '' then IsParamEmpty := true
+   else
+      begin
+      ThisNode := Default(NodeData);
+      ThisParam := StringReplace(ThisParam,':',' ',[rfReplaceAll, rfIgnoreCase]);
+      IpAndPort := Parameter(ThisParam,0);
+      IpAndPort :=  StringReplace(ThisParam,';',' ',[rfReplaceAll, rfIgnoreCase]);
+      ThisNode.host:=Parameter(IpAndPort,0);
+      ThisNode.port:=StrToIntDef(Parameter(IpAndPort,1),8080);
+      ThisNode.block:=0;
+      ThisNode.Pending:=0;
+      ThisNode.updated:=0;
+      ThisNode.Branch:='';
+      Insert(ThisNode,ARRAY_Nodes,length(ARRAY_Nodes));
+      counter := counter+1;
+      end;
+   end;
+until IsParamEmpty;
+LeaveCriticalSection(CS_ArrayNodes);
+End;
+
+// Returns a specific node data
+Function GetNodeIndex(Index:integer):NodeData;
+Begin
+if index > ArrayNodesLength then
+   begin
+   result := Default(NodeData);
+   exit;
+   end;
+EnterCriticalSection(CS_ArrayNodes);
+Result := ARRAY_Nodes[index];
+LeaveCriticalSection(CS_ArrayNodes);
+End;
+
+Function ArrayNodesLength():integer;
+Begin
+EnterCriticalSection(CS_ArrayNodes);
+Result := Length(ARRAY_Nodes);
+LeaveCriticalSection(CS_ArrayNodes);
+End;
+
+// ************
+// *** TIME ***
+// ************
+
+// Returns the UTCTime
+function UTCTime():int64;
+var
+  G_TIMELocalTimeOffset : int64;
+  GetLocalTimestamp : int64;
+  UnixTime : int64;
+Begin
+G_TIMELocalTimeOffset := GetLocalTimeOffset*60;
+GetLocalTimestamp := DateTimeToUnix(now);
+UnixTime := GetLocalTimestamp+G_TIMELocalTimeOffset;
+result := UnixTime;
+End;
+
+// Returns a DateTime format from a Unix time
+function TimestampToDate(timestamp:int64):String;
+var
+  DateToShow : TDateTime;
+begin
+DateToShow := UnixToDateTime(timestamp);
+result := DateTimeToStr(DateToShow);
+end;
+
+//Shows time since timestamp
+function TimeSinceStamp(value:int64):string;
+var
+CurrStamp : Int64 = 0;
+Diferencia : Int64 = 0;
+Begin
+CurrStamp := UTCTime;
+Diferencia := CurrStamp - value;
+if diferencia div 60 < 1 then result := '<1m'
+else if diferencia div 3600 < 1 then result := IntToStr(diferencia div 60)+'m'
+else if diferencia div 86400 < 1 then result := IntToStr(diferencia div 3600)+'h'
+else if diferencia div 2592000 < 1 then result := IntToStr(diferencia div 86400)+'d'
+else if diferencia div 31536000 < 1 then result := IntToStr(diferencia div 2592000)+'M'
+else result := IntToStr(diferencia div 31536000)+' Y'
+end;
+
+
+
 
 // Calculates the mainnet consensus
 function Consensus():Boolean;
@@ -400,27 +486,9 @@ if ((address <> '') and (length(ARRAY_Sumary) > 0)) then
    end;
 End;
 
-// Returns the UTCTime
-function UTCTime():int64;
-var
-  G_TIMELocalTimeOffset : int64;
-  GetLocalTimestamp : int64;
-  UnixTime : int64;
-Begin
-G_TIMELocalTimeOffset := GetLocalTimeOffset*60;
-GetLocalTimestamp := DateTimeToUnix(now);
-UnixTime := GetLocalTimestamp+G_TIMELocalTimeOffset;
-result := UnixTime;
-End;
 
-// Returns a DateTime format from a Unix time
-function TimestampToDate(timestamp:int64):String;
-var
-  DateToShow : TDateTime;
-begin
-DateToShow := UnixToDateTime(timestamp);
-result := DateTimeToStr(DateToShow);
-end;
+
+
 
 // Returns the fee
 function GetFee(monto:int64):Int64;
@@ -583,21 +651,7 @@ until thisorder = '';
 //tolog(Pendings_String);
 End;
 
-// Muestra el tiempo transcurrido desde el timestamp proporcionado
-function TimeSinceStamp(value:int64):string;
-var
-CurrStamp : Int64 = 0;
-Diferencia : Int64 = 0;
-Begin
-CurrStamp := UTCTime;
-Diferencia := CurrStamp - value;
-if diferencia div 60 < 1 then result := '<1m'
-else if diferencia div 3600 < 1 then result := IntToStr(diferencia div 60)+'m'
-else if diferencia div 86400 < 1 then result := IntToStr(diferencia div 3600)+'h'
-else if diferencia div 2592000 < 1 then result := IntToStr(diferencia div 86400)+'d'
-else if diferencia div 31536000 < 1 then result := IntToStr(diferencia div 2592000)+'M'
-else result := IntToStr(diferencia div 31536000)+' Y'
-end;
+
 
 END. // END UNIT
 

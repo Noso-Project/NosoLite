@@ -43,21 +43,25 @@ TUpdateThread = class(TThread)
     end;
 
 NodeData = packed record
-   host : string[60];
-   Peers : integer;
-   Version : string[10];
-   port : integer;
-   block : integer;
-   Pending: integer;
-   Branch : String[40];
-   MNsHash : string[32];
-   MNsCount : integer;
-   Updated : integer;
-   LBHash : String[32];
-   NMSDiff : String[32];
+   host      : string[60];
+   Peers     : integer;
+   Version   : string[10];
+   port      : integer;
+   block     : integer;
+   Pending   : integer;
+   Branch    : String[40];
+   MNsHash   : string[32];
+   MNsCount  : integer;
+   Updated   : integer;
+   LBHash    : String[32];
+   NMSDiff   : String[32];
    LBTimeEnd : Int64;
-   Checks   : integer;
-   Synced   : boolean;
+   Checks    : integer;
+   Synced    : boolean;
+   SumHash   : string[5];
+   LBMiner   : String[32];
+   LBPoW     : int64;
+   LBSolDiff : string[32];
    end;
 
 ConsensusData = packed record
@@ -178,6 +182,7 @@ var
   // Critical Sections
   CS_ARRAY_Addresses: TRTLCriticalSection;
   CS_LOG            : TRTLCriticalSection;
+  CS_ArrayNodes     : TRTLCriticalSection;
 
   // Apps Related
   ArrApps           : array of AppData;
@@ -186,7 +191,7 @@ var
 implementation
 
 Uses
-  nl_mainform, nl_network, nl_functions, nl_GUI, nl_language, nl_disk;
+  nl_mainform, nl_network, nl_functions, nl_GUI, nl_language, nl_disk, nl_consensus;
 
 constructor TUpdateThread.Create(CreateSuspended : boolean);
 Begin
@@ -256,6 +261,9 @@ While not terminated do
       begin
       Synchronize(@showsync);
       sleep(1);
+      SyncDuration := Fillnodes;
+      // ToLog(format('Sync time: %d ms',[SyncDuration]));
+      {
       For counter := 0 to length(ARRAY_Nodes)-1 do
          begin
          LLine := '';
@@ -276,6 +284,7 @@ While not terminated do
             ARRAY_Nodes[counter].NMSDiff   :=AddCharR(' ',(Parameter(LLine,11)),5);
             ARRAY_Nodes[counter].LBTimeEnd :=StrToIntDef(Parameter(LLine,12),0);
             ARRAY_Nodes[counter].Checks    :=StrToIntDef(Parameter(LLine,14),0);
+            ARRAY_Nodes[counter].SumHash   :=Parameter(LLine,17);
             end
          else
             begin
@@ -288,6 +297,7 @@ While not terminated do
             ARRAY_Nodes[counter].NMSDiff:=rsError0003;
             end;
          end;
+      }
       Synchronize(@hidesync);
       if Consensus then
          begin

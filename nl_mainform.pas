@@ -54,7 +54,6 @@ type
     MenuItem18: TMenuItem;
     MenuItem19: TMenuItem;
     MenuItem20: TMenuItem;
-    MenuItem21: TMenuItem;
     MM_File_Exit: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
@@ -117,7 +116,6 @@ type
     procedure MenuItem18Click(Sender: TObject);
     procedure MenuItem19Click(Sender: TObject);
     procedure MenuItem20Click(Sender: TObject);
-    procedure MenuItem21Click(Sender: TObject);
     procedure MenuItem2Click(Sender: TObject);
     procedure MenuItem3Click(Sender: TObject);
     procedure MenuItem4Click(Sender: TObject);
@@ -186,6 +184,7 @@ Begin
 // Initializae Critical sections
 InitCriticalSection(CS_ARRAY_Addresses);
 InitCriticalSection(CS_LOG);
+InitCriticalSection(CS_ArrayNodes);
 //Initialize dynamic arrays
 setlength(ARRAY_Addresses,0);
 setlength(ARRAY_Nodes,0);
@@ -231,6 +230,7 @@ procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 Begin
 DoneCriticalSection(CS_ARRAY_Addresses);
 DoneCriticalSection(CS_LOG);
+DoneCriticalSection(CS_ArrayNodes);
 ClientChannel.Free;
 LogLines.Free;
 application.Terminate;
@@ -502,7 +502,6 @@ else
    end;
 End;
 
-
 // Unlock address
 procedure TForm1.MenuItem10Click(Sender: TObject);
 var
@@ -649,21 +648,6 @@ End;
 // Zip wallet folder
 procedure TForm1.MenuItem20Click(Sender: TObject);
 Begin
-
-End;
-
-// New App
-procedure TForm1.MenuItem21Click(Sender: TObject);
-Var
-  AppPin    : string = '';
-  Resultado : string = '';
-Begin
-AppPin := InputBox('App code','Enter App code','542A53532D5C5E4A377B780678050B7E0673497171265B4601057C205B402102511015683D7841775E7565780174');
-AppPin := XorDecode(HashSha256String('nosoapp'), AppPin);
-AppPin := StringReplace(AppPin,':',' ',[rfReplaceAll, rfIgnoreCase]);
-Resultado := PostMessageToHost(parameter(apppin,0),StrToIntDef(parameter(apppin,1),9797),'REQINF <END>');
-// test code = 542A53532D5C5E4A377B780678050B7E0673497171265B4601057C205B402102511015683D7841775E7565780174
-ToLog(Resultado);
 
 End;
 
@@ -919,9 +903,7 @@ End;
 // App panel
 //******************************************************************************
 
-
-
-
+// TO BE IMPLEMENTED
 
 END. // END PROGRAM
 

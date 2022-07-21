@@ -173,13 +173,6 @@ while not eof(FILE_Options) do
     if parameter(LLine,0) ='sumary' then WO_LastSumary:=Parameter(LLine,1);
     if parameter(LLine,0) ='refresh' then WO_Refreshrate:=Parameter(LLine,1).ToInteger();
     if parameter(LLine,0) ='multisend' then WO_Multisend:=StrToBool(Parameter(LLine,1));
-    if parameter(LLine,0) ='appdata' then
-       begin
-       ThisApp.name    :=parameter(LLine,1);
-       ThisApp.code    :=parameter(LLine,2);
-       ThisApp.RegAddr := parameter(LLine,3);
-       Insert(ThisApp,ArrApps,Length(ArrApps));
-       end;
    end;
 CloseFile(FILE_Options);
 EXCEPT on E:Exception do
@@ -260,7 +253,7 @@ assignfile(FILE_MNs,MNsFilename);
 Rewrite(FILE_MNs);
 write(FILE_MNs,STR_SeedNodes);
 CloseFile(FILE_MNs);
-LoadSeedNodes(STR_SeedNodes);
+//LoadSeedNodes(STR_SeedNodes);
 End;
 
 Procedure LoadMNsFromFile();
@@ -272,7 +265,8 @@ Reset(FILE_MNs);
 ReadLn(FILE_MNs,LineText);
 CloseFile(FILE_MNs);
 if LineText = STR_SeedNodes then LoadSeedNodes(STR_SeedNodes)
-else LoadSeedNodes(STR_SeedNodes); //LoadSeedNodes(GetVerificators(LineText));
+//else LoadSeedNodes(STR_SeedNodes);
+else LoadSeedNodes(GetVerificators(LineText));
 End;
 
 Function GetVerificators(LineText:String):String;

@@ -61,11 +61,11 @@ End;
 // Downloads the sumary file from a node
 function GetSumary():boolean;
 var
-  AFileStream : TFileStream;
+  MyStream       : TMemoryStream;
   DownloadedFile : Boolean = false;
-  HashLine : string;
-  RanNode  : integer;
-  ThisNode : NodeData;
+  HashLine       : string;
+  RanNode        : integer;
+  ThisNode       : NodeData;
 Begin
 result := false;
 RanNode := Random(length(ARRAY_Nodes));
@@ -74,16 +74,17 @@ form1.ClientChannel.Host:=ThisNode.host;
 form1.ClientChannel.Port:=ThisNode.port;
 form1.ClientChannel.ConnectTimeout:= 1000;
 form1.ClientChannel.ReadTimeout:=800;
-AFileStream := TFileStream.Create(ZipSumaryFilename, fmCreate);
+MyStream := TMemoryStream.Create;
 TRY
 form1.ClientChannel.Connect;
 form1.ClientChannel.IOHandler.WriteLn('GETZIPSUMARY');
    TRY
    HashLine := form1.ClientChannel.IOHandler.ReadLn(IndyTextEncoding_UTF8);
    ToLog(format(rsGUI0017,[parameter(HashLine,1)]));
-   form1.ClientChannel.IOHandler.ReadStream(AFileStream);
+   form1.ClientChannel.IOHandler.ReadStream(MyStream);
    result := true;
    DownloadedFile := true;
+   MyStream.SaveToFile(ZipSumaryFilename);
    EXCEPT on E:Exception do
       begin
       ToLog(Format(rsError0008,[form1.ClientChannel.Host]));
@@ -95,7 +96,7 @@ EXCEPT on E:Exception do
    end;
 END{try};
 if form1.ClientChannel.Connected then form1.ClientChannel.Disconnect();
-AFileStream.Free;
+MyStream.Free;
 if DownloadedFile then UnZipSumary();
 End;
 

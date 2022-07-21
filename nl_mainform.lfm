@@ -20,9 +20,9 @@ object Form1: TForm1
     Height = 424
     Top = 0
     Width = 640
-    ActivePage = TabApps
+    ActivePage = TabWallet
     Align = alClient
-    TabIndex = 3
+    TabIndex = 0
     TabOrder = 0
     object TabWallet: TTabSheet
       Caption = 'Wallet'
@@ -1108,10 +1108,6 @@ object Form1: TForm1
       object MenuItem20: TMenuItem
         Caption = 'ZIP Backup'
         OnClick = MenuItem20Click
-      end
-      object MenuItem21: TMenuItem
-        Caption = 'New App'
-        OnClick = MenuItem21Click
       end
       object MM_File_Exit: TMenuItem
         Caption = 'E&xit'

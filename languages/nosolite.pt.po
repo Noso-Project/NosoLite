@@ -16,7 +16,9 @@ msgid "Import address keys"
 msgstr "Importar chaves da conta"
 
 #: nl_language.rsdia0002
-msgid "Paste here the address keys"
+#, fuzzy
+#| msgid "Paste here the address keys"
+msgid "Paste the address keys here"
 msgstr "Colar aqui a chave da conta"
 
 #: nl_language.rsdia0003
@@ -32,12 +34,16 @@ msgid "Passwords do not match"
 msgstr "Palavras passe não são iguais"
 
 #: nl_language.rserror0001
+#, fuzzy
+#| msgid "Error: creating new wallet file-> %s"
 msgctxt "nl_language.rserror0001"
-msgid "Error: creating new wallet file-> %s"
+msgid "Error: Creating new wallet file-> %s"
 msgstr "Erro: Criando novo ficheiro de carteira -> %s"
 
 #: nl_language.rserror0002
-msgid "Error: loading wallet from file-> %s"
+#, fuzzy
+#| msgid "Error: loading wallet from file-> %s"
+msgid "Error: Loading wallet from file-> %s"
 msgstr "Erro: Carregando carteira do ficheiro -> %s"
 
 #: nl_language.rserror0003
@@ -55,11 +61,15 @@ msgid "Error: Disconnecting client-> %s"
 msgstr "Erro: Desligando o cliente -> %s"
 
 #: nl_language.rserror0006
-msgid "Error: connecting node %s-> %s"
+#, fuzzy
+#| msgid "Error: connecting node %s-> %s"
+msgid "Error: Connecting node %s-> %s"
 msgstr "Erro: Ligando ao nó %s-> %s"
 
 #: nl_language.rserror0007
-msgid "Error: Address already exists on wallet-> %s"
+#, fuzzy
+#| msgid "Error: Address already exists on wallet-> %s"
+msgid "Error: Address already exists in wallet-> %s"
 msgstr "Erro: Conta já existe na carteira-> %s"
 
 #: nl_language.rserror0008
@@ -67,7 +77,9 @@ msgid "Error: Downloading summary from -> %s"
 msgstr "Erro: Baixando sumario de -> %s"
 
 #: nl_language.rserror0009
-msgid "Error: Can not delete only address of the wallet"
+#, fuzzy
+#| msgid "Error: Can not delete only address of the wallet"
+msgid "Error: Cannot delete - only one address in wallet"
 msgstr "Erro: A carteira não pode ficar sem pelo menos uma conta"
 
 #: nl_language.rserror0010
@@ -83,11 +95,15 @@ msgid "Error: Insufficient funds"
 msgstr "Erro: Fundos não suficientes"
 
 #: nl_language.rserror0013
-msgid "Error: Can not generate certificates from locked addresses"
+#, fuzzy
+#| msgid "Error: Can not generate certificates from locked addresses"
+msgid "Error: Cannot generate certificates from locked addresses"
 msgstr "Erro: Impossível gerar certificados de uma conta trancada"
 
 #: nl_language.rserror0014
-msgid "Error: Retrieving pendings -> %s"
+#, fuzzy
+#| msgid "Error: Retrieving pendings -> %s"
+msgid "Error: Retrieving pending -> %s"
 msgstr "Erro: Recebendo pendentes -> %s"
 
 #: nl_language.rserror0015
@@ -148,7 +164,9 @@ msgid "Added new wallet: %s"
 msgstr "Nova carteira adicionada: %s"
 
 #: nl_language.rsgui0013
-msgid "Sumary downloaded: %d kb"
+#, fuzzy
+#| msgid "Sumary downloaded: %d kb"
+msgid "Summary downloaded: %d kb"
 msgstr "Sumario baixado: %d kb"
 
 #: nl_language.rsgui0014
@@ -156,7 +174,9 @@ msgid "Destination"
 msgstr "Destino"
 
 #: nl_language.rsgui0015
-msgid "Ammount"
+#, fuzzy
+#| msgid "Ammount"
+msgid "Amount"
 msgstr "Quantidade"
 
 #: nl_language.rsgui0016
@@ -176,7 +196,7 @@ msgid "Peers"
 msgstr ""
 
 #: nl_language.rsgui0020
-msgid "Certificate for address : %s"
+msgid "Certificate for address: %s"
 msgstr ""
 
 #: nl_language.rsgui0021
@@ -185,7 +205,7 @@ msgstr ""
 
 #: nl_language.rsgui0022
 msgid ""
-"Send %s Noso to %s\n"
+"Send %s NOSO to %s\n"
 "Reference: %s\n"
 msgstr ""
 
@@ -218,7 +238,7 @@ msgid "BH"
 msgstr ""
 
 #: nl_language.rsgui0030
-msgid "Order Failed Error : %s"
+msgid "Order Failed Error: %s"
 msgstr ""
 
 #: tform1.caption
@@ -353,10 +373,6 @@ msgstr "Ficheiro"
 
 #: tform1.menuitem20.caption
 msgid "ZIP Backup"
-msgstr ""
-
-#: tform1.menuitem21.caption
-msgid "New App"
 msgstr ""
 
 #: tform1.menuitem3.caption
