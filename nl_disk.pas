@@ -21,7 +21,11 @@ Procedure LoadSumary();
 Procedure UnZipSumary();
 Procedure CreateMNsFile();
 Procedure LoadMNsFromFile();
+Procedure SaveMnsToFile(LineText:String);
 Function GetVerificators(LineText:String):String;
+// GVTs
+Procedure CreateGVTsFile();
+Procedure LoadGVTsFile();
 
 
 implementation
@@ -36,6 +40,8 @@ if not FileExists(TrashFilename) then CreateTrashWallet();
 if not FileExists(OptionsFilename) then SaveOptions() else LoadOptions();
 if not FileExists(SumaryFilename) then CreateSumary() else LoadSumary();
 if not FileExists(MNsFilename) then CreateMNsFile() else LoadMNsFromFile();
+if not FileExists(GVTFilename) then CreateGVTsFile() else LoadGVTsFile();
+
 
 End;
 
@@ -146,7 +152,6 @@ Assignfile(FILE_Options, OptionsFilename);
 rewrite(FILE_Options);
 writeln(FILE_Options,'block '+WO_LastBlock.ToString);
 writeln(FILE_Options,'sumary '+WO_LastSumary);
-writeln(FILE_Options,'refresh '+WO_Refreshrate.ToString);
 writeln(FILE_Options,'multisend '+BoolToStr(WO_MultiSend,true));
 CloseFile(FILE_Options);
 EXCEPT on E:Exception do
@@ -171,7 +176,6 @@ while not eof(FILE_Options) do
    readln(FILE_Options,LLine);
     if parameter(LLine,0) ='block' then WO_LastBlock:=Parameter(LLine,1).ToInteger();
     if parameter(LLine,0) ='sumary' then WO_LastSumary:=Parameter(LLine,1);
-    if parameter(LLine,0) ='refresh' then WO_Refreshrate:=Parameter(LLine,1).ToInteger();
     if parameter(LLine,0) ='multisend' then WO_Multisend:=StrToBool(Parameter(LLine,1));
    end;
 CloseFile(FILE_Options);
@@ -253,7 +257,6 @@ assignfile(FILE_MNs,MNsFilename);
 Rewrite(FILE_MNs);
 write(FILE_MNs,STR_SeedNodes);
 CloseFile(FILE_MNs);
-//LoadSeedNodes(STR_SeedNodes);
 End;
 
 Procedure LoadMNsFromFile();
@@ -264,9 +267,16 @@ assignfile(FILE_MNs,MNsFilename);
 Reset(FILE_MNs);
 ReadLn(FILE_MNs,LineText);
 CloseFile(FILE_MNs);
-if LineText = STR_SeedNodes then LoadSeedNodes(STR_SeedNodes)
-//else LoadSeedNodes(STR_SeedNodes);
+if WO_UseSeedNodes then LoadSeedNodes(STR_SeedNodes)
 else LoadSeedNodes(GetVerificators(LineText));
+End;
+
+Procedure SaveMnsToFile(LineText:String);
+Begin
+assignfile(FILE_MNs,MNsFilename);
+Rewrite(FILE_MNs);
+write(FILE_MNs,LineText);
+CloseFile(FILE_MNs);
 End;
 
 Function GetVerificators(LineText:String):String;
@@ -322,6 +332,40 @@ for counter := 0 to length(ArrNodes)-1 do
    end;
 Result := Trim(Result);
 End;
+
+//******************************************************************************
+// GVTs
+//******************************************************************************
+
+// Creates a new GVTs File
+Procedure CreateGVTsFile();
+Begin
+assignfile(FILE_GVTs,GVTFilename);
+Rewrite(FILE_GVTs);
+CloseFile(FILE_GVTs);
+LoadGVTsFile();
+End;
+
+// Load GVTS from file
+Procedure LoadGVTsFile();
+var
+  LineText : String;
+  Counter  : integer;
+  ThisGVT  : TGVT;
+Begin
+assignfile(FILE_GVTs,GVTFilename);
+Reset(FILE_GVTs);
+SetLength(ARRAY_GVTs,Filesize(FILE_GVTs));
+For Counter := 0 to Filesize(FILE_GVTs)-1 do
+   begin
+   seek(FILE_GVTs,counter);
+   Read(FILE_GVTs,ThisGVT);
+   ARRAY_GVTs[counter] := ThisGVT;
+   end;
+CloseFile(FILE_GVTs);
+End;
+
+
 
 END. // END UNIT
 

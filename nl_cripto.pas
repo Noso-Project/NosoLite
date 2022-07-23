@@ -10,6 +10,7 @@ uses
 
 Function CreateNewAddress(keysData:string = ''):WalletData;
 function GetAddressFromPublicKey(PubKey:String):String;
+function IsValidHashAddress(Address:String):boolean;
 Function HashMD5File(FileToHash:String):String;
 function HashSha256String(StringToHash:string):string;
 function HashMD160String(StringToHash:string):String;
@@ -17,6 +18,7 @@ function GetStringSigned(StringtoSign, PrivateKey:String):String;
 function VerifySignedString(StringToVerify,SignedHash,PublicKey:String):boolean;
 Procedure ImportKeys(Keysline:String);
 function SendTo(Destination:String;Ammount:int64;Reference:String):string;
+Function GetCustomOrder(Address, AddAlias : String; AddIndex:integer):String;
 Function EncodeCertificate(certificate:string):string;
 Function DecodeCertificate(certificate:string):string;
 Function NosoHash(source:string):string;
@@ -78,6 +80,25 @@ sumatoria := BMB58resumen(Hash1);
 clave := BMDecTo58(sumatoria);
 hash2 := hash1+clave;
 Result := 'N'+hash2;
+End;
+
+// Checks if a string is a valid address hash
+function IsValidHashAddress(Address:String):boolean;
+var
+  OrigHash : String;
+  Clave:String;
+Begin
+result := false;
+if ((length(address)>20) and (address[1] = 'N')) then
+   begin
+   OrigHash := Copy(Address,2,length(address)-3);
+   if IsValid58(OrigHash) then
+      begin
+      Clave := BMDecTo58(BMB58resumen(OrigHash));
+      OrigHash := 'N'+OrigHash+clave;
+      if OrigHash = Address then result := true else result := false;
+      end;
+   end
 End;
 
 // Returns the MD5 hash of a file
@@ -185,6 +206,7 @@ ShowFee := fee;
 Remaining := Ammount+fee;
 if WO_Multisend then CoinsAvailable := Int_WalletBalance
 else CoinsAvailable := GetAddressBalanceFromSumary(ARRAY_Addresses[0].Hash);
+Destination := ARRAY_Sumary[AddressSumaryIndex(Destination)].Hash;
 if Remaining > CoinsAvailable then
       begin
       ToLog(rsError0012);
@@ -226,6 +248,35 @@ if KeepProcess then
    Result := SendOrder(OrderString);
    end;
 WO_Refreshrate := PreviousRefresh;
+End;
+
+// Generates a customization order string;
+Function GetCustomOrder(Address, AddAlias : String; AddIndex:integer):String;
+var
+  CurrTime  : string;
+  TrfrHash  : string;
+  OrderHash : string;
+  Signature : String;
+Begin
+CurrTime  := UTCTime.ToString;
+TrfrHash  := GetTransferHash(CurrTime+Address+addalias);
+OrderHash := GetOrderHash('1'+currtime+TrfrHash);
+Signature := GetStringSigned('Customize this '+address+' '+addalias,ARRAY_Addresses[AddIndex].PrivateKey);
+Result := GetPTCEcn('CUSTOM')+'$CUSTOM '+
+           OrderHash+' '+  // OrderID
+           '1'+' '+        // OrderLines
+           'CUSTOM'+' '+   // OrderType
+           CurrTime+' '+   // Timestamp
+           'null'+' '+     // reference
+           '1'+' '+        // Trxline
+           ARRAY_Addresses[AddIndex].PublicKey+' '+    // sender
+           ARRAY_Addresses[AddIndex].Hash+' '+    // address
+           AddAlias+' '+   // receiver
+           IntToStr(Customizationfee)+' '+  // Amountfee
+           '0'+' '+                         // amount trfr
+           signature+' '+
+           TrfrHash;      // trfrhash
+
 End;
 
 Function EncodeCertificate(certificate:string):string;

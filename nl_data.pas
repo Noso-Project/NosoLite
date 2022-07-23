@@ -62,6 +62,7 @@ NodeData = packed record
    LBMiner   : String[32];
    LBPoW     : int64;
    LBSolDiff : string[32];
+   GVTHash   : String[5];
    end;
 
 ConsensusData = packed record
@@ -112,23 +113,33 @@ TMNData     = packed record
    Count   : integer;
    end;
 
+TGVT = packed record
+     number   : string[2];
+     owner    : string[32];
+     Hash     : string[64];
+     control  : integer;
+     end;
+
 CONST
-  WalletDirectory = 'wallet'+directoryseparator;  // Wallet folder
-  DataDirectory   = 'data'+directoryseparator;
-  WalletFileName = WalletDirectory+'wallet.pkw';  // Wallet keys file
-  TrashFilename  = WalletDirectory+'trash.pkw';
-  SumaryFilename = DataDirectory+'sumary.psk';
+  WalletDirectory   = 'wallet'+directoryseparator;  // Wallet folder
+  DataDirectory     = 'data'+directoryseparator;
+  WalletFileName    = WalletDirectory+'wallet.pkw';  // Wallet keys file
+  TrashFilename     = WalletDirectory+'trash.pkw';
+  SumaryFilename    = DataDirectory+'sumary.psk';
   ZipSumaryFilename = DataDirectory+'sumary.zip';
-  OptionsFilename = DataDirectory+'options.nsl';                // Options file
-  MNsFilename     = DataDirectory+'masternodes.txt';
+  OptionsFilename   = DataDirectory+'options.nsl';                // Options file
+  MNsFilename       = DataDirectory+'masternodes.txt';
+  GVTFilename       = DataDirectory+'gvts.psk';
+  Customizationfee =25000;
   Comisiontrfr = 10000;
   MinimunFee = 10;
-  Protocol = 1;
+  Protocol = 2;
   ProgramVersion = '1.24';
 
   HexAlphabet : string = '0123456789ABCDEF';
   B58Alphabet : string = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
   B36Alphabet : string = '0123456789abcdefghijklmnopqrstuvwxyz';
+  CustomValid : String = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@*+-_:';
   Customfee   = 25000;
 
 var
@@ -137,11 +148,13 @@ var
   FILE_Options : textfile;
   FILE_Sumary  : File of SumaryData;
   FILE_MNs     : TextFile;
+  FILE_GVTs    : File of TGVT;
 
   ARRAY_Addresses : array of WalletData;
-  ARRAY_Nodes : array of NodeData;
-  ARRAY_Sumary : array of SumaryData;
-  ARRAY_Pending : array of PendingData;
+  ARRAY_Nodes     : array of NodeData;
+  ARRAY_Sumary    : array of SumaryData;
+  ARRAY_Pending   : array of PendingData;
+  ARRAY_GVTs      : array of TGVT;
 
   THREAD_Update : TUpdateThread;
 
@@ -152,7 +165,9 @@ var
                              '66.151.117.247;8080:X:X '+
                              '192.3.73.184;8080:X:X '+
                              '107.175.24.151;8080:X:X '+
-                             '149.57.137.108;8080:X:X';
+                             '149.57.137.108;8080:X:X '+
+                             '159.196.1.198:8080:X:X '+
+                             '101.100.138.125:8080:X:X';
 
   Int_LastThreadExecution : int64 = 0;
   Int_WalletBalance       : int64 = 0;
@@ -163,21 +178,23 @@ var
   Int_TotalSupply         : integer = 0;
   Int_StakeSize           : integer = 0;
 
-  WO_LastBlock : integer = 0;
-  WO_LastSumary : string = '';
-  WO_Refreshrate : integer = 15;
-  WO_Multisend : boolean = false;
+  WO_LastBlock    : integer = 0;
+  WO_LastSumary   : string = '';
+  WO_Refreshrate  : integer = 60;
+  WO_Multisend    : boolean = false;
+  WO_UseSeedNodes : Boolean = false;
 
   // Global variables
-  SAVE_Wallet : Boolean = false;
-  Closing_App : boolean = false;
-  Wallet_Synced : Boolean = false;
-  REF_Addresses : Boolean = false;
-  REF_Nodes : Boolean = false;
-  REF_Status : Boolean = false;
-  LogLines : TStringList;
-  G_UTCTime : int64;
-  G_FirstRun : boolean = true;
+  SAVE_Wallet    : Boolean = false;
+  Closing_App    : boolean = false;
+  Wallet_Synced  : Boolean = false;
+  REF_Addresses  : Boolean = false;
+  REF_Nodes      : Boolean = false;
+  REF_Status     : Boolean = false;
+  LogLines       : TStringList;
+  G_UTCTime      : int64;
+  G_FirstRun     : boolean = true;
+  MainNetOffSet  : int64 = 0;
 
   // Critical Sections
   CS_ARRAY_Addresses: TRTLCriticalSection;
@@ -256,48 +273,13 @@ var
 Begin
 While not terminated do
    begin
-   ActualTime := DateTimeToUnix(now);
-   if ((ActualTime >= Int_LastThreadExecution+WO_Refreshrate) and (WO_Refreshrate>0)) then
+   if ((UTCTime >= Int_LastThreadExecution+WO_Refreshrate) and (WO_Refreshrate>0) and
+        (BlockAge>=10) and (BlockAge<595) ) then
       begin
       Synchronize(@showsync);
-      sleep(1);
+      //sleep(1);
       SyncDuration := Fillnodes;
       // ToLog(format('Sync time: %d ms',[SyncDuration]));
-      {
-      For counter := 0 to length(ARRAY_Nodes)-1 do
-         begin
-         LLine := '';
-         if not terminated then LLine := GetNodeStatus(ARRAY_Nodes[counter].host,ARRAY_Nodes[counter].port.ToString);
-         if LLine <> '' then
-            begin
-            //NODESTATUS 1{Peers} 2{LastBlock} 3{Pendings} 4{Delta} 5{headers} 6{version} 7{UTCTime} 8{MNsHash} 9{MNscount}
-            //          10{LasBlockHash} 11{BestHashDiff} 12{LastBlockTimeEnd} 13{LBMiner} 14{ChecksCount}
-            ARRAY_Nodes[counter].Peers     :=Parameter(LLine,1).ToInteger();
-            ARRAY_Nodes[counter].block     :=Parameter(LLine,2).ToInteger();
-            ARRAY_Nodes[counter].Pending   :=Parameter(LLine,3).ToInteger();
-            ARRAY_Nodes[counter].Branch    :=AddCharR(' ',(Parameter(LLine,5)),5);
-            ARRAY_Nodes[counter].Version   :=Parameter(LLine,6);
-            ARRAY_Nodes[counter].MNsHash   :=AddCharR(' ',(Parameter(LLine,8)),5);
-            ARRAY_Nodes[counter].MNsCount  := StrToIntDef(Parameter(LLine,9),0);
-            ARRAY_Nodes[counter].Updated   :=0;
-            ARRAY_Nodes[counter].LBHash    :=AddCharR(' ',(Parameter(LLine,10)),5);
-            ARRAY_Nodes[counter].NMSDiff   :=AddCharR(' ',(Parameter(LLine,11)),5);
-            ARRAY_Nodes[counter].LBTimeEnd :=StrToIntDef(Parameter(LLine,12),0);
-            ARRAY_Nodes[counter].Checks    :=StrToIntDef(Parameter(LLine,14),0);
-            ARRAY_Nodes[counter].SumHash   :=Parameter(LLine,17);
-            end
-         else
-            begin
-            ARRAY_Nodes[counter].block:=0;
-            ARRAY_Nodes[counter].Pending:=0;
-            ARRAY_Nodes[counter].Branch:=rsError0003;
-            ARRAY_Nodes[counter].MNsHash:=rsError0003;
-            ARRAY_Nodes[counter].MNsCount:=0;
-            ARRAY_Nodes[counter].Updated:=ARRAY_Nodes[counter].Updated+1;
-            ARRAY_Nodes[counter].NMSDiff:=rsError0003;
-            end;
-         end;
-      }
       Synchronize(@hidesync);
       if Consensus then
          begin
@@ -314,7 +296,7 @@ While not terminated do
          Synchronize(@hidedownload);
          end;
       REF_Nodes := true;
-      Int_LastThreadExecution := DateTimeToUnix(now);
+      Int_LastThreadExecution := UTCTime;
       end;
    if SAVE_Wallet then SaveWallet;
    if REF_Addresses then Synchronize(@UpdateAddresses);

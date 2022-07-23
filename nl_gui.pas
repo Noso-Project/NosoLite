@@ -40,6 +40,8 @@ Form1.SGridSC.Cells[0,0]:=rsGUI0014;
 Form1.SGridSC.Cells[0,1]:=rsGUI0015;
 Form1.SGridSC.Cells[0,2]:=rsGUI0016;
 form1.CBMultisend.Checked:=WO_Multisend;
+Form1.GVTsGrid.Cells[0,0]:= rsGUI0035;
+Form1.GVTsGrid.Cells[1,0]:= rsGUI0036;
 End;
 
 // Refresh the adressess grid

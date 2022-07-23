@@ -11,16 +11,22 @@ uses
 function ThisPercent(percent, thiswidth : integer;RestarBarra : boolean = false):integer;
 function Int2Curr(Value: int64): string;
 Function Parameter(LineText:String;ParamNumber:int64):String;
+Function IsValidCustomName(AddNAme:String):Boolean;
 
 // Array nodes functions
 Procedure LoadSeedNodes(STR_Source:string);
 Function GetNodeIndex(Index:integer):NodeData;
 Function ArrayNodesLength():integer;
+Function PickRandomNode():NodeData;
 
 // Time related
 function UTCTime():int64;
 function TimestampToDate(timestamp:int64):String;
 function TimeSinceStamp(value:int64):string;
+Function BlockAge():integer;
+
+// Network
+
 
 function Consensus():Boolean;
 function GetAddressBalanceFromSumary(address:string):int64;
@@ -124,6 +130,27 @@ if temp = ' ' then temp := '';
 Result := Temp;
 End;
 
+// Verify if an address custom name is valid
+Function IsValidCustomName(AddNAme:String):Boolean;
+var
+  counter : integer;
+Begin
+Result := true;
+if ((length(AddNAme) <5) or (length(AddNAme) >40)) then
+   begin
+   result := false;
+   exit;
+   end;
+for counter := 1 to length(AddNAme) do
+   begin
+   if pos(AddNAme[counter],CustomValid)=0 then
+      begin
+      Result := false;
+      break;
+      end;
+   end;
+End;
+
 // ******************
 // *** ARRAY NODES ***
 // ******************
@@ -138,6 +165,7 @@ var
   IpAndPort    : string;
 Begin
 EnterCriticalSection(CS_ArrayNodes);
+SetLEngth(ARRAY_Nodes,0);
 Repeat
    begin
    ThisParam := parameter(STR_Source,counter);
@@ -182,6 +210,19 @@ Result := Length(ARRAY_Nodes);
 LeaveCriticalSection(CS_ArrayNodes);
 End;
 
+Function PickRandomNode():NodeData;
+var
+  TNumber : integer;
+  Trys   : integer = 0;
+Begin
+Result := Default(NodeData);
+Repeat
+   TNumber := Random(ArrayNodesLength);
+   Inc(Trys);
+until ( (GetNodeIndex(Tnumber).Synced) or (Trys = ArrayNodesLength) );
+Result := GetNodeIndex(Tnumber);
+End;
+
 // ************
 // *** TIME ***
 // ************
@@ -189,14 +230,12 @@ End;
 // Returns the UTCTime
 function UTCTime():int64;
 var
-  G_TIMELocalTimeOffset : int64;
-  GetLocalTimestamp : int64;
-  UnixTime : int64;
+  G_TIMEUTCTimeOffset : int64;
+  GetUTCTimestamp : int64;
 Begin
-G_TIMELocalTimeOffset := GetLocalTimeOffset*60;
-GetLocalTimestamp := DateTimeToUnix(now);
-UnixTime := GetLocalTimestamp+G_TIMELocalTimeOffset;
-result := UnixTime;
+G_TIMEUTCTimeOffset := GetLocalTimeOffset*60;
+GetUTCTimestamp := DateTimeToUnix(now);
+result := GetUTCTimestamp+G_TIMEUTCTimeOffset-MainNetOffSet;
 End;
 
 // Returns a DateTime format from a Unix time
@@ -224,7 +263,14 @@ else if diferencia div 31536000 < 1 then result := IntToStr(diferencia div 25920
 else result := IntToStr(diferencia div 31536000)+' Y'
 end;
 
+Function BlockAge():integer;
+Begin
+Result := UTCtime mod 600;
+End;
 
+// ***************
+// *** NETWORK ***
+// ***************
 
 
 // Calculates the mainnet consensus

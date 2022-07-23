@@ -8,7 +8,8 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, ExtCtrls,
   Grids, Menus, StdCtrls, nl_GUI, nl_disk, nl_data, nl_functions, IdTCPClient,
   nl_language, nl_cripto, Clipbrd, Buttons, Spin, nl_explorer, IdComponent,
-  strutils, Types, nl_qrcode, DefaultTranslator, infoform, nl_apps;
+  strutils, Types, nl_qrcode, DefaultTranslator, infoform, nl_apps, nl_consensus,
+  nl_network;
 
 type
 
@@ -20,6 +21,7 @@ type
     ComboBox1: TComboBox;
     EditSCDest: TEdit;
     EditSCMont: TEdit;
+    GVTsGrid: TStringGrid;
     ImageBlockInfo: TImage;
     ImageList: TImageList;
     ImageSync: TImage;
@@ -44,10 +46,6 @@ type
     MemoSCCon: TMemo;
     MenuItem1: TMenuItem;
     MenuItem10: TMenuItem;
-    MenuItem11: TMenuItem;
-    MenuItem12: TMenuItem;
-    MenuItem13: TMenuItem;
-    MenuItem14: TMenuItem;
     MenuItem15: TMenuItem;
     MenuItem16: TMenuItem;
     MenuItem17: TMenuItem;
@@ -65,6 +63,7 @@ type
     MenuItem9: TMenuItem;
     MM_File: TMenuItem;
     PageControl: TPageControl;
+    PC_GVTs: TPageControl;
     Panel1: TPanel;
     PanelSupply: TPanel;
     PanelDirectory: TPanel;
@@ -77,7 +76,6 @@ type
     PanelSync: TPanel;
     PanelStatus: TPanel;
     PanelDownload: TPanel;
-    POMRefresh: TPopupMenu;
     PUMAddressess: TPopupMenu;
     SBSCMax: TSpeedButton;
     SBSCPaste: TSpeedButton;
@@ -90,7 +88,10 @@ type
     SGridSC: TStringGrid;
     TabNodes: TTabSheet;
     TabLog: TTabSheet;
-    TabApps: TTabSheet;
+    TabLiqPool: TTabSheet;
+    TabSheet1: TTabSheet;
+    TabGVTsGVTs: TTabSheet;
+    TabGVTsPolls: TTabSheet;
     TabWallet: TTabSheet;
     procedure CBMultisendChange(Sender: TObject);
     procedure ClientChannelWork(ASender: TObject; AWorkMode: TWorkMode;
@@ -105,11 +106,8 @@ type
     procedure FormShow(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
+    procedure GVTsGridResize(Sender: TObject);
     procedure MenuItem10Click(Sender: TObject);
-    procedure MenuItem11Click(Sender: TObject);
-    procedure MenuItem12Click(Sender: TObject);
-    procedure MenuItem13Click(Sender: TObject);
-    procedure MenuItem14Click(Sender: TObject);
     procedure MenuItem15Click(Sender: TObject);
     procedure MenuItem16Click(Sender: TObject);
     procedure MenuItem17Click(Sender: TObject);
@@ -121,12 +119,10 @@ type
     procedure MenuItem4Click(Sender: TObject);
     procedure MenuItem5Click(Sender: TObject);
     procedure MenuItem6Click(Sender: TObject);
-    procedure MenuItem7Click(Sender: TObject);
     procedure MenuItem8Click(Sender: TObject);
     procedure MenuItem9Click(Sender: TObject);
     procedure MM_File_ExitClick(Sender: TObject);
-    procedure PanelBlockInfoContextPopup(Sender: TObject; MousePos: TPoint;
-      var Handled: Boolean);
+
     procedure SBSCMaxClick(Sender: TObject);
     procedure SBSCPasteClick(Sender: TObject);
     procedure SCBitCancelClick(Sender: TObject);
@@ -137,6 +133,8 @@ type
       var Handled: Boolean);
     procedure SGridAddressesDrawCell(Sender: TObject; aCol, aRow: Integer;
       aRect: TRect; aState: TGridDrawState);
+    procedure SGridAddressesKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
     procedure SGridAddressesPrepareCanvas(sender: TObject; aCol, aRow: Integer;
       aState: TGridDrawState);
     procedure SGridAddressesResize(Sender: TObject);
@@ -200,6 +198,9 @@ End;
 
 // On show form events
 procedure TForm1.FormShow(Sender: TObject);
+var
+  MainnetTime : int64;
+  UpdatedMNs  : String = '';
 Begin
 if G_FirstRun then
    begin
@@ -208,6 +209,23 @@ if G_FirstRun then
    RefreshAddresses();
    RefreshNodes();
    RefreshStatus();
+
+   MainnetTime := GetMainnetTimestamp;
+   if MainnetTime<>0 then MainNetOffSet := UTCTime-MainnetTime;
+   ToLog(Format('Offset: %d seconds',[MainNetOffSet]));
+
+   If Not WO_UseSeedNodes then
+      begin
+      FillNodes();
+      Consensus();
+      UpdatedMNs := GetMNsFromNode;
+      if StrToIntDef(Parameter(UpdatedMNs,0),-1)>= 0 then
+         begin
+         SaveMnsToFile(UpdatedMNs);
+         LoadSeedNodes(GetVerificators(UpdatedMNs));
+         end;
+      end;
+
    THREAD_Update := TUpdateThread.Create(true);
    THREAD_Update.FreeOnTerminate:=true;
    THREAD_Update.Start;
@@ -261,6 +279,16 @@ form1.SGridAddresses.ColWidths[1] := ThisPercent(18,GridWidth);
 form1.SGridAddresses.ColWidths[2] := ThisPercent(18,GridWidth);
 form1.SGridAddresses.ColWidths[3] := ThisPercent(24,GridWidth,true);
 end;
+
+// Grid GVTS resize
+procedure TForm1.GVTsGridResize(Sender: TObject);
+var
+  GridWidth : integer;
+Begin
+GridWidth := form1.GVTsGrid.Width;
+form1.GVTsGrid.ColWidths[0] := ThisPercent(20,GridWidth);
+form1.GVTsGrid.ColWidths[1] := ThisPercent(80,GridWidth,true);
+End;
 
 // Set nodes grid prepare canvas
 procedure TForm1.SGridNodesPrepareCanvas(sender: TObject; aCol, aRow: Integer;
@@ -337,6 +365,53 @@ if ((CurrPos>=0) and (Acol = 3)) then
    end;
 End;
 
+// Grid addresses on keyup
+procedure TForm1.SGridAddressesKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+  Procedure TryMoveUpAddress();
+  var
+    tempdata:WalletData;
+    CurrRow : integer;
+  Begin
+  CurrRow := SGridAddresses.Row-1;
+  if CurrRow>0 then
+     begin
+     tempdata := ARRAY_Addresses[currRow-1];
+     ARRAY_Addresses[currRow-1] := ARRAY_Addresses[currRow];
+     ARRAY_Addresses[currRow] := Tempdata;
+     RefreshAddresses;
+     SaveWallet();
+     SGridAddresses.Row :=SGridAddresses.Row-1
+     end;
+  end;
+
+  Procedure TryMoveDownAddress();
+  var
+    tempdata:WalletData;
+    CurrRow : integer;
+  Begin
+  CurrRow := SGridAddresses.Row-1;
+  if CurrRow<length(ARRAY_Addresses)-1 then
+     begin
+     tempdata := ARRAY_Addresses[currRow+1];
+     ARRAY_Addresses[currRow+1] := ARRAY_Addresses[currRow];
+     ARRAY_Addresses[currRow] := Tempdata;
+     RefreshAddresses;
+     SaveWallet();
+     SGridAddresses.Row :=SGridAddresses.Row+1
+     end;
+  end;
+
+begin
+if SGridAddresses.Row>0 then
+   begin
+   if (Key = VK_Q) then
+      TryMoveUpAddress;
+   if (Key = VK_A) then
+      TryMoveDownAddress;
+   end
+end;
+
 //******************************************************************************
 // Client channel
 //******************************************************************************
@@ -395,12 +470,12 @@ else
    menuitem6.enabled:=true;
    menuitem15.enabled:=true;
    end;
+// Enable-Disable customize
 if ((ARRAY_Addresses[SGridAddresses.Row-1].custom<>'') or (ARRAY_Addresses[SGridAddresses.Row-1].Balance<=Customfee) or
    (ARRAY_Addresses[SGridAddresses.Row-1].PrivateKey[1]='*') ) then
    menuitem17.Enabled:=false
 else menuitem17.Enabled:=true;
-if ARRAY_Addresses[SGridAddresses.Row-1].Custom='' then menuitem17.visible:=true
-else menuitem17.visible:=false;
+
 End;
 
 // Import address from keys
@@ -444,11 +519,6 @@ if SGridAddresses.Row > 1 then
    SAVE_Wallet := true;
    end;
 End;
-
-procedure TForm1.MenuItem7Click(Sender: TObject);
-begin
-
-end;
 
 // Delete address
 procedure TForm1.MenuItem8Click(Sender: TObject);
@@ -589,13 +659,36 @@ else
 form2.show;
 End;
 
-// Customize
+// Customize address
 procedure TForm1.MenuItem17Click(Sender: TObject);
 var
-  Newalias : string = '';
+  HashAddres : String;
+  Newalias   : string = '';
+  OrderStr   : String = '';
+  OperResult : integer;
 Begin
+HashAddres := ARRAY_Addresses[SGridAddresses.Row-1].hash;
 Newalias := InputBox(ARRAY_Addresses[SGridAddresses.Row-1].hash,'Enter a custom alias', '');
-If ( (NewAlias = '') or (length(newalias)<5) ) then exit;
+if Not IsValidCustomName(Newalias) then
+   begin
+   ShowInfoForm(Format(rsGUI0031,[HashAddres]),rsGUI0032);  // 'Invalid custom alias'
+   exit;
+   end;
+if IsValidHashAddress(Newalias) then
+   begin
+   ShowInfoForm(Format(rsGUI0031,[HashAddres]),rsGUI0033);   //'Alias can not be a valid hash address'
+   exit;
+   end;
+if ARRAY_Addresses[SGridAddresses.Row-1].Custom <>'' then
+   begin
+   ShowInfoForm(Format(rsGUI0031,[HashAddres]),rsGUI0037);   //'Address already have an alias'
+   exit;
+   end;
+OrderStr := GetCustomOrder(HashAddres,Newalias, SGridAddresses.Row-1);
+OperResult := StrToIntDef(SendOrder(OrderStr),-1);
+if OperResult = 0 then ShowInfoForm(Format(rsGUI0031,[HashAddres]),Format(rsGUI0024,[Newalias]))
+else if OperResult = -1 then ShowInfoForm(Format(rsGUI0031,[HashAddres]),rsGUI0023+': '+rsGUI0034)
+else if OperResult > 0 then ShowInfoForm(Format(rsGUI0031,[HashAddres]),Format(rsGUI0030,[OperResult.ToString]));
 End;
 
 // Import addresses from file
@@ -645,7 +738,7 @@ Begin
 SysUtils.ExecuteProcess('explorer.exe', GetCurrentDir+directoryseparator+'wallet', []);
 End;
 
-// Zip wallet folder
+// Zip wallet folder (To be implemented)
 procedure TForm1.MenuItem20Click(Sender: TObject);
 Begin
 
@@ -656,53 +749,6 @@ procedure TForm1.MM_File_ExitClick(Sender: TObject);
 Begin
   Close;
 End;
-
-//******************************************************************************
-// Refresh PoP Up menu
-//******************************************************************************
-
-// On popup menu
-procedure TForm1.PanelBlockInfoContextPopup(Sender: TObject; MousePos: TPoint;
-  var Handled: Boolean);
-Begin
-menuitem11.Checked:=false;
-menuitem12.Checked:=false;
-menuitem13.Checked:=false;
-menuitem14.Checked:=false;
-if WO_Refreshrate = 15 then menuitem11.Checked:=true;
-if WO_Refreshrate = 60 then menuitem12.Checked:=true;
-if WO_Refreshrate = 600 then menuitem13.Checked:=true;
-if WO_Refreshrate = 0 then menuitem14.Checked:=true;
-End;
-
-// 15 segs
-procedure TForm1.MenuItem11Click(Sender: TObject);
-Begin
-WO_Refreshrate := 15;
-SaveOptions;
-End;
-
-// 1 min
-procedure TForm1.MenuItem12Click(Sender: TObject);
-begin
-WO_Refreshrate := 60;
-SaveOptions;
-end;
-
-//10 mins
-procedure TForm1.MenuItem13Click(Sender: TObject);
-begin
-WO_Refreshrate := 600;
-SaveOptions;
-end;
-
-// Disabled
-procedure TForm1.MenuItem14Click(Sender: TObject);
-begin
-WO_Refreshrate := 0;
-Wallet_Synced := false;
-SaveOptions;
-end;
 
 //******************************************************************************
 // Send coins panel

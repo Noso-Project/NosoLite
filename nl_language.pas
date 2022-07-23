@@ -57,6 +57,13 @@ Resourcestring
   rsGUI0028 = 'Invalid certificate';
   rsGUI0029 = 'BH';
   rsGUI0030 = 'Order Failed Error: %s';
+  rsGUI0031 = 'Customize: %s';
+  rsGUI0032 = 'Invalid custom alias';
+  rsGUI0033 = 'Alias can not be a valid hash address';
+  rsGUI0034 = 'Unknown';
+  rsGUI0035 = '#';
+  rsGUI0036 = 'Address';
+  rsGUI0037 = 'Address already have a custom alias';
   // Dialogs
   rsDIA0001 = 'Import address keys';
   rsDIA0002 = 'Paste the address keys here';

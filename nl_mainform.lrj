@@ -14,12 +14,15 @@
 {"hash":174379213,"name":"tform1.scbitconf.caption","sourcebytes":[67,111,110,102,105,114,109],"value":"Confirm"},
 {"hash":53477888,"name":"tform1.editscmont.text","sourcebytes":[48,46,48,48,48,48,48,48,48,48],"value":"0.00000000"},
 {"hash":146472345,"name":"tform1.lsctop1.caption","sourcebytes":[68,105,114,101,99,116,111,114,121],"value":"Directory"},
+{"hash":314291,"name":"tform1.tabsheet1.caption","sourcebytes":[71,86,84,115],"value":"GVTs"},
+{"hash":314291,"name":"tform1.tabgvtsgvts.caption","sourcebytes":[71,86,84,115],"value":"GVTs"},
+{"hash":5727027,"name":"tform1.tabgvtspolls.caption","sourcebytes":[80,111,108,108,115],"value":"Polls"},
 {"hash":5593795,"name":"tform1.tabnodes.caption","sourcebytes":[78,111,100,101,115],"value":"Nodes"},
-{"hash":21335,"name":"tform1.tablog.caption","sourcebytes":[76,111,103],"value":"Log"},
-{"hash":50886156,"name":"tform1.tabapps.caption","sourcebytes":[76,105,113,112,111,111,108],"value":"Liqpool"},
+{"hash":50886156,"name":"tform1.tabliqpool.caption","sourcebytes":[76,105,113,112,111,111,108],"value":"Liqpool"},
 {"hash":188446316,"name":"tform1.label1.caption","sourcebytes":[76,105,113,117,105,100,105,116,121,32,112,111,111,108],"value":"Liquidity pool"},
 {"hash":194750528,"name":"tform1.label2.caption","sourcebytes":[87,111,114,107,105,110,103,32,97,100,100,114,101,115,115,58,32],"value":"Working address: "},
 {"hash":60021969,"name":"tform1.combobox1.text","sourcebytes":[67,111,109,98,111,66,111,120,49],"value":"ComboBox1"},
+{"hash":21335,"name":"tform1.tablog.caption","sourcebytes":[76,111,103],"value":"Log"},
 {"hash":167539545,"name":"tform1.labelsupply.hint","sourcebytes":[84,111,116,97,108,32,110,111,115,111,32,115,117,112,112,108,121],"value":"Total noso supply"},
 {"hash":95188793,"name":"tform1.labelsupply.caption","sourcebytes":[83,117,112,112,108,121],"value":"Supply"},
 {"hash":257266087,"name":"tform1.panelsync.hint","sourcebytes":[83,121,110,99,104,114,111,110,105,122,105,110,103],"value":"Synchronizing"},
@@ -47,9 +50,5 @@
 {"hash":96810395,"name":"tform1.menuitem10.caption","sourcebytes":[85,110,108,111,99,107],"value":"Unlock"},
 {"hash":260460805,"name":"tform1.menuitem15.caption","sourcebytes":[67,101,114,116,105,102,105,99,97,116,101],"value":"Certificate"},
 {"hash":105293301,"name":"tform1.menuitem16.caption","sourcebytes":[81,82,32,99,111,100,101],"value":"QR code"},
-{"hash":179735493,"name":"tform1.menuitem17.caption","sourcebytes":[67,117,115,116,111,109,105,122,101],"value":"Customize"},
-{"hash":55015863,"name":"tform1.menuitem11.caption","sourcebytes":[49,53,32,115,101,103],"value":"15 seg"},
-{"hash":3372030,"name":"tform1.menuitem12.caption","sourcebytes":[49,32,109,105,110],"value":"1 min"},
-{"hash":54686718,"name":"tform1.menuitem13.caption","sourcebytes":[49,48,32,109,105,110],"value":"10 min"},
-{"hash":371552,"name":"tform1.menuitem14.caption","sourcebytes":[83,116,111,112],"value":"Stop"}
+{"hash":179735493,"name":"tform1.menuitem17.caption","sourcebytes":[67,117,115,116,111,109,105,122,101],"value":"Customize"}
 ]}

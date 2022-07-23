@@ -25,6 +25,8 @@ type
 
   end;
 
+Procedure ShowInfoform(RequestText,ResultText:String);
+
 var
   Form3: TForm3;
 
@@ -37,6 +39,13 @@ uses
 
 { TForm3 }
 
+Procedure ShowInfoform(RequestText,ResultText:String);
+Begin
+form3.BorderIcons:=form3.BorderIcons+[bisystemmenu];
+form3.memorequest.Text:=RequestText;
+form3.memoresult.Text:=ResultText;
+form3.ShowModal;
+End;
 
 procedure TForm3.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin

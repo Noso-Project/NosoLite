@@ -20,9 +20,9 @@ object Form1: TForm1
     Height = 424
     Top = 0
     Width = 640
-    ActivePage = TabWallet
+    ActivePage = TabSheet1
     Align = alClient
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 0
     object TabWallet: TTabSheet
       Caption = 'Wallet'
@@ -110,6 +110,7 @@ object Form1: TForm1
         TabOrder = 1
         OnContextPopup = SGridAddressesContextPopup
         OnDrawCell = SGridAddressesDrawCell
+        OnKeyUp = SGridAddressesKeyUp
         OnPrepareCanvas = SGridAddressesPrepareCanvas
         OnResize = SGridAddressesResize
       end
@@ -595,6 +596,44 @@ object Form1: TForm1
         end
       end
     end
+    object TabSheet1: TTabSheet
+      Caption = 'GVTs'
+      ClientHeight = 396
+      ClientWidth = 632
+      object PC_GVTs: TPageControl
+        Left = 0
+        Height = 396
+        Top = 0
+        Width = 632
+        ActivePage = TabGVTsGVTs
+        Align = alClient
+        TabIndex = 0
+        TabOrder = 0
+        object TabGVTsGVTs: TTabSheet
+          Caption = 'GVTs'
+          ClientHeight = 368
+          ClientWidth = 624
+          object GVTsGrid: TStringGrid
+            Left = 0
+            Height = 368
+            Top = 0
+            Width = 624
+            Align = alClient
+            ColCount = 2
+            FixedCols = 0
+            Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRowSelect, goSmoothScroll]
+            RowCount = 1
+            ScrollBars = ssVertical
+            TabOrder = 0
+            OnResize = GVTsGridResize
+          end
+        end
+        object TabGVTsPolls: TTabSheet
+          Caption = 'Polls'
+          TabVisible = False
+        end
+      end
+    end
     object TabNodes: TTabSheet
       Caption = 'Nodes'
       ClientHeight = 396
@@ -615,34 +654,11 @@ object Form1: TForm1
         OnResize = SGridNodesResize
       end
     end
-    object TabLog: TTabSheet
-      Caption = 'Log'
-      ClientHeight = 396
-      ClientWidth = 632
-      object MemoLog: TMemo
-        Left = 0
-        Height = 396
-        Top = 0
-        Width = 632
-        Align = alClient
-        BorderStyle = bsNone
-        Color = clBlack
-        Font.CharSet = ANSI_CHARSET
-        Font.Color = clWhite
-        Font.Height = -13
-        Font.Name = 'Consolas'
-        Font.Pitch = fpFixed
-        Font.Quality = fqDraft
-        ParentFont = False
-        ReadOnly = True
-        ScrollBars = ssAutoVertical
-        TabOrder = 0
-      end
-    end
-    object TabApps: TTabSheet
+    object TabLiqPool: TTabSheet
       Caption = 'Liqpool'
       ClientHeight = 396
       ClientWidth = 632
+      TabVisible = False
       object Label1: TLabel
         Left = 0
         Height = 25
@@ -700,6 +716,30 @@ object Form1: TForm1
           TabOrder = 0
           Text = 'ComboBox1'
         end
+      end
+    end
+    object TabLog: TTabSheet
+      Caption = 'Log'
+      ClientHeight = 396
+      ClientWidth = 632
+      object MemoLog: TMemo
+        Left = 0
+        Height = 396
+        Top = 0
+        Width = 632
+        Align = alClient
+        BorderStyle = bsNone
+        Color = clBlack
+        Font.CharSet = ANSI_CHARSET
+        Font.Color = clWhite
+        Font.Height = -13
+        Font.Name = 'Consolas'
+        Font.Pitch = fpFixed
+        Font.Quality = fqDraft
+        ParentFont = False
+        ReadOnly = True
+        ScrollBars = ssAutoVertical
+        TabOrder = 0
       end
     end
   end
@@ -996,10 +1036,8 @@ object Form1: TForm1
       Color = clRed
       ParentColor = False
       ParentShowHint = False
-      PopupMenu = POMRefresh
       ShowHint = True
       TabOrder = 0
-      OnContextPopup = PanelBlockInfoContextPopup
       object ImageBlockInfo: TImage
         Left = 6
         Height = 19
@@ -1143,7 +1181,6 @@ object Form1: TForm1
     end
     object MenuItem7: TMenuItem
       Caption = 'Delete'
-      OnClick = MenuItem7Click
       object MenuItem8: TMenuItem
         Caption = 'Confirm'
         OnClick = MenuItem8Click
@@ -1314,25 +1351,5 @@ object Form1: TForm1
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000
     }
-  end
-  object POMRefresh: TPopupMenu
-    Left = 448
-    Top = 520
-    object MenuItem11: TMenuItem
-      Caption = '15 seg'
-      OnClick = MenuItem11Click
-    end
-    object MenuItem12: TMenuItem
-      Caption = '1 min'
-      OnClick = MenuItem12Click
-    end
-    object MenuItem13: TMenuItem
-      Caption = '10 min'
-      OnClick = MenuItem13Click
-    end
-    object MenuItem14: TMenuItem
-      Caption = 'Stop'
-      OnClick = MenuItem14Click
-    end
   end
 end

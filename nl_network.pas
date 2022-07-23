@@ -12,6 +12,8 @@ function GetNodeStatus(Host,Port:String):string;
 function GetSumary():boolean;
 function SendOrder(OrderString:String):String;
 function GetPendings():string;
+function GetMainnetTimestamp(Trys:integer=5):int64;
+function GetMNsFromNode(Trys:integer=5):string;
 
 implementation
 
@@ -110,11 +112,11 @@ var
   WasOk     : Boolean = false;
 Begin
 Result := '';
+Client := TidTCPClient.Create(nil);
 REPEAT
 Inc(TrysCount);
 RanNode := Random(length(ARRAY_Nodes));
 ThisNode := ARRAY_Nodes[RanNode];
-Client := TidTCPClient.Create(nil);
 Client.Host:=ThisNode.host;
 Client.Port:=thisnode.port;
 Client.ConnectTimeout:= 3000;
@@ -165,6 +167,67 @@ if client.Connected then Client.Disconnect();
 client.Free;
 End;
 
+function GetMainnetTimestamp(Trys:integer=5):int64;
+var
+  Client : TidTCPClient;
+  RanNode : integer;
+  ThisNode : NodeData;
+  WasDone : boolean = false;
+Begin
+Result := 0;
+Client := TidTCPClient.Create(nil);
+REPEAT
+   ThisNode := PickRandomNode;
+   Client.Host:=ThisNode.host;
+   Client.Port:=ThisNode.port;
+   Client.ConnectTimeout:= 1000;
+   Client.ReadTimeout:= 1000;
+   TRY
+   Client.Connect;
+   Client.IOHandler.WriteLn('NSLTIME');
+   Result := StrToInt64Def(Client.IOHandler.ReadLn(IndyTextEncoding_UTF8),0);
+   WasDone := true;
+   EXCEPT on E:Exception do
+      begin
+      WasDone := False;
+      end;
+   END{Try};
+Inc(Trys);
+UNTIL ( (WasDone) or (Trys = 5) );
+if client.Connected then Client.Disconnect();
+client.Free;
+End;
+
+function GetMNsFromNode(Trys:integer=5):string;
+var
+  Client : TidTCPClient;
+  RanNode : integer;
+  ThisNode : NodeData;
+  WasDone : boolean = false;
+Begin
+Result := '';
+Client := TidTCPClient.Create(nil);
+REPEAT
+   ThisNode := PickRandomNode;
+   Client.Host:=ThisNode.host;
+   Client.Port:=ThisNode.port;
+   Client.ConnectTimeout:= 3000;
+   Client.ReadTimeout:= 3000;
+   TRY
+   Client.Connect;
+   Client.IOHandler.WriteLn('NSLMNS');
+   Result := Client.IOHandler.ReadLn(IndyTextEncoding_UTF8);
+   WasDone := true;
+   EXCEPT on E:Exception do
+      begin
+      WasDone := False;
+      end;
+   END{Try};
+Inc(Trys);
+UNTIL ( (WasDone) or (Trys = 5) );
+if client.Connected then Client.Disconnect();
+client.Free;
+End;
 
 END. // END UNIT.
 

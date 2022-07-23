@@ -1,3 +1,7 @@
 - Version 1.24
 
--
+- Fixed bug not allowing send/receive funds to custom addresses.
+- Implemented dynamic MNs update.
+- Implemented consensus from dynamic MNs.
+- Customize address implemented.
+- Easy address ordering with keys: "Q" / "A"

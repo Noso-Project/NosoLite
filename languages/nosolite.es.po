@@ -225,6 +225,36 @@ msgstr ""
 msgid "Order Failed Error: %s"
 msgstr ""
 
+#: nl_language.rsgui0031
+msgid "Customize: %s"
+msgstr ""
+
+#: nl_language.rsgui0032
+msgid "Invalid custom alias"
+msgstr ""
+
+#: nl_language.rsgui0033
+msgid "Alias can not be a valid hash address"
+msgstr ""
+
+#: nl_language.rsgui0034
+msgid "Unknown"
+msgstr ""
+
+#: nl_language.rsgui0035
+msgid "#"
+msgstr ""
+
+#: nl_language.rsgui0036
+#, fuzzy
+msgctxt "nl_language.rsgui0036"
+msgid "Address"
+msgstr "Direccion"
+
+#: nl_language.rsgui0037
+msgid "Address already have a custom alias"
+msgstr ""
+
 #: tform1.caption
 msgctxt "tform1.caption"
 msgid "Nosolite"
@@ -311,22 +341,6 @@ msgstr "Importar"
 #: tform1.menuitem10.caption
 msgid "Unlock"
 msgstr "Desbloquear"
-
-#: tform1.menuitem11.caption
-msgid "15 seg"
-msgstr ""
-
-#: tform1.menuitem12.caption
-msgid "1 min"
-msgstr ""
-
-#: tform1.menuitem13.caption
-msgid "10 min"
-msgstr ""
-
-#: tform1.menuitem14.caption
-msgid "Stop"
-msgstr ""
 
 #: tform1.menuitem15.caption
 msgid "Certificate"
@@ -435,7 +449,17 @@ msgstr "Confirmar"
 msgid "Send"
 msgstr "Enviar"
 
-#: tform1.tabapps.caption
+#: tform1.tabgvtsgvts.caption
+msgctxt "tform1.tabgvtsgvts.caption"
+msgid "GVTs"
+msgstr ""
+
+#: tform1.tabgvtspolls.caption
+msgid "Polls"
+msgstr ""
+
+#: tform1.tabliqpool.caption
+msgctxt "tform1.tabliqpool.caption"
 msgid "Liqpool"
 msgstr ""
 
@@ -446,6 +470,11 @@ msgstr "Historial"
 #: tform1.tabnodes.caption
 msgid "Nodes"
 msgstr "Nodos"
+
+#: tform1.tabsheet1.caption
+msgctxt "tform1.tabsheet1.caption"
+msgid "GVTs"
+msgstr ""
 
 #: tform1.tabwallet.caption
 msgid "Wallet"
