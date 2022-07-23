@@ -214,10 +214,17 @@ if G_FirstRun then
    if MainnetTime<>0 then MainNetOffSet := UTCTime-MainnetTime;
    ToLog(Format('Offset: %d seconds',[MainNetOffSet]));
 
+   {
+   FillNodes;
+   LastNodesUpdateTime := UTCTime;
+   MainConsensus := CalculateConsensus;
+   }
+
+   {
    If Not WO_UseSeedNodes then
       begin
-      FillNodes();
-      Consensus();
+      RunFillNodes();
+      MAinConsensus := CalculateConsensus;
       UpdatedMNs := GetMNsFromNode;
       if StrToIntDef(Parameter(UpdatedMNs,0),-1)>= 0 then
          begin
@@ -225,6 +232,7 @@ if G_FirstRun then
          LoadSeedNodes(GetVerificators(UpdatedMNs));
          end;
       end;
+   }
 
    THREAD_Update := TUpdateThread.Create(true);
    THREAD_Update.FreeOnTerminate:=true;
@@ -240,6 +248,9 @@ Begin
 Closing_App := true;
 THREAD_Update.Terminate;
 THREAD_Update.WaitFor;
+Repeat
+  sleep(1);
+until ( (not FillingNodes) and (not GettingSum) );
 SaveOptions;
 End;
 

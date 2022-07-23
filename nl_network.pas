@@ -8,8 +8,8 @@ uses
   Classes, SysUtils, nl_data, IdGlobal, dialogs, nl_functions, nl_language,
   IdTCPClient;
 
-function GetNodeStatus(Host,Port:String):string;
-function GetSumary():boolean;
+//function GetNodeStatus(Host,Port:String):string;
+//function GetSumary():boolean;
 function SendOrder(OrderString:String):String;
 function GetPendings():string;
 function GetMainnetTimestamp(Trys:integer=5):int64;
@@ -20,6 +20,7 @@ implementation
 Uses
   nl_mainform, nl_Disk;
 
+{
 // Connects a client and returns the nodestatus
 function GetNodeStatus(Host,Port:String):string;
 var
@@ -59,7 +60,9 @@ if not errored then
       END{try};
    end;
 End;
+}
 
+{
 // Downloads the sumary file from a node
 function GetSumary():boolean;
 var
@@ -101,6 +104,7 @@ if form1.ClientChannel.Connected then form1.ClientChannel.Disconnect();
 MyStream.Free;
 if DownloadedFile then UnZipSumary();
 End;
+}
 
 // Sends a order to the mainnet
 function SendOrder(OrderString:String):String;

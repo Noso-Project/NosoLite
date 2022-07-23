@@ -29,6 +29,7 @@ Function BlockAge():integer;
 
 
 function Consensus():Boolean;
+Function GetSumaryLastBlock():Integer;
 function GetAddressBalanceFromSumary(address:string):int64;
 function GetAddressPendingPays(address : string):int64;
 function GetAddressToShow(address:string):String;
@@ -372,6 +373,15 @@ For counter := 0 to length (ARRAY_Nodes)-1 do
    else ARRAY_Nodes[counter].Synced:=false;
    end;
 End;
+
+// Returns the last block updated on sumary
+Function GetSumaryLastBlock():Integer;
+Begin
+if length(ARRAY_Sumary) = 0 then result := 0
+else result := ARRAY_Sumary[0].LastOP;
+End;
+
+
 
 // Return the summary balance for the specified address
 function GetAddressBalanceFromSumary(address:string):int64;

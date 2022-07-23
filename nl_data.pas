@@ -169,7 +169,7 @@ var
                              '159.196.1.198:8080:X:X '+
                              '101.100.138.125:8080:X:X';
 
-  Int_LastThreadExecution : int64 = 0;
+  LastNodesUpdateTime     : int64 = 0;
   Int_WalletBalance       : int64 = 0;
   Int_LockedBalance       : int64 = 0;
   Int_SumarySize          : int64 = 0;
@@ -180,7 +180,7 @@ var
 
   WO_LastBlock    : integer = 0;
   WO_LastSumary   : string = '';
-  WO_Refreshrate  : integer = 60;
+  WO_Refreshrate  : integer = 15;
   WO_Multisend    : boolean = false;
   WO_UseSeedNodes : Boolean = false;
 
@@ -273,31 +273,45 @@ var
 Begin
 While not terminated do
    begin
-   if ((UTCTime >= Int_LastThreadExecution+WO_Refreshrate) and (WO_Refreshrate>0) and
-        (BlockAge>=10) and (BlockAge<595) ) then
+   if ((UTCTime >= LastNodesUpdateTime+WO_Refreshrate) and (WO_Refreshrate>0) and
+        (BlockAge>=10) and (BlockAge<595) and (not FillingNodes) and (not NodesFilled) ) then
       begin
       Synchronize(@showsync);
-      //sleep(1);
-      SyncDuration := Fillnodes;
-      // ToLog(format('Sync time: %d ms',[SyncDuration]));
-      Synchronize(@hidesync);
-      if Consensus then
-         begin
-         Synchronize(@showdownload);
-         if GetSumary then
-            begin
-            LoadSumary;
-            REF_Addresses := true;
-            if ARRAY_Sumary[0].LastOP = WO_LastBlock then
-               Wallet_Synced := true
-            else Wallet_Synced := false;
-            REF_Status := true;
-            end;
-         Synchronize(@hidedownload);
-         end;
-      REF_Nodes := true;
-      Int_LastThreadExecution := UTCTime;
+      RunFillnodes;
+      ToLog('Starting sync nodes');
       end;
+   If NodesFilled then
+      begin
+      ToLog('Nodes Synced');
+      LastNodesUpdateTime := UTCTime;
+      NodesFilled  := false;
+      Synchronize(@hidesync);
+      REF_Nodes := true;
+      MainConsensus := CalculateConsensus;
+      end;
+   // Update sumary
+   if ( (MainConsensus.block>GetSumaryLastBlock) and (not GettingSum) and (not SumReceived) ) then
+      begin
+      Synchronize(@showdownload);
+      ToLog('Downloading sumary');
+      RunGetSumary();
+      REF_Status := true;
+      end;
+   if SumReceived then
+      begin
+      SumReceived := false;
+      ToLog('Sumary downloaded');
+      Synchronize(@hidedownload);
+      if GoodSumary then
+         begin
+         UnZipSumary;
+         LoadSumary();
+         REF_Addresses := true;
+         end;
+      end;
+
+   if MainConsensus.block=GetSumaryLastBlock then Wallet_Synced := true
+   else Wallet_Synced := false;
    if SAVE_Wallet then SaveWallet;
    if REF_Addresses then Synchronize(@UpdateAddresses);
    if LogLines.Count>0 then Synchronize(@UpdateLog);
@@ -308,7 +322,7 @@ While not terminated do
       G_UTCTime := UTCTime;
       Synchronize(@UpdateStatus);
       end;
-   Sleep(10);
+   Sleep(200);
    end;
 End;
 

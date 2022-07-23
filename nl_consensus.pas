@@ -18,15 +18,40 @@ TTGetNodeStatus = class(TThread)
    constructor Create(const CreatePaused: Boolean;TSlot:Integer);
  end;
 
+TFillThread = class(TThread)
+  protected
+    procedure Execute; override;
+  public
+    Constructor Create(const CreateSuspended : boolean);
+  end;
+
+TGetSumThread = class(TThread)
+  protected
+    procedure Execute; override;
+  public
+    Constructor Create(const CreateSuspended : boolean);
+  end;
+
 Function GetSyncingThreads():Integer;
 Procedure SetSyncingThreads(value:integer);
 Procedure CloseSyncingThread();
 Function FillNodes():int64;
+Procedure RunFillNodes();
+
+function GetSumary():boolean;
+Procedure RunGetSumary();
+
 Function CalculateConsensus():NodeData;
 
 var
-  GetConsensus     : boolean = false;
-  GettingConsensus : boolean = false;
+  NodesFilled      : boolean = false;
+  FillingNodes     : boolean = false;
+
+  GettingSum       : boolean = false;
+  SumReceived      : boolean = false;
+  GoodSumary       : boolean = false;
+
+
   SyncingThreads   : integer = 0;
   SyncDuration     : int64;
   MainConsensus    : NodeData;
@@ -35,6 +60,8 @@ var
   CS_CSThread      : TRTLCriticalSection;
 
 IMPLEMENTATION
+
+// Thread GetNodeStatus
 
 constructor TTGetNodeStatus.Create(const CreatePaused: Boolean; TSlot:Integer);
 begin
@@ -112,6 +139,36 @@ else
 CloseSyncingThread;
 End;
 
+// Thread FillNodes
+
+constructor TFillThread.Create(const CreateSuspended: Boolean);
+Begin
+inherited Create(CreateSuspended);
+FreeOnTerminate := True;
+End;
+
+procedure TFillThread.Execute;
+Begin
+FillNodes;
+NodesFilled  := true;
+FillingNodes :=false;
+End;
+
+// Thread TGetSumThread
+
+constructor TGetSumThread.Create(const CreateSuspended: Boolean);
+Begin
+inherited Create(CreateSuspended);
+FreeOnTerminate := True;
+End;
+
+procedure TGetSumThread.Execute;
+Begin
+if GetSumary then GoodSumary := true
+else GoodSumary := false;
+SumReceived  := true;
+End;
+
 Function GetSyncingThreads():Integer;
 Begin
 EnterCriticalSection(CS_CSThread);
@@ -158,6 +215,67 @@ if GetSyncingThreads>0 then
    // ToLog('ERROR: Open threads '+GetSyncingThreads.ToString);
    end;
 Result := GetTickCount64-StartTime;
+End;
+
+Procedure RunFillNodes();
+var
+  ThisThread : TFillThread;
+Begin
+FillingNodes :=true;
+ThisThread := TFillThread.Create(True);
+ThisThread.FreeOnTerminate:=true;
+ThisThread.Start;
+End;
+
+function GetSumary():boolean;
+var
+  TCPClient      : TidTCPClient;
+  MyStream       : TMemoryStream;
+  DownloadedFile : Boolean = false;
+  HashLine       : string;
+  RanNode        : integer;
+  ThisNode       : NodeData;
+Begin
+Result := false;
+TCPClient := TidTCPClient.Create(nil);
+ThisNode := PickRandomNode;
+TCPClient.Host:=ThisNode.host;
+TCPClient.Port:=ThisNode.port;
+TCPClient.ConnectTimeout:= 1000;
+TCPClient.ReadTimeout:=800;
+MyStream := TMemoryStream.Create;
+TRY
+TCPClient.Connect;
+TCPClient.IOHandler.WriteLn('GETZIPSUMARY');
+   TRY
+   HashLine := TCPClient.IOHandler.ReadLn(IndyTextEncoding_UTF8);
+   ToLog(format(rsGUI0017,[parameter(HashLine,1)]));
+   TCPClient.IOHandler.ReadStream(MyStream);
+   result := true;
+   MyStream.SaveToFile(ZipSumaryFilename);
+   EXCEPT on E:Exception do
+      begin
+
+      end;
+   END{Try};
+EXCEPT on E:Exception do
+   begin
+
+   end;
+END{try};
+if TCPClient.Connected then TCPClient.Disconnect();
+MyStream.Free;
+GettingSum := false;
+End;
+
+Procedure RunGetSumary();
+var
+  ThisThread : TGetSumThread;
+Begin
+GettingSum := True;
+ThisThread := TGetSumThread.Create(True);
+ThisThread.FreeOnTerminate:=true;
+ThisThread.Start;
 End;
 
 Function CalculateConsensus():NodeData;
@@ -256,14 +374,14 @@ if cPending>Int_LastPendingCount  then
    ProcessPendings();
    Int_LastPendingCount := cPending;
    end;
-
+}
 For counter := 0 to length (ARRAY_Nodes)-1 do
    begin
-   if ( (ARRAY_Nodes[counter].block=CBlock) and (ARRAY_Nodes[counter].Branch = CBranch) ) then
+   if ( (ARRAY_Nodes[counter].block=Result.block) and (ARRAY_Nodes[counter].Branch = Result.Branch) ) then
       ARRAY_Nodes[counter].Synced:=true
    else ARRAY_Nodes[counter].Synced:=false;
    end;
-}
+
 End;
 
 INITIALIZATION

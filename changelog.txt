@@ -4,4 +4,5 @@
 - Implemented dynamic MNs update.
 - Implemented consensus from dynamic MNs.
 - Customize address implemented.
-- Easy address ordering with keys: "Q" / "A"
+- Easy address ordering with keys: "Q" / "A".
+- Synchronization algo changed.
