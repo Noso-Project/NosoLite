@@ -14,7 +14,7 @@
 {"hash":174379213,"name":"tform1.scbitconf.caption","sourcebytes":[67,111,110,102,105,114,109],"value":"Confirm"},
 {"hash":40340035,"name":"tform1.cbmultisend.hint","sourcebytes":[67,104,101,99,107,32,116,111,32,117,115,101,32,97,108,108,32,97,100,100,114,101,115,115,101,115],"value":"Check to use all addresses"},
 {"hash":53477888,"name":"tform1.editscmont.text","sourcebytes":[48,46,48,48,48,48,48,48,48,48],"value":"0.00000000"},
-{"hash":146472345,"name":"tform1.lsctop1.caption","sourcebytes":[68,105,114,101,99,116,111,114,121],"value":"Directory"},
+{"hash":161808767,"name":"tform1.lsctop1.caption","sourcebytes":[84,114,120,32,73,110,102,111],"value":"Trx Info"},
 {"hash":314291,"name":"tform1.tabgvts.caption","sourcebytes":[71,86,84,115],"value":"GVTs"},
 {"hash":314291,"name":"tform1.tabgvtsgvts.caption","sourcebytes":[71,86,84,115],"value":"GVTs"},
 {"hash":142973298,"name":"tform1.label14.caption","sourcebytes":[84,114,97,110,115,102,101,114],"value":"Transfer"},

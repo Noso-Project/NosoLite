@@ -192,7 +192,7 @@ var
   WO_LastSumary   : string = '';
   WO_Refreshrate  : integer = 15;
   WO_Multisend    : boolean = false;
-  WO_UseSeedNodes : Boolean = false;
+  WO_UseSeedNodes : Boolean = true;
 
   // Global variables
   SAVE_Wallet    : Boolean = false;

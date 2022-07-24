@@ -72,7 +72,7 @@ type
     PC_GVTs: TPageControl;
     Panel1: TPanel;
     PanelSupply: TPanel;
-    PanelDirectory: TPanel;
+    PanelTrxInfo: TPanel;
     PanelDown: TPanel;
     PanelBlockInfo: TPanel;
     PanelBalance: TPanel;
@@ -935,6 +935,8 @@ if ((ammount>0) and (ammount<=GetMaximunToSend(Int_WalletBalance)))then
   end
 else Form1.ImageList.GetBitmap(1,ImgSCMont.Picture.Bitmap);
 if EditSCMont.Text = '0.00000000' then ImgSCMont.Picture.Clear;
+if EditSCMont.Text = '0.00000000' then PanelTrxInfo.Visible:=false
+else PanelTrxInfo.Visible:=true;
 End;
 
 // Ammount edit on key pressed

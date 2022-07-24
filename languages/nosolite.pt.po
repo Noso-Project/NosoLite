@@ -376,7 +376,9 @@ msgid "Send coins"
 msgstr "Enviar moedas"
 
 #: tform1.lsctop1.caption
-msgid "Directory"
+#, fuzzy
+#| msgid "Directory"
+msgid "Trx Info"
 msgstr "Diretoria"
 
 #: tform1.menuitem1.caption

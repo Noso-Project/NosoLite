@@ -40,7 +40,7 @@ function BMDecToHex(numero:string):string;
 implementation
 
 Uses
-  nl_functions, dialogs;
+  nl_functions, dialogs, nl_mainform;
 
 // Creates a new address
 Function CreateNewAddress(keysData:string = ''):WalletData;
@@ -206,7 +206,9 @@ ShowFee := fee;
 Remaining := Ammount+fee;
 if WO_Multisend then CoinsAvailable := Int_WalletBalance
 else CoinsAvailable := GetAddressBalanceFromSumary(ARRAY_Addresses[0].Hash);
-Destination := ARRAY_Sumary[AddressSumaryIndex(Destination)].Hash;
+if not IsValidAddressHash(Destination) then
+   Destination := ARRAY_Sumary[AddressSumaryIndex(Destination)].Hash;
+
 if Remaining > CoinsAvailable then
       begin
       ToLog(rsError0012);
