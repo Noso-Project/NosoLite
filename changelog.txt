@@ -10,5 +10,6 @@
 - Address label implemented.
 - GVTs track implemented.
 - Colors for pending transactions.
+- Trx details panel added.
 
 

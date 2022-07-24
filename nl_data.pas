@@ -174,7 +174,7 @@ var
                              '66.151.117.247;8080:X:X '+
                              '149.57.229.81;8080:X:X '+
                              '107.175.24.151;8080:X:X '+
-                             '149.57.137.108;8080:X:X '+
+                             '149.57.138.12;8080:X:X '+
                              '159.196.1.198:8080:X:X '+
                              '101.100.138.125:8080:X:X';
 
@@ -192,7 +192,7 @@ var
   WO_LastSumary   : string = '';
   WO_Refreshrate  : integer = 15;
   WO_Multisend    : boolean = false;
-  WO_UseSeedNodes : Boolean = true;
+  WO_UseSeedNodes : Boolean = false;
 
   // Global variables
   SAVE_Wallet    : Boolean = false;
