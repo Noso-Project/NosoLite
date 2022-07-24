@@ -17,8 +17,8 @@ type
 
   TForm1 = class(TForm)
     CBMultisend: TCheckBox;
-    ClientChannel: TIdTCPClient;
     ComboBox1: TComboBox;
+    Edit2: TEdit;
     EditSCDest: TEdit;
     EditSCMont: TEdit;
     GVTsGrid: TStringGrid;
@@ -29,7 +29,10 @@ type
     ImgSCDest: TImage;
     ImgSCMont: TImage;
     Label1: TLabel;
+    Label14: TLabel;
+    Label15: TLabel;
     Label2: TLabel;
+    LabelNodes: TLabel;
     Labelsupply: TLabel;
     Labelstake: TLabel;
     Labelsummary: TLabel;
@@ -46,6 +49,7 @@ type
     MemoSCCon: TMemo;
     MenuItem1: TMenuItem;
     MenuItem10: TMenuItem;
+    MenuItem11: TMenuItem;
     MenuItem15: TMenuItem;
     MenuItem16: TMenuItem;
     MenuItem17: TMenuItem;
@@ -63,6 +67,8 @@ type
     MenuItem9: TMenuItem;
     MM_File: TMenuItem;
     PageControl: TPageControl;
+    Panel23: TPanel;
+    PanelTransferGVT: TPanel;
     PC_GVTs: TPageControl;
     Panel1: TPanel;
     PanelSupply: TPanel;
@@ -83,22 +89,18 @@ type
     SCBitClea: TBitBtn;
     SCBitConf: TBitBtn;
     SCBitSend: TBitBtn;
+    SCBitSend1: TBitBtn;
     SGridAddresses: TStringGrid;
     SGridNodes: TStringGrid;
     SGridSC: TStringGrid;
     TabNodes: TTabSheet;
     TabLog: TTabSheet;
     TabLiqPool: TTabSheet;
-    TabSheet1: TTabSheet;
+    TabGVTs: TTabSheet;
     TabGVTsGVTs: TTabSheet;
     TabGVTsPolls: TTabSheet;
     TabWallet: TTabSheet;
     procedure CBMultisendChange(Sender: TObject);
-    procedure ClientChannelWork(ASender: TObject; AWorkMode: TWorkMode;
-      AWorkCount: Int64);
-    procedure ClientChannelWorkBegin(ASender: TObject; AWorkMode: TWorkMode;
-      AWorkCountMax: Int64);
-    procedure ClientChannelWorkEnd(ASender: TObject; AWorkMode: TWorkMode);
     procedure EditSCDestChange(Sender: TObject);
     procedure EditSCMontChange(Sender: TObject);
     procedure EditSCMontKeyPress(Sender: TObject; var Key: char);
@@ -108,6 +110,7 @@ type
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure GVTsGridResize(Sender: TObject);
     procedure MenuItem10Click(Sender: TObject);
+    procedure MenuItem11Click(Sender: TObject);
     procedure MenuItem15Click(Sender: TObject);
     procedure MenuItem16Click(Sender: TObject);
     procedure MenuItem17Click(Sender: TObject);
@@ -183,6 +186,8 @@ Begin
 InitCriticalSection(CS_ARRAY_Addresses);
 InitCriticalSection(CS_LOG);
 InitCriticalSection(CS_ArrayNodes);
+InitCriticalSection(CS_Masternodes);
+
 //Initialize dynamic arrays
 setlength(ARRAY_Addresses,0);
 setlength(ARRAY_Nodes,0);
@@ -209,11 +214,23 @@ if G_FirstRun then
    RefreshAddresses();
    RefreshNodes();
    RefreshStatus();
+   RefreshGVTs;
+
+   FillNodes;
+   MainConsensus := CalculateConsensus;
 
    MainnetTime := GetMainnetTimestamp;
    if MainnetTime<>0 then MainNetOffSet := UTCTime-MainnetTime;
    ToLog(Format('Offset: %d seconds',[MainNetOffSet]));
 
+   UpdatedMNs := GetMNsFromNode;
+   if StrToIntDef(Parameter(UpdatedMNs,0),-1)> MasternodesLastBlock then
+      begin
+      SaveMnsToFile(UpdatedMNs);
+      FillArrayNodes;
+      end;
+   Pendings_String := GetPendings();
+   ProcessPendings();
    {
    FillNodes;
    LastNodesUpdateTime := UTCTime;
@@ -246,11 +263,11 @@ End;
 procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: boolean);
 Begin
 Closing_App := true;
-THREAD_Update.Terminate;
-THREAD_Update.WaitFor;
 Repeat
   sleep(1);
 until ( (not FillingNodes) and (not GettingSum) );
+THREAD_Update.Terminate;
+THREAD_Update.WaitFor;
 SaveOptions;
 End;
 
@@ -260,7 +277,7 @@ Begin
 DoneCriticalSection(CS_ARRAY_Addresses);
 DoneCriticalSection(CS_LOG);
 DoneCriticalSection(CS_ArrayNodes);
-ClientChannel.Free;
+DoneCriticalSection(CS_Masternodes);
 LogLines.Free;
 application.Terminate;
 End;
@@ -270,12 +287,21 @@ procedure TForm1.SGridAddressesPrepareCanvas(sender: TObject; aCol,
   aRow: Integer; aState: TGridDrawState);
 var
   ts: TTextStyle;
+  CurrPos : integer;
 Begin
-if (ACol>0)  then
+Currpos := ARow-1;
+if (ACol>1)  then
    begin
    ts := (Sender as TStringGrid).Canvas.TextStyle;
    ts.Alignment := taRightJustify;
    (Sender as TStringGrid).Canvas.TextStyle := ts;
+   end;
+if ( (Acol=2) and (ARow>0) ) then
+   begin
+   if ARRAY_Pending[Currpos].incoming-ARRAY_Pending[Currpos].outgoing < 0 then
+      (Sender as TStringGrid).Canvas.Brush.Color := clRed
+   else if ARRAY_Pending[Currpos].incoming-ARRAY_Pending[Currpos].outgoing > 0 then
+      (Sender as TStringGrid).Canvas.Brush.Color := clMoneyGreen;
    end;
 End;
 
@@ -298,7 +324,7 @@ var
 Begin
 GridWidth := form1.GVTsGrid.Width;
 form1.GVTsGrid.ColWidths[0] := ThisPercent(20,GridWidth);
-form1.GVTsGrid.ColWidths[1] := ThisPercent(80,GridWidth,true);
+form1.GVTsGrid.ColWidths[1] := ThisPercent(79,GridWidth,true);
 End;
 
 // Set nodes grid prepare canvas
@@ -345,6 +371,7 @@ Begin
 CurrPos := aRow-1;
 if ((CurrPos >=0) and (Acol = 0)) then
    begin
+   // Lock icon
    if copy(ARRAY_Addresses[CurrPos].PrivateKey,1,1) = '*' then
       begin
       ColWidth := (sender as TStringGrid).ColWidths[0];
@@ -361,7 +388,21 @@ if ((CurrPos >=0) and (Acol = 0)) then
    end;
 if ((CurrPos>=0) and (Acol = 3)) then
    begin
-   if (ARRAY_Addresses[CurrPos].Balance div 100000000) > Int_StakeSize then
+   // MN icon
+   If AnsiContainsStr(GetMasternodes,ARRAY_Addresses[CurrPos].Hash) then
+      begin
+      ColWidth := (sender as TStringGrid).ColWidths[3];
+      Bitmap:=TBitmap.Create;
+      ImageList.GetBitmap(4,Bitmap);
+      myRect := Arect;
+      myrect.Left:=myRect.Left+4;
+      myRect.Right := myrect.Left+20;
+      myrect.Bottom:=myrect.Top+20;
+      (sender as TStringGrid).Canvas.StretchDraw(myRect,bitmap);
+      Bitmap.free
+      end;
+   if ( (ARRAY_Addresses[CurrPos].Balance div 100000000 > Int_StakeSize) and
+        (not AnsiContainsStr(GetMasternodes,ARRAY_Addresses[CurrPos].Hash)) ) then
       begin
       ColWidth := (sender as TStringGrid).ColWidths[3];
       Bitmap:=TBitmap.Create;
@@ -381,15 +422,21 @@ procedure TForm1.SGridAddressesKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
   Procedure TryMoveUpAddress();
   var
-    tempdata:WalletData;
-    CurrRow : integer;
+    tempdata    :WalletData;
+    tempPending : PendingData;
+    CurrRow     : integer;
   Begin
   CurrRow := SGridAddresses.Row-1;
   if CurrRow>0 then
      begin
-     tempdata := ARRAY_Addresses[currRow-1];
+     tempdata    := ARRAY_Addresses[currRow-1];
+     tempPending := ARRAY_Pending[currRow-1];
      ARRAY_Addresses[currRow-1] := ARRAY_Addresses[currRow];
      ARRAY_Addresses[currRow] := Tempdata;
+
+     ARRAY_Pending[currRow-1] := ARRAY_Pending[currRow];
+     ARRAY_Pending[currRow]   := tempPending;
+
      RefreshAddresses;
      SaveWallet();
      SGridAddresses.Row :=SGridAddresses.Row-1
@@ -399,14 +446,19 @@ procedure TForm1.SGridAddressesKeyUp(Sender: TObject; var Key: Word;
   Procedure TryMoveDownAddress();
   var
     tempdata:WalletData;
+    tempPending : PendingData;
     CurrRow : integer;
   Begin
   CurrRow := SGridAddresses.Row-1;
   if CurrRow<length(ARRAY_Addresses)-1 then
      begin
      tempdata := ARRAY_Addresses[currRow+1];
+     tempPending := ARRAY_Pending[currRow+1];
      ARRAY_Addresses[currRow+1] := ARRAY_Addresses[currRow];
      ARRAY_Addresses[currRow] := Tempdata;
+     ARRAY_Pending[currRow+1] := ARRAY_Pending[currRow];
+     ARRAY_Pending[currRow] := tempPending;
+
      RefreshAddresses;
      SaveWallet();
      SGridAddresses.Row :=SGridAddresses.Row+1
@@ -422,32 +474,6 @@ if SGridAddresses.Row>0 then
       TryMoveDownAddress;
    end
 end;
-
-//******************************************************************************
-// Client channel
-//******************************************************************************
-
-// On work begin
-procedure TForm1.ClientChannelWorkBegin(ASender: TObject; AWorkMode: TWorkMode;
-  AWorkCountMax: Int64);
-Begin
-Int_SumarySize := AWorkCountMax;
-End;
-
-// Client on work
-procedure TForm1.ClientChannelWork(ASender: TObject; AWorkMode: TWorkMode;
-  AWorkCount: Int64);
-Begin
-//Form1.LabelDownload.Caption:=IntToStr(((AWorkCount*100) div Int_SumarySize))+' %';
-End;
-
-// On work end
-procedure TForm1.ClientChannelWorkEnd(ASender: TObject; AWorkMode: TWorkMode);
-Begin
-Tolog(format(rsGUI0013,[Int_SumarySize div 1024]));
-//Form1.LabelDownload.Caption  := '0 %';
-End;
-
 
 //******************************************************************************
 // Addresses Pop Up menu
@@ -544,6 +570,7 @@ if length(ARRAY_Addresses)>1 then
    CurrWallet := ARRAY_Addresses[CurrPosition];
    Delete(ARRAY_Addresses,CurrPosition,1);
    LeaveCriticalSection(CS_ARRAY_Addresses);
+   Delete(ARRAY_Pending,CurrPosition,1);
    MoveAddressToTrash(CurrWallet);
    SAVE_Wallet := true;
    REF_Addresses := true;
@@ -622,6 +649,20 @@ else
    else ToLog(format(rsError0011,[ARRAY_Addresses[CurrPos].Hash]));
    end;
 end;
+
+// Edit address label
+procedure TForm1.MenuItem11Click(Sender: TObject);
+var
+  NewLabel : String;
+Begin
+newlabel := GetLabelAddress(ARRAY_Addresses[SGridAddresses.Row-1].Hash);
+if InputQuery('Edit label', 'Enter label', newlabel) then
+   begin
+   SetLabelValue(ARRAY_Addresses[SGridAddresses.Row-1].Hash,NewLabel);
+   Ref_Addresses := true;
+   end;
+
+End;
 
 // Certificate
 procedure TForm1.MenuItem15Click(Sender: TObject);

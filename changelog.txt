@@ -6,3 +6,9 @@
 - Customize address implemented.
 - Easy address ordering with keys: "Q" / "A".
 - Synchronization algo changed.
+- Dish icon implemented.
+- Address label implemented.
+- GVTs track implemented.
+- Colors for pending transactions.
+
+

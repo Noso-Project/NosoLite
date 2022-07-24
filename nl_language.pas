@@ -28,8 +28,8 @@ Resourcestring
 
   // GUI interface
   rsGUI0001 = 'Address';
-  rsGUI0002 = 'Incoming';
-  rsGUI0003 = 'Outgoing';
+  rsGUI0002 = 'Label';
+  rsGUI0003 = 'Pending';
   rsGUI0004 = 'Balance';
   rsGUI0005 = 'Host';
   rsGUI0006 = 'Block';

@@ -20,9 +20,9 @@ object Form1: TForm1
     Height = 424
     Top = 0
     Width = 640
-    ActivePage = TabSheet1
+    ActivePage = TabWallet
     Align = alClient
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 0
     object TabWallet: TTabSheet
       Caption = 'Wallet'
@@ -535,10 +535,13 @@ object Form1: TForm1
           object CBMultisend: TCheckBox
             Left = 144
             Height = 17
+            Hint = 'Check to use all addresses'
             Top = 42
             Width = 20
             AutoSize = False
             OnChange = CBMultisendChange
+            ParentShowHint = False
+            ShowHint = True
             TabOrder = 7
           end
           object EditSCMont: TEdit
@@ -596,7 +599,7 @@ object Form1: TForm1
         end
       end
     end
-    object TabSheet1: TTabSheet
+    object TabGVTs: TTabSheet
       Caption = 'GVTs'
       ClientHeight = 396
       ClientWidth = 632
@@ -615,7 +618,7 @@ object Form1: TForm1
           ClientWidth = 624
           object GVTsGrid: TStringGrid
             Left = 0
-            Height = 368
+            Height = 302
             Top = 0
             Width = 624
             Align = alClient
@@ -626,6 +629,94 @@ object Form1: TForm1
             ScrollBars = ssVertical
             TabOrder = 0
             OnResize = GVTsGridResize
+          end
+          object PanelTransferGVT: TPanel
+            Left = 0
+            Height = 66
+            Top = 302
+            Width = 624
+            Align = alBottom
+            ClientHeight = 66
+            ClientWidth = 624
+            TabOrder = 1
+            object Label14: TLabel
+              Left = 1
+              Height = 21
+              Top = 1
+              Width = 622
+              Align = alTop
+              Alignment = taCenter
+              Caption = 'Transfer'
+              Font.CharSet = ANSI_CHARSET
+              Font.Color = clBlack
+              Font.Height = -16
+              Font.Name = 'Segoe UI'
+              Font.Pitch = fpVariable
+              Font.Quality = fqDraft
+              Font.Style = [fsBold]
+              ParentColor = False
+              ParentFont = False
+            end
+            object SCBitSend1: TBitBtn
+              Left = 527
+              Height = 43
+              Top = 22
+              Width = 96
+              Align = alRight
+              Caption = 'Transfer'
+              Enabled = False
+              Font.CharSet = ANSI_CHARSET
+              Font.Height = -12
+              Font.Name = 'Segoe UI'
+              Font.Pitch = fpVariable
+              Font.Quality = fqDraft
+              ImageIndex = 16
+              ParentFont = False
+              TabOrder = 0
+            end
+            object Panel23: TPanel
+              Left = 1
+              Height = 43
+              Top = 22
+              Width = 526
+              Align = alClient
+              BevelOuter = bvNone
+              ClientHeight = 43
+              ClientWidth = 526
+              TabOrder = 1
+              object Label15: TLabel
+                Left = 0
+                Height = 17
+                Top = 0
+                Width = 526
+                Align = alTop
+                Caption = 'Destination'
+                Font.CharSet = ANSI_CHARSET
+                Font.Color = clBlack
+                Font.Height = -13
+                Font.Name = 'Segoe UI'
+                Font.Pitch = fpVariable
+                Font.Quality = fqDraft
+                ParentColor = False
+                ParentFont = False
+              end
+              object Edit2: TEdit
+                Left = 0
+                Height = 26
+                Top = 17
+                Width = 526
+                Align = alClient
+                Color = clBlack
+                Font.CharSet = ANSI_CHARSET
+                Font.Color = clWhite
+                Font.Height = -13
+                Font.Name = 'Consolas'
+                Font.Pitch = fpFixed
+                Font.Quality = fqDraft
+                ParentFont = False
+                TabOrder = 0
+              end
+            end
           end
         end
         object TabGVTsPolls: TTabSheet
@@ -640,7 +731,7 @@ object Form1: TForm1
       ClientWidth = 632
       object SGridNodes: TStringGrid
         Left = 0
-        Height = 396
+        Height = 381
         Top = 0
         Width = 632
         Align = alClient
@@ -652,6 +743,15 @@ object Form1: TForm1
         TabOrder = 0
         OnPrepareCanvas = SGridNodesPrepareCanvas
         OnResize = SGridNodesResize
+      end
+      object LabelNodes: TLabel
+        Left = 0
+        Height = 15
+        Top = 381
+        Width = 632
+        Align = alBottom
+        Caption = ' '
+        ParentColor = False
       end
     end
     object TabLiqPool: TTabSheet
@@ -1160,8 +1260,13 @@ object Form1: TForm1
       Caption = 'New'
       OnClick = MenuItem5Click
     end
+    object MenuItem11: TMenuItem
+      Caption = 'Label'
+      OnClick = MenuItem11Click
+    end
     object MenuItem6: TMenuItem
       Caption = 'Set as Default'
+      Visible = False
       OnClick = MenuItem6Click
     end
     object MenuItem4: TMenuItem
@@ -1207,21 +1312,11 @@ object Form1: TForm1
       OnClick = MenuItem17Click
     end
   end
-  object ClientChannel: TIdTCPClient
-    OnWork = ClientChannelWork
-    OnWorkBegin = ClientChannelWorkBegin
-    OnWorkEnd = ClientChannelWorkEnd
-    ConnectTimeout = 0
-    Port = 0
-    ReadTimeout = -1
-    Left = 256
-    Top = 512
-  end
   object ImageList: TImageList
     Left = 384
     Top = 520
     Bitmap = {
-      4C69040000001000000010000000FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      4C69050000001000000010000000FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -1348,6 +1443,38 @@ object Form1: TForm1
       BDFF8EA7B5DDACA4A080B3B1B1289191910AAFAEAE27B6B2B038B9B3AF46BDB4
       B055B9B2AF56B3B1AF67B1B1B16CB1B1B16BB3AFAD63B8B1AE56BDB4B054BAB3
       B045B7B4B236AEAEAE258E8E8E07000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00001D1D1D1911111162363636933B3B3BA633333390131313510D0D0D050000
+      00000000000000000000000000000000000000000000000000000D0D0D1A3C3C
+      3CA9696969FC838383FF888888FF848484FF6D6D6DFF6D6D6DFF404040DC2525
+      25370000000000000000000000000000000000000000303030345D5D5DEA8F9D
+      A5FF83939DFF979797FF8E8E8EFF7A7A7AFF686868FF828282FF7E7E7EFF4C4C
+      4CF11B1B1B200000000000000000000000001D1D1D296A6A6AEFB3B3B3FFA8AB
+      ACFF7799ABFFA0A0A0FF989898FF888888FF8A8A8AFF7E7E7EFF808080FF8A8A
+      8AFF3F3F3F99000000000000000012121204535353D1BFBFBFFFB9B9B9FFB4B4
+      B4FFACACACFFA3A3A3FF959595FF9B9B9BFF989898FF909090FF818181FF8282
+      82FF6F6F6FE000000000000000002626265CB0B0B0FFC4C4C4FFC0C0C0FFB9B9
+      B9FFB2B2B2FF9E9E9EFFA3A3A3FF9F9F9FFF999999FF969696FF949494FF8C8C
+      8CFF828282F40000000000000000515151AFD3D3D3FFCDCDCDFFC4C4C4FFBDBD
+      BDFFABABABFFA1A1A1FF9A9A9AFFA6A6A6FF9F9F9FFF9A9A9AFF949494FFA0A0
+      A0FF676767D10000000000000000686868D9D8D8D8FFD1D1D1FFC9C9C9FFB9B9
+      B9FFBEBEBEFFBABABAFFB3B3B3FFAEAEAEFFA8A8A8FFA1A1A1FF9B9B9BFFACAC
+      ACFF2727277800000000000000005B5B5BD0DEDEDEFFCDCDCDFFC6C6C6FFCACA
+      CAFFC8C8C8FFC2C2C2FFBABABAFFB6B6B6FFAFAFAFFFA8A8A8FFACACACFF4848
+      48D81414140A00000000000000003232328BBABABAFFCFCFCFFFD6D6D6FFD5D5
+      D5FFCFCFCFFFC9C9C9FFC2C2C2FFBBBBBBFFB8B8B8FFA2A2A2FF414141E90606
+      064E000000270000001A000000050C0C0C16464646E8BFBFBFFFDFDFDFFFDADA
+      DAFFD5D5D5FFD0D0D0FFCBCBCBFFB3B3B3FF717171FF232323D2030303700000
+      00630000005F000000510000001A00000000161616232C2C2CB5535353FD7B7B
+      7BFF8C8C8CFF818181FF626262FF3D3D3DFF131313BC00000058000000500000
+      0043000000300000001800000003000000000000000000000000131313162828
+      289F8D8D8DFF888888FF6F6F6FFF4B4B4BFF1818189C010101110000000A0000
+      0004000000010000000000000000000000000000000000000000000000000D0D
+      0D0A33333384515151CB424242D2272727970808081400000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000
     }

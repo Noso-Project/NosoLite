@@ -27,7 +27,6 @@ Function BlockAge():integer;
 
 // Network
 
-
 function Consensus():Boolean;
 Function GetSumaryLastBlock():Integer;
 function GetAddressBalanceFromSumary(address:string):int64;
@@ -54,11 +53,20 @@ function isAddressLocked(address:walletdata):boolean;
 Procedure UpdateWalletFromSumary();
 Procedure ProcessPendings();
 
+// Masternodes
+Procedure SetMasterNodes(TValue:string);
+Function GetMasternodes():String;
+Function MasternodesLastBlock():Integer;
+
+// Labels
+Function GetLabelAddress(Address:String):String;
+Procedure SetLabelValue(Address,LabelStr:String);
+
 
 implementation
 
 uses
-  nl_cripto, nl_network;
+  nl_cripto, nl_network, nl_Disk;
 
 // ***************
 // *** GENERAL ***
@@ -707,7 +715,70 @@ until thisorder = '';
 //tolog(Pendings_String);
 End;
 
+// MASTERNODES
 
+Procedure SetMasterNodes(TValue:string);
+Begin
+EnterCriticalSection(CS_Masternodes);
+G_Masternodes := TValue;
+LeaveCriticalSection(CS_Masternodes);
+End;
+
+Function GetMasternodes():String;
+Begin
+EnterCriticalSection(CS_Masternodes);
+Result := G_Masternodes;
+LeaveCriticalSection(CS_Masternodes);
+End;
+
+Function MasternodesLastBlock():Integer;
+Begin
+EnterCriticalSection(CS_Masternodes);
+Result := StrToIntDef(Parameter(G_Masternodes,0),0);
+LeaveCriticalSection(CS_Masternodes);
+End;
+
+// Labels
+
+Function GetLabelAddress(Address:String):String;
+var
+  Counter : integer;
+Begin
+result := '';
+For counter := 0 to length(ARRAY_Labels)-1 do
+   begin
+   if ARRAY_Labels[counter].Address=Address then
+      begin
+      result := ARRAY_Labels[counter].LabelSt;
+      Break;
+      end;
+   end;
+End;
+
+Procedure SetLabelValue(Address,LabelStr:string);
+var
+  Counter : integer;
+  Added   : boolean = false;
+  NewLabel: TypeLabel;
+Begin
+For counter := 0 to length(ARRAY_Labels)-1 do
+   begin
+   if ARRAY_Labels[counter].Address=address then
+      begin
+      ARRAY_Labels[counter].LabelSt:=LabelStr;
+      if LabelStr = '' then Delete(ARRAY_Labels,counter,1);
+      Added := true;
+      break;
+      end;
+   end;
+If not Added then
+   begin
+   NewLabel.Address:=Address;
+   NewLabel.LabelSt:=LabelStr;
+   Insert(NewLAbel,ARRAY_Labels,length(ARRAY_Labels));
+   end;
+SaveLabelsToDisk();
+End;
 
 END. // END UNIT
 

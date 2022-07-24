@@ -106,11 +106,17 @@ msgid "Address"
 msgstr "Direccion"
 
 #: nl_language.rsgui0002
-msgid "Incoming"
+#, fuzzy
+#| msgid "Incoming"
+msgctxt "nl_language.rsgui0002"
+msgid "Label"
 msgstr "Entrante"
 
 #: nl_language.rsgui0003
-msgid "Outgoing"
+#, fuzzy
+#| msgid "Outgoing"
+msgctxt "nl_language.rsgui0003"
+msgid "Pending"
 msgstr "Saliente"
 
 #: nl_language.rsgui0004
@@ -126,6 +132,7 @@ msgid "Block"
 msgstr "Bloque"
 
 #: nl_language.rsgui0007
+msgctxt "nl_language.rsgui0007"
 msgid "Pending"
 msgstr "Pendiente"
 
@@ -154,6 +161,7 @@ msgid "Summary downloaded: %d kb"
 msgstr ""
 
 #: nl_language.rsgui0014
+msgctxt "nl_language.rsgui0014"
 msgid "Destination"
 msgstr "Destino"
 
@@ -260,6 +268,10 @@ msgctxt "tform1.caption"
 msgid "Nosolite"
 msgstr ""
 
+#: tform1.cbmultisend.hint
+msgid "Check to use all addresses"
+msgstr ""
+
 #: tform1.combobox1.text
 msgid "ComboBox1"
 msgstr ""
@@ -276,6 +288,17 @@ msgstr ""
 msgid "Liquidity pool"
 msgstr ""
 
+#: tform1.label14.caption
+msgctxt "tform1.label14.caption"
+msgid "Transfer"
+msgstr ""
+
+#: tform1.label15.caption
+#, fuzzy
+msgctxt "tform1.label15.caption"
+msgid "Destination"
+msgstr "Destino"
+
 #: tform1.label2.caption
 msgid "Working address: "
 msgstr ""
@@ -287,6 +310,10 @@ msgstr ""
 
 #: tform1.labellocked.hint
 msgid "Locked balance"
+msgstr ""
+
+#: tform1.labelnodes.caption
+msgid " "
 msgstr ""
 
 #: tform1.labelstake.caption
@@ -341,6 +368,11 @@ msgstr "Importar"
 #: tform1.menuitem10.caption
 msgid "Unlock"
 msgstr "Desbloquear"
+
+#: tform1.menuitem11.caption
+msgctxt "tform1.menuitem11.caption"
+msgid "Label"
+msgstr ""
 
 #: tform1.menuitem15.caption
 msgid "Certificate"
@@ -449,6 +481,16 @@ msgstr "Confirmar"
 msgid "Send"
 msgstr "Enviar"
 
+#: tform1.scbitsend1.caption
+msgctxt "tform1.scbitsend1.caption"
+msgid "Transfer"
+msgstr ""
+
+#: tform1.tabgvts.caption
+msgctxt "tform1.tabgvts.caption"
+msgid "GVTs"
+msgstr ""
+
 #: tform1.tabgvtsgvts.caption
 msgctxt "tform1.tabgvtsgvts.caption"
 msgid "GVTs"
@@ -470,11 +512,6 @@ msgstr "Historial"
 #: tform1.tabnodes.caption
 msgid "Nodes"
 msgstr "Nodos"
-
-#: tform1.tabsheet1.caption
-msgctxt "tform1.tabsheet1.caption"
-msgid "GVTs"
-msgstr ""
 
 #: tform1.tabwallet.caption
 msgid "Wallet"

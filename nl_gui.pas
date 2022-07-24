@@ -11,6 +11,7 @@ Procedure LoadGUIInterface();
 Procedure RefreshAddresses();
 Procedure RefreshNodes();
 Procedure RefreshStatus();
+Procedure RefreshGVTs();
 Function BestHashReadeable(BestDiff:String):string;
 
 implementation
@@ -42,6 +43,7 @@ Form1.SGridSC.Cells[0,2]:=rsGUI0016;
 form1.CBMultisend.Checked:=WO_Multisend;
 Form1.GVTsGrid.Cells[0,0]:= rsGUI0035;
 Form1.GVTsGrid.Cells[1,0]:= rsGUI0036;
+form1.GVTsGrid.FocusRectVisible:=false;
 End;
 
 // Refresh the adressess grid
@@ -59,8 +61,8 @@ if length(ARRAY_Addresses)>0 then
    for counter := 0 to length(ARRAY_Addresses)-1 do
       begin
       form1.SGridAddresses.Cells[0,counter+1] := GetAddressToShow(ARRAY_Addresses[counter].Hash);
-      form1.SGridAddresses.Cells[1,counter+1] := Int2Curr(ARRAY_Pending[counter].incoming);
-      form1.SGridAddresses.Cells[2,counter+1] := Int2Curr(ARRAY_Pending[counter].outgoing);
+      form1.SGridAddresses.Cells[1,counter+1] := GetLabelAddress(ARRAY_Addresses[counter].Hash);
+      form1.SGridAddresses.Cells[2,counter+1] := Int2Curr(ARRAY_Pending[counter].incoming-ARRAY_Pending[counter].outgoing);
       form1.SGridAddresses.Cells[3,counter+1] := Int2Curr(ARRAY_Addresses[counter].Balance-ARRAY_Pending[counter].outgoing);
       if ARRAY_Addresses[counter].PrivateKey[1] = '*' then
          Int_LockedBalance := Int_LockedBalance+ARRAY_Addresses[counter].Balance-ARRAY_Pending[counter].outgoing
@@ -77,6 +79,7 @@ Procedure RefreshNodes();
 var
   counter : integer = 0;
 Begin
+Form1.LabelNodes.caption := 'Block: '+MasternodesLastBlock.ToString+'+';
 form1.SGridNodes.RowCount:=length(ARRAY_Nodes)+1;
 if length(ARRAY_Nodes)>0 then
    begin
@@ -92,6 +95,7 @@ if length(ARRAY_Nodes)>0 then
       form1.SGridNodes.Cells[7,counter+1] := ARRAY_Nodes[counter].version;
       end;
    end;
+Form1.TabNodes.Caption:=Format('Nodes (%d)',[length(ARRAY_Nodes)]);
 End;
 
 // Refresh the status bar
@@ -111,6 +115,26 @@ Form1.Labelsupply.Hint:=format(rsGUI0025,[FormatFloat('0.00', Supply)]);
 form1.LabelTime.Caption:=TimestampToDate(G_UTCTime);
 form1.labelstake.Caption:=IntToStr(Int_StakeSize)+' NOSO';
 form1.Labelsummary.Caption:=FormatFloat('0.00', (length(ARRAY_Sumary)+1)/1000)+'k';
+End;
+
+Procedure RefreshGVTs();
+var
+  counter : integer;
+Begin
+Form1.GVTsGrid.RowCount:=1;
+For Counter := 0 to Length(ARRAY_GVTs)-1 do
+   begin
+   if WalletAddressIndex(ARRAY_GVTs[counter].owner) >=0 then
+      begin
+      Form1.GVTsGrid.RowCount:=Form1.GVTsGrid.RowCount+1;
+      Form1.GVTsGrid.Cells[0,Form1.GVTsGrid.RowCount-1] := ARRAY_GVTs[counter].number;
+      Form1.GVTsGrid.Cells[1,Form1.GVTsGrid.RowCount-1] := ARRAY_GVTs[counter].owner;
+      end;
+   end;
+Int_GVTOwned := Form1.GVTsGrid.RowCount-1;
+if Int_GVTOwned = 0 then Form1.TabGVTs.TabVisible:=false
+else Form1.TabGVTs.TabVisible:=true;
+Form1.TabGVTs.Caption:=Format('GVTs (%d)',[Int_GVTOwned]);
 End;
 
 Function BestHashReadeable(BestDiff:String):string;

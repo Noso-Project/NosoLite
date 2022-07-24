@@ -5,7 +5,7 @@ unit nl_consensus;
 interface
 
 uses
-  Classes, SysUtils, IdTCPClient, IdGlobal, nl_data, nl_functions, strutils, nl_language;
+  Classes, SysUtils, IdTCPClient, IdGlobal, nl_data, nl_functions, strutils, nl_language, Nl_disk;
 
 Type
 
@@ -43,6 +43,9 @@ Procedure RunGetSumary();
 
 Function CalculateConsensus():NodeData;
 
+Procedure RunUpdateGVTs();
+function GetGVTsFile():boolean;
+
 var
   NodesFilled      : boolean = false;
   FillingNodes     : boolean = false;
@@ -55,6 +58,8 @@ var
   SyncingThreads   : integer = 0;
   SyncDuration     : int64;
   MainConsensus    : NodeData;
+
+  UpdatingGVTs     : boolean = false;
 
   // Critical sections
   CS_CSThread      : TRTLCriticalSection;
@@ -236,20 +241,19 @@ var
   RanNode        : integer;
   ThisNode       : NodeData;
 Begin
-Result := false;
-TCPClient := TidTCPClient.Create(nil);
-ThisNode := PickRandomNode;
-TCPClient.Host:=ThisNode.host;
-TCPClient.Port:=ThisNode.port;
+Result         := false;
+TCPClient      := TidTCPClient.Create(nil);
+ThisNode       := PickRandomNode;
+TCPClient.Host :=ThisNode.host;
+TCPClient.Port :=ThisNode.port;
 TCPClient.ConnectTimeout:= 1000;
 TCPClient.ReadTimeout:=800;
-MyStream := TMemoryStream.Create;
+MyStream       := TMemoryStream.Create;
 TRY
 TCPClient.Connect;
 TCPClient.IOHandler.WriteLn('GETZIPSUMARY');
    TRY
    HashLine := TCPClient.IOHandler.ReadLn(IndyTextEncoding_UTF8);
-   ToLog(format(rsGUI0017,[parameter(HashLine,1)]));
    TCPClient.IOHandler.ReadStream(MyStream);
    result := true;
    MyStream.SaveToFile(ZipSumaryFilename);
@@ -264,6 +268,7 @@ EXCEPT on E:Exception do
    end;
 END{try};
 if TCPClient.Connected then TCPClient.Disconnect();
+TCPClient.Free;
 MyStream.Free;
 GettingSum := false;
 End;
@@ -382,6 +387,56 @@ For counter := 0 to length (ARRAY_Nodes)-1 do
    else ARRAY_Nodes[counter].Synced:=false;
    end;
 
+End;
+
+Procedure RunUpdateGVTs();
+Begin
+if GetGVTsFile then
+   begin
+   REF_GVTS := true;
+   LoadGVTsFile();
+   end;
+UpdatingGVTs := true;
+End;
+
+function GetGVTsFile():boolean;
+var
+  TCPClient      : TidTCPClient;
+  MyStream       : TMemoryStream;
+  DownloadedFile : Boolean = false;
+  HashLine       : string;
+  RanNode        : integer;
+  ThisNode       : NodeData;
+Begin
+Result         := false;
+TCPClient      := TidTCPClient.Create(nil);
+ThisNode       := PickRandomNode;
+TCPClient.Host :=ThisNode.host;
+TCPClient.Port :=ThisNode.port;
+TCPClient.ConnectTimeout:= 1000;
+TCPClient.ReadTimeout:=800;
+MyStream       := TMemoryStream.Create;
+TRY
+TCPClient.Connect;
+TCPClient.IOHandler.WriteLn('NSLGVT');
+   TRY
+   HashLine := TCPClient.IOHandler.ReadLn(IndyTextEncoding_UTF8);
+   TCPClient.IOHandler.ReadStream(MyStream);
+   result := true;
+   MyStream.SaveToFile(GVTFilename);
+   EXCEPT on E:Exception do
+      begin
+
+      end;
+   END{Try};
+EXCEPT on E:Exception do
+   begin
+
+   end;
+END{try};
+if TCPClient.Connected then TCPClient.Disconnect();
+TCPClient.Free;
+MyStream.Free;
 End;
 
 INITIALIZATION

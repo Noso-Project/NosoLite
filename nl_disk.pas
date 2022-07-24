@@ -21,12 +21,16 @@ Procedure LoadSumary();
 Procedure UnZipSumary();
 Procedure CreateMNsFile();
 Procedure LoadMNsFromFile();
+Procedure FillArrayNodes();
 Procedure SaveMnsToFile(LineText:String);
 Function GetVerificators(LineText:String):String;
 // GVTs
 Procedure CreateGVTsFile();
 Procedure LoadGVTsFile();
-
+// Labels
+Procedure CreateLabelsFile();
+Procedure LoadLabelsFile();
+Procedure SaveLabelsToDisk();
 
 implementation
 
@@ -41,6 +45,7 @@ if not FileExists(OptionsFilename) then SaveOptions() else LoadOptions();
 if not FileExists(SumaryFilename) then CreateSumary() else LoadSumary();
 if not FileExists(MNsFilename) then CreateMNsFile() else LoadMNsFromFile();
 if not FileExists(GVTFilename) then CreateGVTsFile() else LoadGVTsFile();
+if not FileExists(LabelsFilename) then CreateLabelsFile() else LoadLabelsFile();
 
 
 End;
@@ -229,16 +234,14 @@ var
 Begin
 TRY
 UnZipper := TUnZipper.Create;
-   try
+   TRY
    UnZipper.FileName := ZipSumaryFilename;
    UnZipper.OutputPath := '';
    UnZipper.Examine;
    UnZipper.UnZipAllFiles;
-   finally
+   FINALLY
    UnZipper.Free;
-   tolog(HashMD5File(SumaryFilename));
-   end;
-//if delfile then Trydeletefile(ZipSumaryFilename);
+   END;
 EXCEPT on E:Exception do
    begin
    tolog ('Error unzipping block file');
@@ -267,14 +270,21 @@ assignfile(FILE_MNs,MNsFilename);
 Reset(FILE_MNs);
 ReadLn(FILE_MNs,LineText);
 CloseFile(FILE_MNs);
+SetMasternodes(LineText);
+FillArrayNodes
+End;
+
+Procedure FillArrayNodes();
+Begin
 if WO_UseSeedNodes then LoadSeedNodes(STR_SeedNodes)
-else LoadSeedNodes(GetVerificators(LineText));
+else LoadSeedNodes(GetVerificators(GetMasterNodes));
 End;
 
 Procedure SaveMnsToFile(LineText:String);
 Begin
 assignfile(FILE_MNs,MNsFilename);
 Rewrite(FILE_MNs);
+SetMasternodes(LineText);
 write(FILE_MNs,LineText);
 CloseFile(FILE_MNs);
 End;
@@ -293,7 +303,7 @@ var
   Added     : boolean;
   VersCount : integer;
 Begin
-result := '';
+Result := MasternodesLastBlock.ToString+' ';
 SetLEngth(ArrNodes,0);
 repeat
   thisParam := Parameter(LineText,counter);
@@ -365,7 +375,46 @@ For Counter := 0 to Filesize(FILE_GVTs)-1 do
 CloseFile(FILE_GVTs);
 End;
 
+//******************************************************************************
+// LABELS
+//******************************************************************************
 
+Procedure CreateLabelsFile();
+Begin
+assignfile(FILE_Labels,LabelsFilename);
+Rewrite(FILE_Labels);
+CloseFile(FILE_Labels);
+LoadGVTsFile();
+End;
+
+Procedure LoadLabelsFile();
+var
+  ThisLine : string;
+  ThisData : TypeLabel;
+Begin
+assignfile(FILE_Labels,LabelsFilename);
+Reset(FILE_Labels);
+SetLength(ARRAY_Labels,0);
+While not eof(FILE_Labels) do
+   begin
+   ReadLn(FILE_Labels,ThisLine);
+   ThisData.Address:=Parameter(ThisLine,0);
+   ThisData.LabelSt:=Parameter(ThisLine,1);
+   Insert(ThisData,ARRAY_Labels,LEngth(ARRAY_Labels));
+   end;
+CloseFile(FILE_Labels);
+End;
+
+Procedure SaveLabelsToDisk();
+var
+  Counter : integer;
+Begin
+assignfile(FILE_Labels,LabelsFilename);
+Rewrite(FILE_Labels);
+For counter := 0 to length(ARRAY_Labels)-1 do
+   writeln(FILE_Labels,ARRAY_Labels[counter].Address+' '+ARRAY_Labels[counter].LabelSt);
+CloseFile(FILE_Labels);
+End;
 
 END. // END UNIT
 

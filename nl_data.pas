@@ -36,6 +36,7 @@ TUpdateThread = class(TThread)
       procedure hidesync;
       procedure showdownload;
       procedure hidedownload;
+      procedure UpdateGVTs;
     protected
       procedure Execute; override;
     public
@@ -88,11 +89,11 @@ OrderData = Packed Record
    end;
 
 SumaryData = Packed Record
-   Hash : String[40]; // El hash publico o direccion
-   Custom : String[40]; // En caso de que la direccion este personalizada
-   Balance : int64; // el ultimo saldo conocido de la direccion
-   Score : int64; // estado del registro de la direccion.
-   LastOP : int64;// tiempo de la ultima operacion en UnixTime.
+   Hash    : String[40]; // El hash publico o direccion
+   Custom  : String[40]; // En caso de que la direccion este personalizada
+   Balance : int64;      // el ultimo saldo conocido de la direccion
+   Score   : int64;      // estado del registro de la direccion.
+   LastOP  : int64;      // tiempo de la ultima operacion en UnixTime.
    end;
 
 PendingData = Packed Record
@@ -120,6 +121,11 @@ TGVT = packed record
      control  : integer;
      end;
 
+TypeLabel = packed record
+     Address  : string[32];
+     LabelSt  : string[20];
+     end;
+
 CONST
   WalletDirectory   = 'wallet'+directoryseparator;  // Wallet folder
   DataDirectory     = 'data'+directoryseparator;
@@ -130,6 +136,7 @@ CONST
   OptionsFilename   = DataDirectory+'options.nsl';                // Options file
   MNsFilename       = DataDirectory+'masternodes.txt';
   GVTFilename       = DataDirectory+'gvts.psk';
+  LabelsFilename    = DataDirectory+'labels.psk';
   Customizationfee =25000;
   Comisiontrfr = 10000;
   MinimunFee = 10;
@@ -149,12 +156,14 @@ var
   FILE_Sumary  : File of SumaryData;
   FILE_MNs     : TextFile;
   FILE_GVTs    : File of TGVT;
+  FILE_Labels  : TextFile;
 
   ARRAY_Addresses : array of WalletData;
   ARRAY_Nodes     : array of NodeData;
   ARRAY_Sumary    : array of SumaryData;
   ARRAY_Pending   : array of PendingData;
   ARRAY_GVTs      : array of TGVT;
+  ARRAY_Labels    : array of TypeLabel;
 
   THREAD_Update : TUpdateThread;
 
@@ -163,7 +172,7 @@ var
                              '149.57.226.244;8080:X:X '+
                              '107.172.193.176;8080:X:X '+
                              '66.151.117.247;8080:X:X '+
-                             '192.3.73.184;8080:X:X '+
+                             '149.57.229.81;8080:X:X '+
                              '107.175.24.151;8080:X:X '+
                              '149.57.137.108;8080:X:X '+
                              '159.196.1.198:8080:X:X '+
@@ -177,6 +186,7 @@ var
     Pendings_String       : string = '';
   Int_TotalSupply         : integer = 0;
   Int_StakeSize           : integer = 0;
+  Int_GVTOwned            : integer = 0;
 
   WO_LastBlock    : integer = 0;
   WO_LastSumary   : string = '';
@@ -191,15 +201,19 @@ var
   REF_Addresses  : Boolean = false;
   REF_Nodes      : Boolean = false;
   REF_Status     : Boolean = false;
+  REF_GVTS       : Boolean = false;
   LogLines       : TStringList;
+  G_Masternodes  : String = '';
   G_UTCTime      : int64;
   G_FirstRun     : boolean = true;
   MainNetOffSet  : int64 = 0;
+  G_UpdatedMNs   : String = '';
 
   // Critical Sections
   CS_ARRAY_Addresses: TRTLCriticalSection;
   CS_LOG            : TRTLCriticalSection;
   CS_ArrayNodes     : TRTLCriticalSection;
+  CS_Masternodes    : TRTLCriticalSection;
 
   // Apps Related
   ArrApps           : array of AppData;
@@ -208,7 +222,7 @@ var
 implementation
 
 Uses
-  nl_mainform, nl_network, nl_functions, nl_GUI, nl_language, nl_disk, nl_consensus;
+  nl_mainform, nl_network, nl_functions, nl_GUI, nl_language, nl_disk, nl_consensus, nl_cripto;
 
 constructor TUpdateThread.Create(CreateSuspended : boolean);
 Begin
@@ -265,6 +279,12 @@ Begin
 Form1.PanelDownload.Visible:=false;
 End;
 
+procedure TUpdateThread.UpdateGVTs();
+Begin
+RefreshGVTs();
+REF_GVTs := false;
+End;
+
 procedure TUpdateThread.Execute;
 var
   counter : integer;
@@ -278,21 +298,32 @@ While not terminated do
       begin
       Synchronize(@showsync);
       RunFillnodes;
-      ToLog('Starting sync nodes');
+      //ToLog('Starting sync nodes');
       end;
    If NodesFilled then
       begin
-      ToLog('Nodes Synced');
+      //ToLog('Nodes Synced');
       LastNodesUpdateTime := UTCTime;
       NodesFilled  := false;
       Synchronize(@hidesync);
       REF_Nodes := true;
+      Int_LastPendingCount := MainConsensus.pending;
       MainConsensus := CalculateConsensus;
+      if MainConsensus.pending > Int_LastPendingCount then
+         begin
+         Pendings_String := GetPendings();
+         ProcessPendings();
+         Int_LastPendingCount := MainConsensus.pending;
+         end;
       end;
-   // Update sumary
    if ( (MainConsensus.block>GetSumaryLastBlock) and (not GettingSum) and (not SumReceived) ) then
+      // NEW BLOCK
       begin
       Synchronize(@showdownload);
+      Int_LastPendingCount := 0;
+      Pendings_String := '';
+      ProcessPendings();
+      REF_Addresses := true;
       ToLog('Downloading sumary');
       RunGetSumary();
       REF_Status := true;
@@ -307,6 +338,21 @@ While not terminated do
          UnZipSumary;
          LoadSumary();
          REF_Addresses := true;
+         G_UpdatedMNs := GetMNsFromNode;
+         if StrToIntDef(Parameter(G_UpdatedMNs,0),-1)> MasternodesLastBlock then
+            begin
+            SaveMnsToFile(G_UpdatedMNs);
+            FillArrayNodes;
+            LastNodesUpdateTime := 0;
+            end;
+         end;
+      end;
+   If Copy(HashMD5File(GVTFilename),1,5) <> MainConsensus.GVTHash then
+      begin
+      if (not UpdatingGVTs) then
+         begin
+         UpdatingGVTs := true;
+         RunUpdateGVTs();
          end;
       end;
 
@@ -317,6 +363,8 @@ While not terminated do
    if LogLines.Count>0 then Synchronize(@UpdateLog);
    if REF_Nodes then Synchronize(@UpdateNodes);
    if REF_Status then Synchronize(@UpdateStatus);
+   if REF_GVTs then Synchronize(@UpdateGVTs);
+
    if UTCTime <> G_UTCTime then
       begin
       G_UTCTime := UTCTime;
