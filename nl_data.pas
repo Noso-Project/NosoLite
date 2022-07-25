@@ -137,11 +137,12 @@ CONST
   MNsFilename       = DataDirectory+'masternodes.txt';
   GVTFilename       = DataDirectory+'gvts.psk';
   LabelsFilename    = DataDirectory+'labels.psk';
+  StartLogFilename  = DataDirectory+'startlog.txt';
   Customizationfee =25000;
   Comisiontrfr = 10000;
   MinimunFee = 10;
   Protocol = 2;
-  ProgramVersion = '1.24';
+  ProgramVersion = '1.25';
 
   HexAlphabet : string = '0123456789ABCDEF';
   B58Alphabet : string = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
@@ -150,13 +151,14 @@ CONST
   Customfee   = 25000;
 
 var
-  FILE_Wallet  : File of WalletData; // Wallet file pointer
-  FILE_Trash   : File of WalletData;
-  FILE_Options : textfile;
-  FILE_Sumary  : File of SumaryData;
-  FILE_MNs     : TextFile;
-  FILE_GVTs    : File of TGVT;
-  FILE_Labels  : TextFile;
+  FILE_Wallet   : File of WalletData; // Wallet file pointer
+  FILE_Trash    : File of WalletData;
+  FILE_Options  : textfile;
+  FILE_Sumary   : File of SumaryData;
+  FILE_MNs      : TextFile;
+  FILE_GVTs     : File of TGVT;
+  FILE_Labels   : TextFile;
+  FILE_StartLog : TextFile;
 
   ARRAY_Addresses : array of WalletData;
   ARRAY_Nodes     : array of NodeData;

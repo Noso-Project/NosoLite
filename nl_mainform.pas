@@ -9,7 +9,7 @@ uses
   Grids, Menus, StdCtrls, nl_GUI, nl_disk, nl_data, nl_functions, IdTCPClient,
   nl_language, nl_cripto, Clipbrd, Buttons, Spin, nl_explorer, IdComponent,
   strutils, Types, nl_qrcode, DefaultTranslator, infoform, nl_apps, nl_consensus,
-  nl_network;
+  nl_network, splashform;
 
 type
 
@@ -100,6 +100,7 @@ type
     TabGVTsGVTs: TTabSheet;
     TabGVTsPolls: TTabSheet;
     TabWallet: TTabSheet;
+    StartTimer : TTimer;
     procedure CBMultisendChange(Sender: TObject);
     procedure EditSCDestChange(Sender: TObject);
     procedure EditSCMontChange(Sender: TObject);
@@ -125,6 +126,8 @@ type
     procedure MenuItem8Click(Sender: TObject);
     procedure MenuItem9Click(Sender: TObject);
     procedure MM_File_ExitClick(Sender: TObject);
+    Procedure StartTimerRun(Sender: TObject);
+    Procedure RunAppStart();
 
     procedure SBSCMaxClick(Sender: TObject);
     procedure SBSCPasteClick(Sender: TObject);
@@ -196,67 +199,70 @@ Setlength(ARRAY_Pending,0);
 Setlength(ArrApps,0);
 LogLines :=TStringList.create;
 form1.Caption:='Nosolite '+ProgramVersion;
-// Verify files structure
-VerifyFilesStructure;
-
 End;
 
 // On show form events
 procedure TForm1.FormShow(Sender: TObject);
+Begin
+if G_FirstRun then
+   begin
+   G_FirstRun := false;
+   Form4.Label1.Caption:='Nosolite '+ProgramVersion;
+   Form1.StartTimer:= TTimer.Create(Form1);
+   Form1.StartTimer.Enabled:=true;
+   Form1.StartTimer.Interval:=1;
+   Form1.StartTimer.OnTimer:= @form1.StartTimerRun;
+   Form1.Visible:=false;
+   end;
+End;
+
+Procedure TForm1.StartTimerRun(Sender: TObject);
+Begin
+StartTimer.Enabled:=false;
+RunAppStart;
+End;
+
+Procedure TForm1.RunAppStart();
 var
   MainnetTime : int64;
   UpdatedMNs  : String = '';
 Begin
-if G_FirstRun then
+VerifyFilesStructure;
+  ToStartLog('Files verified');
+LoadGUIInterface();
+UpdateWalletFromSumary();
+RefreshAddresses();
+RefreshNodes();
+RefreshStatus();
+RefreshGVTs;
+  ToStartLog('GVTs updated');
+
+FillNodes;
+MainConsensus := CalculateConsensus;
+  ToStartLog('Consensus calculated');
+
+MainnetTime := GetMainnetTimestamp;
+if MainnetTime<>0 then MainNetOffSet := UTCTime-MainnetTime;
+ToLog(Format('Offset: %d seconds',[MainNetOffSet]));
+  ToStartLog('Mainnet time synced');
+
+UpdatedMNs := GetMNsFromNode;
+if StrToIntDef(Parameter(UpdatedMNs,0),-1)> MasternodesLastBlock then
    begin
-   LoadGUIInterface();
-   UpdateWalletFromSumary();
-   RefreshAddresses();
-   RefreshNodes();
-   RefreshStatus();
-   RefreshGVTs;
+   SaveMnsToFile(UpdatedMNs);
+   FillArrayNodes;
+   ToStartLog('Nodes updated');
+   end;
+Pendings_String := GetPendings();
+ProcessPendings();
+Sleep(500);
 
-   FillNodes;
-   MainConsensus := CalculateConsensus;
-
-   MainnetTime := GetMainnetTimestamp;
-   if MainnetTime<>0 then MainNetOffSet := UTCTime-MainnetTime;
-   ToLog(Format('Offset: %d seconds',[MainNetOffSet]));
-
-   UpdatedMNs := GetMNsFromNode;
-   if StrToIntDef(Parameter(UpdatedMNs,0),-1)> MasternodesLastBlock then
-      begin
-      SaveMnsToFile(UpdatedMNs);
-      FillArrayNodes;
-      end;
-   Pendings_String := GetPendings();
-   ProcessPendings();
-   {
-   FillNodes;
-   LastNodesUpdateTime := UTCTime;
-   MainConsensus := CalculateConsensus;
-   }
-
-   {
-   If Not WO_UseSeedNodes then
-      begin
-      RunFillNodes();
-      MAinConsensus := CalculateConsensus;
-      UpdatedMNs := GetMNsFromNode;
-      if StrToIntDef(Parameter(UpdatedMNs,0),-1)>= 0 then
-         begin
-         SaveMnsToFile(UpdatedMNs);
-         LoadSeedNodes(GetVerificators(UpdatedMNs));
-         end;
-      end;
-   }
-
+   Form1.Visible:=true;
+   form4.Visible:=false;
    THREAD_Update := TUpdateThread.Create(true);
    THREAD_Update.FreeOnTerminate:=true;
    THREAD_Update.Start;
-   G_FirstRun := false;
    form1.PageControl.ActivePage := form1.TabWallet;
-   end;
 End;
 
 // On close query form events
@@ -472,6 +478,8 @@ if SGridAddresses.Row>0 then
       TryMoveUpAddress;
    if (Key = VK_A) then
       TryMoveDownAddress;
+   if (Key = VK_H) then
+      form4.Visible := true;
    end
 end;
 

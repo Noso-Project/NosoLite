@@ -221,15 +221,18 @@ End;
 
 Function PickRandomNode():NodeData;
 var
-  TNumber : integer;
+  TNumber : integer = 0;
   Trys   : integer = 0;
 Begin
 Result := Default(NodeData);
-Repeat
-   TNumber := Random(ArrayNodesLength);
-   Inc(Trys);
-until ( (GetNodeIndex(Tnumber).Synced) or (Trys = ArrayNodesLength) );
-Result := GetNodeIndex(Tnumber);
+if ArrayNodesLength>0 then
+   begin
+   REPEAT
+      TNumber := Random(ArrayNodesLength);
+      Inc(Trys);
+   UNTIL ( (GetNodeIndex(Tnumber).Synced) or (Trys >= ArrayNodesLength) );
+   Result := GetNodeIndex(Tnumber);
+   end;
 End;
 
 // ************

@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, nl_data, nl_cripto, nl_language, dialogs, nl_functions, fileutil,
-  Zipper;
+  Zipper, splashform;
 
 Procedure VerifyFilesStructure();
 Procedure CreateNewWallet();
@@ -31,6 +31,9 @@ Procedure LoadGVTsFile();
 Procedure CreateLabelsFile();
 Procedure LoadLabelsFile();
 Procedure SaveLabelsToDisk();
+// Start log
+Procedure CreateStartLog();
+Procedure ToStartLog(TextLine:String);
 
 implementation
 
@@ -46,7 +49,7 @@ if not FileExists(SumaryFilename) then CreateSumary() else LoadSumary();
 if not FileExists(MNsFilename) then CreateMNsFile() else LoadMNsFromFile();
 if not FileExists(GVTFilename) then CreateGVTsFile() else LoadGVTsFile();
 if not FileExists(LabelsFilename) then CreateLabelsFile() else LoadLabelsFile();
-
+CreateStartLog();
 
 End;
 
@@ -260,6 +263,7 @@ assignfile(FILE_MNs,MNsFilename);
 Rewrite(FILE_MNs);
 write(FILE_MNs,STR_SeedNodes);
 CloseFile(FILE_MNs);
+LoadMNsFromFile;
 End;
 
 Procedure LoadMNsFromFile();
@@ -271,7 +275,7 @@ Reset(FILE_MNs);
 ReadLn(FILE_MNs,LineText);
 CloseFile(FILE_MNs);
 SetMasternodes(LineText);
-FillArrayNodes
+FillArrayNodes;
 End;
 
 Procedure FillArrayNodes();
@@ -414,6 +418,27 @@ Rewrite(FILE_Labels);
 For counter := 0 to length(ARRAY_Labels)-1 do
    writeln(FILE_Labels,ARRAY_Labels[counter].Address+' '+ARRAY_Labels[counter].LabelSt);
 CloseFile(FILE_Labels);
+End;
+
+//******************************************************************************
+// START LOG
+//******************************************************************************
+
+Procedure CreateStartLog();
+Begin
+assignfile(FILE_StartLog,StartLogFilename);
+Rewrite(FILE_StartLog);
+CloseFile(FILE_StartLog);
+End;
+
+Procedure ToStartLog(TextLine:String);
+Begin
+assignfile(FILE_StartLog,StartLogFilename);
+Append(FILE_StartLog);
+WriteLn(FILE_StartLog,TextLine);
+CloseFile(FILE_StartLog);
+form4.LabelSplash.Caption:=form4.LabelSplash.Caption+TextLine+slinebreak;
+form4.LabelSplash.Update;
 End;
 
 END. // END UNIT

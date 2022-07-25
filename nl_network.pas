@@ -6,12 +6,12 @@ interface
 
 uses
   Classes, SysUtils, nl_data, IdGlobal, dialogs, nl_functions, nl_language,
-  IdTCPClient;
+  IdTCPClient, splashform;
 
 function SendOrder(OrderString:String):String;
 function GetPendings():string;
-function GetMainnetTimestamp(Trys:integer=5):int64;
-function GetMNsFromNode(Trys:integer=5):string;
+function GetMainnetTimestamp(MaxTrys:integer=5):int64;
+function GetMNsFromNode(MaxTrys:integer=5):string;
 
 implementation
 
@@ -61,13 +61,12 @@ var
   ThisNode : NodeData;
 Begin
 Result := '';
-RanNode := Random(length(ARRAY_Nodes));
-ThisNode := ARRAY_Nodes[RanNode];
+ThisNode := PickRandomNode;
 Client := TidTCPClient.Create(nil);
 Client.Host:=Thisnode.host;
 Client.Port:=thisnode.port;
 Client.ConnectTimeout:= 1000;
-Client.ReadTimeout:=1500;
+Client.ReadTimeout:=1000;
 TRY
 Client.Connect;
 Client.IOHandler.WriteLn('NSLPEND');
@@ -83,12 +82,13 @@ if client.Connected then Client.Disconnect();
 client.Free;
 End;
 
-function GetMainnetTimestamp(Trys:integer=5):int64;
+function GetMainnetTimestamp(MaxTrys:integer=5):int64;
 var
-  Client : TidTCPClient;
-  RanNode : integer;
+  Client   : TidTCPClient;
+  RanNode  : integer;
   ThisNode : NodeData;
-  WasDone : boolean = false;
+  WasDone  : boolean = false;
+  Trys     : integer = 0;
 Begin
 Result := 0;
 Client := TidTCPClient.Create(nil);
@@ -109,17 +109,18 @@ REPEAT
       end;
    END{Try};
 Inc(Trys);
-UNTIL ( (WasDone) or (Trys = 5) );
+UNTIL ( (WasDone) or (Trys = MaxTrys) );
 if client.Connected then Client.Disconnect();
 client.Free;
 End;
 
-function GetMNsFromNode(Trys:integer=5):string;
+function GetMNsFromNode(MaxTrys:integer=5):string;
 var
-  Client : TidTCPClient;
-  RanNode : integer;
+  Client   : TidTCPClient;
+  RanNode  : integer;
   ThisNode : NodeData;
-  WasDone : boolean = false;
+  WasDone  : boolean = false;
+  Trys     : integer = 0;
 Begin
 Result := '';
 Client := TidTCPClient.Create(nil);
@@ -140,7 +141,7 @@ REPEAT
       end;
    END{Try};
 Inc(Trys);
-UNTIL ( (WasDone) or (Trys = 5) );
+UNTIL ( (WasDone) or (Trys = MaxTrys) );
 if client.Connected then Client.Disconnect();
 client.Free;
 End;

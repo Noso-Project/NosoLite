@@ -1,4 +1,9 @@
-- Version 1.24
+* Version 1.25
+
+- Fixed wrong data showed on status bar.
+- Added splash form.
+
+* Version 1.24
 
 - Fixed bug not allowing send/receive funds to custom addresses.
 - Implemented dynamic MNs update.

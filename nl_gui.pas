@@ -103,10 +103,10 @@ Procedure RefreshStatus();
 var
   Supply : extended;
 Begin
-Int_TotalSupply := (WO_LastBlock*50)+10303;
+Int_TotalSupply := (GetSumaryLastBlock *50)+10303;
 supply := Int_TotalSupply/1000000;
 Int_StakeSize  := (Int_TotalSupply div 500)+1;
-supply := (((WO_LastBlock*50)+10303)/1000000);
+supply := ((GetSumaryLastBlock *50)+10303)/1000000;
 if Wallet_Synced then form1.PanelBlockInfo.Color:=clGreen
 else form1.PanelBlockInfo.Color:=clRed;
 form1.LabelBlockInfo.Caption:=GetSumaryLastBlock.ToString;

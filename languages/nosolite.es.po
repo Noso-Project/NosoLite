@@ -545,6 +545,18 @@ msgstr ""
 msgid "Request"
 msgstr ""
 
+#: tform4.caption
+msgid "Form4"
+msgstr ""
+
+#: tform4.label1.caption
+msgid "Label1"
+msgstr ""
+
+#: tform4.label2.caption
+msgid "Starting..."
+msgstr ""
+
 #: tformexplorer.butaccept.hint
 msgctxt "tformexplorer.butaccept.hint"
 msgid "Accept"
