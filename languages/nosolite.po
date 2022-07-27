@@ -242,6 +242,56 @@ msgstr ""
 msgid "Address already have a custom alias"
 msgstr ""
 
+#: nl_language.rsgui0038
+msgid "Noso"
+msgstr ""
+
+#: nl_language.rsgui0039
+msgid "nUSDo"
+msgstr ""
+
+#: nl_language.rsgui0040
+msgid "LiqShares"
+msgstr ""
+
+#: nl_language.rsgui0041
+msgid "Account"
+msgstr ""
+
+#: nl_language.rsgui0042
+msgid "Pool"
+msgstr ""
+
+#: nl_language.rsgui0043
+msgctxt "nl_language.rsgui0043"
+msgid "Price"
+msgstr ""
+
+#: nl_language.rsgui0044
+msgid "   24 H Volume: %s nUSDo"
+msgstr ""
+
+#: nl_language.rsgui0045
+msgid "Hour"
+msgstr ""
+
+#: nl_language.rsgui0046
+msgid "Ammount"
+msgstr ""
+
+#: nl_language.rsgui0047
+msgctxt "nl_language.rsgui0047"
+msgid "Price"
+msgstr ""
+
+#: nl_language.rsgui0048
+msgid "   Marketcap : %s US$"
+msgstr ""
+
+#: nl_language.rsgui0049
+msgid "LTC: %s US$"
+msgstr ""
+
 #: tform1.caption
 msgctxt "tform1.caption"
 msgid "Nosolite"
@@ -249,10 +299,6 @@ msgstr ""
 
 #: tform1.cbmultisend.hint
 msgid "Check to use all addresses"
-msgstr ""
-
-#: tform1.combobox1.text
-msgid "ComboBox1"
 msgstr ""
 
 #: tform1.editscmont.text
@@ -278,7 +324,19 @@ msgid "Destination"
 msgstr ""
 
 #: tform1.label2.caption
-msgid "Working address: "
+msgid "Recent trades"
+msgstr ""
+
+#: tform1.label3.caption
+msgid "My trades"
+msgstr ""
+
+#: tform1.label4.caption
+msgid "Reconnecting..."
+msgstr ""
+
+#: tform1.label5.caption
+msgid "Noso/nUSDo"
 msgstr ""
 
 #: tform1.labellocked.caption
@@ -292,6 +350,22 @@ msgstr ""
 
 #: tform1.labelnodes.caption
 msgid " "
+msgstr ""
+
+#: tform1.labelpoolmainprice.caption
+msgid "LabelPoolMainPrice"
+msgstr ""
+
+#: tform1.labelpooltier.caption
+msgid "LAbelPoolTier"
+msgstr ""
+
+#: tform1.labelpoolvolume.caption
+msgid "LabelPoolVolume"
+msgstr ""
+
+#: tform1.labelpoomarketcap.caption
+msgid "LabelPoolMarketcap"
 msgstr ""
 
 #: tform1.labelstake.caption
@@ -434,12 +508,20 @@ msgctxt "tform1.panelsync.hint"
 msgid "Synchronizing"
 msgstr ""
 
+#: tform1.sbdepositnoso.hint
+msgid "Deposit Noso to your account"
+msgstr ""
+
 #: tform1.sbscmax.hint
 msgid "Send all"
 msgstr ""
 
 #: tform1.sbscpaste.hint
 msgid "Paste destination"
+msgstr ""
+
+#: tform1.sbwithdrawnoso.hint
+msgid "Withdraw Noso from your account"
 msgstr ""
 
 #: tform1.scbitcancel.caption
@@ -489,6 +571,14 @@ msgstr ""
 
 #: tform1.tabnodes.caption
 msgid "Nodes"
+msgstr ""
+
+#: tform1.tabsheet1.caption
+msgid "Trades"
+msgstr ""
+
+#: tform1.tabsheet2.caption
+msgid "History"
 msgstr ""
 
 #: tform1.tabwallet.caption

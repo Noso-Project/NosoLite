@@ -214,7 +214,7 @@ For Counter := 0 to ArrayNodesLength-1 do
 REPEAT
    sleep(1);
    Inc(Cycles);
-UNTIL ( (GetSyncingThreads <= 0) or (Cycles>=3000) );
+UNTIL ( (GetSyncingThreads <= 0) or (Cycles>=5000) );
 if GetSyncingThreads>0 then
    begin
    // ToLog('ERROR: Open threads '+GetSyncingThreads.ToString);

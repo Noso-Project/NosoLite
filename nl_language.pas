@@ -64,6 +64,18 @@ Resourcestring
   rsGUI0035 = '#';
   rsGUI0036 = 'Address';
   rsGUI0037 = 'Address already have a custom alias';
+  rsGUI0038 = 'Noso';
+  rsGUI0039 = 'nUSDo';
+  rsGUI0040 = 'LiqShares';
+  rsGUI0041 = 'Account';
+  rsGUI0042 = 'Pool';
+  rsGUI0043 = 'Price';
+  rsGUI0044 = '   24 H Volume: %s nUSDo';
+  rsGUI0045 = 'Hour';
+  rsGUI0046 = 'Ammount';
+  rsGUI0047 = 'Price';
+  rsGUI0048 = '   Marketcap : %s US$';
+  rsGUI0049 = 'LTC: %s US$';
   // Dialogs
   rsDIA0001 = 'Import address keys';
   rsDIA0002 = 'Paste the address keys here';

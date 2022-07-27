@@ -20,9 +20,9 @@ object Form1: TForm1
     Height = 424
     Top = 0
     Width = 640
-    ActivePage = TabWallet
+    ActivePage = TabLiqPool
     Align = alClient
-    TabIndex = 0
+    TabIndex = 3
     TabOrder = 0
     object TabWallet: TTabSheet
       Caption = 'Wallet'
@@ -760,63 +760,332 @@ object Form1: TForm1
       Caption = 'Liqpool'
       ClientHeight = 396
       ClientWidth = 632
+      OnResize = TabLiqPoolResize
       TabVisible = False
-      object Label1: TLabel
-        Left = 0
-        Height = 25
-        Top = 0
-        Width = 632
-        Align = alTop
-        Alignment = taCenter
-        Caption = 'Liquidity pool'
-        Font.CharSet = ANSI_CHARSET
-        Font.Color = clBlack
-        Font.Height = -19
-        Font.Name = 'Segoe UI'
-        Font.Pitch = fpVariable
-        Font.Quality = fqDraft
-        Font.Style = [fsBold]
+      object PanelPoolDisconnect: TPanel
+        Left = 160
+        Height = 160
+        Top = 128
+        Width = 354
+        ClientHeight = 160
+        ClientWidth = 354
+        Color = clScrollBar
         ParentColor = False
-        ParentFont = False
-      end
-      object Panel1: TPanel
-        Left = 0
-        Height = 23
-        Top = 25
-        Width = 632
-        Align = alTop
-        BevelOuter = bvNone
-        ClientHeight = 23
-        ClientWidth = 632
-        TabOrder = 0
-        object Label2: TLabel
-          Left = 5
-          Height = 23
-          Top = 0
-          Width = 119
-          Align = alLeft
-          BorderSpacing.Left = 5
-          BorderSpacing.Right = 10
-          Caption = 'Working address: '
+        TabOrder = 4
+        object Label4: TLabel
+          Left = 1
+          Height = 39
+          Top = 1
+          Width = 352
+          Align = alTop
+          Alignment = taCenter
+          AutoSize = False
+          Caption = 'Reconnecting...'
           Font.CharSet = ANSI_CHARSET
           Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Consolas'
-          Font.Pitch = fpFixed
+          Font.Height = -19
+          Font.Name = 'Segoe UI'
+          Font.Pitch = fpVariable
           Font.Quality = fqDraft
+          Font.Style = [fsBold]
           Layout = tlCenter
           ParentColor = False
           ParentFont = False
         end
-        object ComboBox1: TComboBox
-          Left = 134
-          Height = 23
+      end
+      object GridPoolData: TStringGrid
+        Left = 0
+        Height = 110
+        Top = 71
+        Width = 632
+        Align = alTop
+        BorderStyle = bsNone
+        FixedCols = 0
+        FixedRows = 0
+        GridLineWidth = 0
+        ScrollBars = ssNone
+        TabOrder = 1
+        OnPrepareCanvas = GridPoolDataPrepareCanvas
+      end
+      object Panel1: TPanel
+        Left = 0
+        Height = 71
+        Top = 0
+        Width = 632
+        Align = alTop
+        BevelOuter = bvNone
+        ClientHeight = 71
+        ClientWidth = 632
+        TabOrder = 0
+        object PanelPoolMarketPrice: TPanel
+          Left = 496
+          Height = 71
           Top = 0
-          Width = 364
-          Align = alLeft
-          ItemHeight = 15
+          Width = 136
+          Align = alRight
+          ClientHeight = 71
+          ClientWidth = 136
+          Color = clBlack
+          ParentColor = False
           TabOrder = 0
-          Text = 'ComboBox1'
+          object Label5: TLabel
+            Left = 1
+            Height = 21
+            Top = 1
+            Width = 134
+            Align = alTop
+            Alignment = taCenter
+            Caption = 'Noso/nUSDo'
+            Font.CharSet = ANSI_CHARSET
+            Font.Color = clWhite
+            Font.Height = -16
+            Font.Name = 'Segoe UI'
+            Font.Pitch = fpVariable
+            Font.Quality = fqDraft
+            Font.Style = [fsBold]
+            ParentColor = False
+            ParentFont = False
+          end
+          object LabelPoolMainPrice: TLabel
+            Left = 1
+            Height = 48
+            Top = 22
+            Width = 134
+            Align = alClient
+            Alignment = taCenter
+            Caption = 'LabelPoolMainPrice'
+            Font.CharSet = ANSI_CHARSET
+            Font.Color = clLime
+            Font.Height = -21
+            Font.Name = 'Consolas'
+            Font.Pitch = fpFixed
+            Font.Quality = fqDraft
+            Font.Style = [fsBold]
+            Layout = tlCenter
+            ParentColor = False
+            ParentFont = False
+          end
+        end
+        object PanelPoolHeader: TPanel
+          Left = 0
+          Height = 71
+          Top = 0
+          Width = 496
+          Align = alClient
+          ClientHeight = 71
+          ClientWidth = 496
+          TabOrder = 1
+          object Label1: TLabel
+            Left = 1
+            Height = 25
+            Top = 1
+            Width = 494
+            Align = alTop
+            Alignment = taCenter
+            Caption = 'Liquidity pool'
+            Font.CharSet = ANSI_CHARSET
+            Font.Color = clBlack
+            Font.Height = -19
+            Font.Name = 'Segoe UI'
+            Font.Pitch = fpVariable
+            Font.Quality = fqDraft
+            Font.Style = [fsBold]
+            ParentColor = False
+            ParentFont = False
+          end
+          object LAbelPoolTier: TLabel
+            Left = 378
+            Height = 44
+            Top = 26
+            Width = 107
+            Align = alRight
+            BorderSpacing.Right = 10
+            Caption = 'LAbelPoolTier'
+            Font.CharSet = ANSI_CHARSET
+            Font.Color = clGreen
+            Font.Height = -16
+            Font.Name = 'Segoe UI'
+            Font.Pitch = fpVariable
+            Font.Quality = fqDraft
+            Font.Style = [fsBold]
+            Layout = tlCenter
+            ParentColor = False
+            ParentFont = False
+          end
+          object labelPoolUser: TLabel
+            Left = 21
+            Height = 44
+            Top = 26
+            Width = 1
+            Align = alLeft
+            BorderSpacing.Left = 20
+            Font.CharSet = ANSI_CHARSET
+            Font.Color = clBlack
+            Font.Height = -16
+            Font.Name = 'Segoe UI'
+            Font.Pitch = fpVariable
+            Font.Quality = fqDraft
+            Font.Style = [fsBold]
+            Layout = tlCenter
+            ParentColor = False
+            ParentFont = False
+          end
+        end
+      end
+      object SBDepositNoso: TSpeedButton
+        Left = 84
+        Height = 18
+        Hint = 'Deposit Noso to your account'
+        Top = 88
+        Width = 18
+        Images = ImageList
+        ImageIndex = 5
+        ShowHint = True
+        ParentShowHint = False
+      end
+      object SBWithdrawNoso: TSpeedButton
+        Left = 96
+        Height = 18
+        Hint = 'Withdraw Noso from your account'
+        Top = 80
+        Width = 18
+        Images = ImageList
+        ImageIndex = 6
+        ShowHint = True
+        ParentShowHint = False
+      end
+      object PanelPoolHistory: TPanel
+        Left = 336
+        Height = 215
+        Top = 181
+        Width = 296
+        Align = alRight
+        ClientHeight = 215
+        ClientWidth = 296
+        TabOrder = 2
+        object LabelPoolVolume: TLabel
+          Left = 1
+          Height = 20
+          Top = 1
+          Width = 294
+          Align = alTop
+          AutoSize = False
+          Caption = 'LabelPoolVolume'
+          Color = clHighlight
+          Layout = tlCenter
+          ParentColor = False
+          Transparent = False
+        end
+        object Label2: TLabel
+          Left = 1
+          Height = 20
+          Top = 41
+          Width = 294
+          Align = alTop
+          Alignment = taCenter
+          AutoSize = False
+          Caption = 'Recent trades'
+          Color = clBlack
+          Font.CharSet = ANSI_CHARSET
+          Font.Color = clWhite
+          Font.Height = -16
+          Font.Name = 'Segoe UI'
+          Font.Pitch = fpVariable
+          Font.Quality = fqDraft
+          Font.Style = [fsBold]
+          Layout = tlCenter
+          ParentColor = False
+          ParentFont = False
+          Transparent = False
+        end
+        object GridPoolTrades: TStringGrid
+          Left = 1
+          Height = 153
+          Top = 61
+          Width = 294
+          Align = alClient
+          ColCount = 3
+          FixedCols = 0
+          RowCount = 1
+          ScrollBars = ssVertical
+          TabOrder = 0
+          OnResize = GridPoolTradesResize
+        end
+        object LabelPooMarketCap: TLabel
+          Left = 1
+          Height = 20
+          Top = 21
+          Width = 294
+          Align = alTop
+          AutoSize = False
+          Caption = 'LabelPoolMarketcap'
+          Color = clAqua
+          Layout = tlCenter
+          ParentColor = False
+          Transparent = False
+        end
+      end
+      object PanelPoolUSer: TPanel
+        Left = 0
+        Height = 215
+        Top = 181
+        Width = 336
+        Align = alLeft
+        ClientHeight = 215
+        ClientWidth = 336
+        TabOrder = 3
+        object PageControl1: TPageControl
+          Left = 1
+          Height = 213
+          Top = 1
+          Width = 334
+          ActivePage = TabSheet1
+          Align = alClient
+          TabIndex = 0
+          TabOrder = 0
+          object TabSheet1: TTabSheet
+            Caption = 'Trades'
+            ClientHeight = 185
+            ClientWidth = 326
+            object Label3: TLabel
+              Left = 0
+              Height = 20
+              Top = 0
+              Width = 326
+              Align = alTop
+              Alignment = taCenter
+              AutoSize = False
+              Caption = 'My trades'
+              Color = clBlack
+              Font.CharSet = ANSI_CHARSET
+              Font.Color = clWhite
+              Font.Height = -16
+              Font.Name = 'Segoe UI'
+              Font.Pitch = fpVariable
+              Font.Quality = fqDraft
+              Font.Style = [fsBold]
+              Layout = tlCenter
+              ParentColor = False
+              ParentFont = False
+              Transparent = False
+            end
+            object GridUserTrades: TStringGrid
+              Left = 0
+              Height = 165
+              Top = 20
+              Width = 326
+              Align = alClient
+              ColCount = 3
+              FixedCols = 0
+              RowCount = 1
+              ScrollBars = ssVertical
+              TabOrder = 0
+              OnResize = GridUserTradesResize
+            end
+          end
+          object TabSheet2: TTabSheet
+            Caption = 'History'
+          end
         end
       end
     end
@@ -1318,7 +1587,7 @@ object Form1: TForm1
     Left = 384
     Top = 520
     Bitmap = {
-      4C69050000001000000010000000FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      4C69070000001000000010000000FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -1478,7 +1747,71 @@ object Form1: TForm1
       0D0A33333384515151CB424242D2272727970808081400000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000
+      0000000000000000000000000000FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FCFCFD05CCCCCD72757477F8706F71F8C8C7C872FCFCFC05FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FAFA
+      FA08BFBFC06D818183F3CBCBCC77CBCBCC7778777AF3BCBBBC6DFAFAFB08FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00F9F8F90ABBBA
+      BB6B6C6B6EF0B9B9BA7CEDFDF915EDFDF915C9C9CA7C848486F0C4C4C56BF9F9
+      FA0AFFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00F9F8F90ABBBBBC6A6C6C
+      6EEEB8B8B97EEAFDF81885E7CA9885E7CA98EAFDF818C8C8C97E858487EEC5C5
+      C66AF9F9FA0AFFFFFF00FFFFFF00FFFFFF00FAFAFA08BBBABB6B6C6C6EEEB7B7
+      B87FE8FDF81A86E4C89557A378FF529F75FF83E1C695E8FDF81AC7C7C87F8584
+      87EEC4C4C56BFAFAFB08FFFFFF00FCFCFD05BFBFC06D6C6B6EF0B8B8B97EE8FD
+      F81A87E4C89458A679FF626346FF595941FF4B9872FF84E0C694E8FDF81AC8C8
+      C97E848486F0C2C2C36DFCFCFD05C8C7C872818183F3B9B9BA7CEAFDF81889E6
+      C9955DAB7CFF6C9064FF4D7A5BFF4D7A5BFF62865FFF52A076FF86E4C895EAFD
+      F818C9C9CA7C838385F3C8C8C9726F6E71F8CBCBCC77EDFDF91578F1D3982ED9
+      A8FF55B685FF3AC697FF309A7AFF309A7AFF3AC697FF4FAF82FF2BD6A6FF78F1
+      D398EDFDF915CBCBCC77706F71F86F6E71F8CBCBCC77EDFDF91578F1D3981DE6
+      B5FF1DE6B5FF1DE6B5FF309A7AFF309A7AFF1DE6B5FF1DE6B5FF1DE6B5FF78F1
+      D398EDFDF915CBCBCC77706F71F8C7C7C87278787AF3CACACA7CEAFDF8187BF1
+      D4951DE6B5FF1DE6B5FF309A7AFF309A7AFF1DE6B5FF1DE6B5FF7BF1D495EAFD
+      F818B9B9BA7C767578F3C8C7C872FCFCFC05BCBBBC6D858486F0C8C8C97EE8FD
+      F81A7CF1D4941DE6B5FF309A7AFF309A7AFF1DE6B5FF7CF1D494E8FDF81AB8B8
+      B97E6C6B6EF0B9B8B96DFCFCFC05FFFFFF00FAFAFB08C4C4C56B858587EEC8C8
+      C87FE8FDF81A7BF1D495309A7AFF309A7AFF7BF1D495E8FDF81AB7B7B87F6C6C
+      6EEEBBBABB6BFAFAFA08FFFFFF00FFFFFF00FFFFFF00F9F9FA0AC5C5C66A8585
+      87EEC8C8C97EEAFDF8188CA598988CA59898EAFDF818B8B8B97E6C6C6EEEBBBB
+      BC6AF9F8F90AFFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00F9F9FA0AC4C4
+      C56BA5A5A6A5FFFFFF00AAAAA878AAAAA878FFFFFF00969597A5BBBABB6BF9F8
+      F90AFFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FAFA
+      FB08F4F4F513FFFFFF00ABABAC78ABABAC78FFFFFF00F3F3F313FAFAFA08FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00ABABAC78ABABAC78FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00ABABAC78ABABAC78FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FAFA
+      FB08F4F4F513FFFFFF00ABABAC78ABABAC78FFFFFF00F3F3F313FAFAFA08FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00F9F9FA0AC4C4
+      C56BA5A5A6A5FFFFFF00AAAAA878AAAAA878FFFFFF00969597A5BBBABB6BF9F8
+      F90AFFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00F9F9FA0AC5C5C66A8585
+      87EEC8C8C97EEAE9FE188D8C9F988D8C9F98EAE9FE18B8B8B97E6C6C6EEEBBBB
+      BC6AF9F8F90AFFFFFF00FFFFFF00FFFFFF00FAFAFB08C4C4C56B858587EEC8C8
+      C87FE9E8FE1A7F7AF595332F97FF332F97FF7F7AF595E9E8FE1AB7B7B87F6C6C
+      6EEEBBBABB6BFAFAFA08FFFFFF00FCFCFC05BCBBBC6D858486F0C8C8C97EE9E8
+      FE1A807BF594241CEDFF332F97FF332F97FF241CEDFF807BF594E9E8FE1AB8B8
+      B97E6C6B6EF0B9B8B96DFCFCFC05C7C7C87278787AF3CACACA7CEAE9FE187F7A
+      F595241CEDFF241CEDFF332F97FF332F97FF241CEDFF241CEDFF7F7AF595EAE9
+      FE18B9B9BA7C767578F3C8C7C8726F6E71F8CBCBCC77EDEDFE157D78F598241C
+      EDFF241CEDFF241CEDFF332F97FF332F97FF241CEDFF241CEDFF241CEDFF7D78
+      F598EDEDFE15CBCBCC77706F71F86F6E71F8CBCBCC77EDEDFE157D78F598342E
+      D7FF5956A0FF3F3ABEFF332F97FF332F97FF3F3ABEFF52509CFF312BD6FF7D78
+      F598EDEDFE15CBCBCC77706F71F8C8C7C872818183F3B9B9BA7CEAE9FE188C88
+      E4955F5E91FF6D6D6EFF4F4E68FF4F4E68FF646469FF55538BFF8A86E295EAE9
+      FE18C9C9CA7C838385F3C8C8C972FCFCFD05BFBFC06D6C6B6EF0B8B8B97EE9E8
+      FE1A8B87E2945A598EFF626346FF595941FF4E4B87FF8784E094E9E8FE1AC8C8
+      C97E848486F0C2C2C36DFCFCFD05FFFFFF00FAFAFA08BBBABB6B6C6C6EEEB7B7
+      B87FE9E8FE1A8A86E29559588DFF55538AFF8683E195E9E8FE1AC7C7C87F8584
+      87EEC4C4C56BFAFAFB08FFFFFF00FFFFFF00FFFFFF00F9F8F90ABBBBBC6A6C6C
+      6EEEB8B8B97EEAE9FE188885E5988885E598EAE9FE18C8C8C97E858487EEC5C5
+      C66AF9F9FA0AFFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00F9F8F90ABBBA
+      BB6B6C6B6EF0B9B9BA7CEDEDFE15EDEDFE15C9C9CA7C848486F0C4C4C56BF9F9
+      FA0AFFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FAFA
+      FA08BFBFC06D818183F3CBCBCC77CBCBCC7778777AF3BCBBBC6DFAFAFB08FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FCFCFD05CCCCCD72757477F8706F71F8C8C7C872FCFCFC05FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00
     }
   end
 end

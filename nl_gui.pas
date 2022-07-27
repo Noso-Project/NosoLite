@@ -44,6 +44,30 @@ form1.CBMultisend.Checked:=WO_Multisend;
 Form1.GVTsGrid.Cells[0,0]:= rsGUI0035;
 Form1.GVTsGrid.Cells[1,0]:= rsGUI0036;
 form1.GVTsGrid.FocusRectVisible:=false;
+
+// Pool Data
+Form1.SBDepositNoso.Parent:=form1.GridPoolData;
+Form1.SBWithdrawNoso.Parent:=form1.GridPoolData;
+
+
+Form1.GridPoolData.FocusRectVisible:=false;
+form1.GridPoolData.Cells[0,0] := rsGUI0041;
+form1.GridPoolData.Cells[2,0] := rsGUI0042;
+form1.GridPoolData.Cells[0,1] := rsGUI0038;
+form1.GridPoolData.Cells[0,2] := rsGUI0039;
+form1.GridPoolData.Cells[0,3] := rsGUI0040;
+form1.GridPoolData.Cells[2,1] := rsGUI0038;
+form1.GridPoolData.Cells[2,2] := rsGUI0039;
+form1.GridPoolData.Cells[2,3] := rsGUI0043;
+form1.GridPoolData.Cells[2,4] := rsGUI0040;
+
+Form1.GridPoolTrades.Cells[0,0] :=rsGUI0045;
+Form1.GridPoolTrades.Cells[1,0] :=rsGUI0046;
+Form1.GridPoolTrades.Cells[2,0] :=rsGUI0047;
+
+Form1.GridUserTrades.Cells[0,0] :=rsGUI0045;
+Form1.GridUserTrades.Cells[1,0] :=rsGUI0046;
+Form1.GridUserTrades.Cells[2,0] :=rsGUI0047;
 End;
 
 // Refresh the adressess grid

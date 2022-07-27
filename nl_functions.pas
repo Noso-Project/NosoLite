@@ -10,6 +10,8 @@ uses
 // General functions
 function ThisPercent(percent, thiswidth : integer;RestarBarra : boolean = false):integer;
 function Int2Curr(Value: int64): string;
+function Int2Curr2Dec(Value: int64): string;
+Function EnoughDecimals(value:extended): string;
 Function Parameter(LineText:String;ParamNumber:int64):String;
 Function IsValidCustomName(AddNAme:String):Boolean;
 
@@ -86,6 +88,24 @@ Result := IntTostr(Abs(Value));
 result :=  AddChar('0',Result, 9);
 Insert('.',Result, Length(Result)-7);
 If Value <0 THen Result := '-'+Result;
+End;
+
+// Returns the GUI representation of any ammount of coins with 2 decimals
+function Int2Curr2Dec(Value: int64): string;
+var
+  RealVal : extended;
+Begin
+RealVal := Value / 100000000;
+Result := FormatFLoat('#,##0.00',RealVal);
+End;
+
+Function EnoughDecimals(value:extended): string;
+var
+  RealVal : extended;
+Begin
+if value>1.0 then Result := FormatFLoat('#,##0.00',value)
+else if value>0.1 then Result := FormatFLoat('0.00',value)
+else if value>0.01 then Result := FormatFLoat('0.000',value)
 End;
 
 // Returs parameters from a string

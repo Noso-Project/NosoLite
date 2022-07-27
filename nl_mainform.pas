@@ -17,10 +17,10 @@ type
 
   TForm1 = class(TForm)
     CBMultisend: TCheckBox;
-    ComboBox1: TComboBox;
     Edit2: TEdit;
     EditSCDest: TEdit;
     EditSCMont: TEdit;
+    GridUserTrades: TStringGrid;
     GVTsGrid: TStringGrid;
     ImageBlockInfo: TImage;
     ImageList: TImageList;
@@ -32,7 +32,15 @@ type
     Label14: TLabel;
     Label15: TLabel;
     Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    LabelPoolMainPrice: TLabel;
+    LabelPoolVolume: TLabel;
+    LAbelPoolTier: TLabel;
+    labelPoolUser: TLabel;
     LabelNodes: TLabel;
+    LabelPooMarketCap: TLabel;
     Labelsupply: TLabel;
     Labelstake: TLabel;
     Labelsummary: TLabel;
@@ -67,7 +75,13 @@ type
     MenuItem9: TMenuItem;
     MM_File: TMenuItem;
     PageControl: TPageControl;
+    PageControl1: TPageControl;
+    PanelPoolHeader: TPanel;
+    PanelPoolMarketPrice: TPanel;
+    PanelPoolDisconnect: TPanel;
+    PanelPoolHistory: TPanel;
     Panel23: TPanel;
+    PanelPoolUSer: TPanel;
     PanelTransferGVT: TPanel;
     PC_GVTs: TPageControl;
     Panel1: TPanel;
@@ -93,12 +107,18 @@ type
     SGridAddresses: TStringGrid;
     SGridNodes: TStringGrid;
     SGridSC: TStringGrid;
+    GridPoolData: TStringGrid;
+    SBDepositNoso: TSpeedButton;
+    SBWithdrawNoso: TSpeedButton;
+    GridPoolTrades: TStringGrid;
     TabNodes: TTabSheet;
     TabLog: TTabSheet;
     TabLiqPool: TTabSheet;
     TabGVTs: TTabSheet;
     TabGVTsGVTs: TTabSheet;
     TabGVTsPolls: TTabSheet;
+    TabSheet1: TTabSheet;
+    TabSheet2: TTabSheet;
     TabWallet: TTabSheet;
     StartTimer : TTimer;
     procedure CBMultisendChange(Sender: TObject);
@@ -109,6 +129,10 @@ type
     procedure FormShow(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
+    procedure GridPoolDataPrepareCanvas(sender: TObject; aCol, aRow: Integer;
+      aState: TGridDrawState);
+    procedure GridPoolTradesResize(Sender: TObject);
+    procedure GridUserTradesResize(Sender: TObject);
     procedure GVTsGridResize(Sender: TObject);
     procedure MenuItem10Click(Sender: TObject);
     procedure MenuItem11Click(Sender: TObject);
@@ -147,6 +171,7 @@ type
     procedure SGridNodesPrepareCanvas(sender: TObject; aCol, aRow: Integer;
       aState: TGridDrawState);
     procedure SGridNodesResize(Sender: TObject);
+    procedure TabLiqPoolResize(Sender: TObject);
 
   private
 
@@ -256,13 +281,15 @@ if StrToIntDef(Parameter(UpdatedMNs,0),-1)> MasternodesLastBlock then
 Pendings_String := GetPendings();
 ProcessPendings();
 Sleep(500);
-
    Form1.Visible:=true;
    form4.Visible:=false;
    THREAD_Update := TUpdateThread.Create(true);
    THREAD_Update.FreeOnTerminate:=true;
    THREAD_Update.Start;
    form1.PageControl.ActivePage := form1.TabWallet;
+
+RefreshPoolDataGrid('N3rUKKedwDrTBAvjQrz5d8fUjeKipFy','54,01',0,0,0,3000000000000,180000000000,100,0);
+
 End;
 
 // On close query form events
@@ -1008,10 +1035,78 @@ if EditSCMont.SelStart <= length(EditSCMont.Text)-9 then // it is in integers
 End;
 
 //******************************************************************************
-// App panel
+// Pool  panel
 //******************************************************************************
 
-// TO BE IMPLEMENTED
+// Resize Grid data
+Procedure TForm1.TabLiqPoolResize(Sender: TObject);
+var
+  GridWidth : integer;
+Begin
+GridWidth := form1.GridPoolData.Width;
+form1.GridPoolData.ColWidths[0] := ThisPercent(20,GridWidth);
+form1.GridPoolData.ColWidths[1] := ThisPercent(30,GridWidth);
+form1.GridPoolData.ColWidths[2] := ThisPercent(20,GridWidth);
+form1.GridPoolData.ColWidths[3] := ThisPercent(30,GridWidth);
+
+form1.PanelPoolHistory.Width    := ThisPercent(50,GridWidth);
+form1.PanelPoolUSer.Width       := ThisPercent(50,GridWidth);
+
+SBDepositNoso.Top:=24;SBDepositNoso.Left:=ThisPercent(20,GridWidth)-20;
+SBWithdrawNoso.Top:=24;SBWithdrawNoso.Left:=ThisPercent(20,GridWidth)-44;
+
+End;
+
+// Format Grid data
+procedure TForm1.GridPoolDataPrepareCanvas(sender: TObject; aCol,
+  aRow: Integer; aState: TGridDrawState);
+var
+  ts: TTextStyle;
+Begin
+ts := (Sender as TStringGrid).Canvas.TextStyle;
+if ( ( (aCol=0) or (aCol=2) ) and (Arow>0) ) then
+   begin
+   if ((aCol=0) and (aRow=4)) then exit;
+   (Sender as TStringGrid).Canvas.Brush.Color := clSilver;
+   end;
+if aRow = 0 then
+   begin
+   (Sender as TStringGrid).Canvas.Brush.Color := clBlack;
+   (Sender as TStringGrid).Canvas.font.Color := clWhite;
+   end;
+if ( ( (aCol=1) or (aCol=3) ) and (Arow>0) ) then
+   begin
+   ts.Alignment := taRightJustify;
+   (Sender as TStringGrid).Canvas.TextStyle := ts;
+   end;
+if ((aCol=3) and (aRow= 3)) then
+   begin
+   (Sender as TStringGrid).Canvas.font.Style := [fsBold];
+   end;
+End;
+
+// Resize pool trades grid
+procedure TForm1.GridPoolTradesResize(Sender: TObject);
+var
+  GridWidth : integer;
+Begin
+GridWidth := form1.PanelPoolHistory.Width;
+form1.GridPoolTrades.ColWidths[0] := ThisPercent(20,GridWidth);
+form1.GridPoolTrades.ColWidths[1] := ThisPercent(40,GridWidth);
+form1.GridPoolTrades.ColWidths[2] := ThisPercent(40,GridWidth,true);
+End;
+
+// Resize user trades grid
+procedure TForm1.GridUserTradesResize(Sender: TObject);
+var
+  GridWidth : integer;
+Begin
+GridWidth := form1.PanelPoolUser.Width;
+form1.GridUserTrades.ColWidths[0] := ThisPercent(20,GridWidth);
+form1.GridUserTrades.ColWidths[1] := ThisPercent(40,GridWidth);
+form1.GridUserTrades.ColWidths[2] := ThisPercent(40,GridWidth,true);
+End;
+
 
 END. // END PROGRAM
 
