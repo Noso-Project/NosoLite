@@ -3,6 +3,10 @@ object Form1: TForm1
   Height = 480
   Top = 191
   Width = 640
+  HorzScrollBar.Page = 522
+  HorzScrollBar.Range = 522
+  VertScrollBar.Page = 357
+  VertScrollBar.Range = 357
   Caption = 'Nosolite'
   ClientHeight = 460
   ClientWidth = 640
@@ -761,53 +765,7 @@ object Form1: TForm1
       ClientHeight = 396
       ClientWidth = 632
       OnResize = TabLiqPoolResize
-      TabVisible = False
-      object PanelPoolDisconnect: TPanel
-        Left = 160
-        Height = 160
-        Top = 128
-        Width = 354
-        ClientHeight = 160
-        ClientWidth = 354
-        Color = clScrollBar
-        ParentColor = False
-        TabOrder = 4
-        object Label4: TLabel
-          Left = 1
-          Height = 39
-          Top = 1
-          Width = 352
-          Align = alTop
-          Alignment = taCenter
-          AutoSize = False
-          Caption = 'Reconnecting...'
-          Font.CharSet = ANSI_CHARSET
-          Font.Color = clBlack
-          Font.Height = -19
-          Font.Name = 'Segoe UI'
-          Font.Pitch = fpVariable
-          Font.Quality = fqDraft
-          Font.Style = [fsBold]
-          Layout = tlCenter
-          ParentColor = False
-          ParentFont = False
-        end
-      end
-      object GridPoolData: TStringGrid
-        Left = 0
-        Height = 110
-        Top = 71
-        Width = 632
-        Align = alTop
-        BorderStyle = bsNone
-        FixedCols = 0
-        FixedRows = 0
-        GridLineWidth = 0
-        ScrollBars = ssNone
-        TabOrder = 1
-        OnPrepareCanvas = GridPoolDataPrepareCanvas
-      end
-      object Panel1: TPanel
+      object PanelPoolTop: TPanel
         Left = 0
         Height = 71
         Top = 0
@@ -828,6 +786,7 @@ object Form1: TForm1
           Color = clBlack
           ParentColor = False
           TabOrder = 0
+          Visible = False
           object Label5: TLabel
             Left = 1
             Height = 21
@@ -911,6 +870,7 @@ object Form1: TForm1
             Layout = tlCenter
             ParentColor = False
             ParentFont = False
+            Visible = False
           end
           object labelPoolUser: TLabel
             Left = 21
@@ -929,6 +889,26 @@ object Form1: TForm1
             Layout = tlCenter
             ParentColor = False
             ParentFont = False
+            Visible = False
+          end
+          object EditPoolAddress: TEdit
+            Left = 22
+            Height = 44
+            Top = 26
+            Width = 225
+            Align = alLeft
+            AutoSize = False
+            TabOrder = 0
+          end
+          object ButtonPoolConnect: TButton
+            Left = 247
+            Height = 44
+            Top = 26
+            Width = 75
+            Align = alLeft
+            Caption = 'Connect'
+            OnClick = ButtonPoolConnectClick
+            TabOrder = 1
           end
         end
       end
@@ -940,6 +920,7 @@ object Form1: TForm1
         Width = 18
         Images = ImageList
         ImageIndex = 5
+        OnClick = SBDepositNosoClick
         ShowHint = True
         ParentShowHint = False
       end
@@ -951,44 +932,218 @@ object Form1: TForm1
         Width = 18
         Images = ImageList
         ImageIndex = 6
+        OnClick = SBWithdrawNosoClick
         ShowHint = True
         ParentShowHint = False
       end
-      object PanelPoolHistory: TPanel
-        Left = 336
-        Height = 215
-        Top = 181
-        Width = 296
-        Align = alRight
-        ClientHeight = 215
-        ClientWidth = 296
+      object SBDepositLTC: TSpeedButton
+        Left = 84
+        Height = 18
+        Hint = 'Deposit LTC to your account'
+        Top = 88
+        Width = 18
+        Images = ImageList
+        ImageIndex = 5
+        ShowHint = True
+        ParentShowHint = False
+      end
+      object SBWithdrawLTC: TSpeedButton
+        Left = 96
+        Height = 18
+        Hint = 'Withdraw LTC from your account'
+        Top = 80
+        Width = 18
+        Images = ImageList
+        ImageIndex = 6
+        OnClick = SBWithdrawLTCClick
+        ShowHint = True
+        ParentShowHint = False
+      end
+      object PanelPoolMain: TPanel
+        Left = 0
+        Height = 325
+        Top = 71
+        Width = 632
+        Align = alClient
+        BevelOuter = bvNone
+        ClientHeight = 325
+        ClientWidth = 632
+        Color = clBackground
+        ParentColor = False
         TabOrder = 2
-        object LabelPoolVolume: TLabel
-          Left = 1
-          Height = 20
-          Top = 1
-          Width = 294
+        Visible = False
+        object GridPoolData: TStringGrid
+          Left = 0
+          Height = 110
+          Top = 0
+          Width = 632
           Align = alTop
-          AutoSize = False
-          Caption = 'LabelPoolVolume'
-          Color = clHighlight
-          Layout = tlCenter
-          ParentColor = False
-          Transparent = False
+          BorderStyle = bsNone
+          FixedCols = 0
+          FixedRows = 0
+          GridLineWidth = 0
+          ScrollBars = ssNone
+          TabOrder = 0
+          OnPrepareCanvas = GridPoolDataPrepareCanvas
         end
-        object Label2: TLabel
+        object PanelPoolUSer: TPanel
+          Left = 0
+          Height = 215
+          Top = 110
+          Width = 328
+          Align = alLeft
+          ClientHeight = 215
+          ClientWidth = 328
+          TabOrder = 1
+          object PageControl1: TPageControl
+            Left = 1
+            Height = 213
+            Top = 1
+            Width = 326
+            ActivePage = TabSheet1
+            Align = alClient
+            TabIndex = 0
+            TabOrder = 0
+            object TabSheet1: TTabSheet
+              Caption = 'Trades'
+              ClientHeight = 185
+              ClientWidth = 318
+              object Label3: TLabel
+                Left = 0
+                Height = 20
+                Top = 0
+                Width = 318
+                Align = alTop
+                Alignment = taCenter
+                AutoSize = False
+                Caption = 'My trades'
+                Color = clBlack
+                Font.CharSet = ANSI_CHARSET
+                Font.Color = clWhite
+                Font.Height = -16
+                Font.Name = 'Segoe UI'
+                Font.Pitch = fpVariable
+                Font.Quality = fqDraft
+                Font.Style = [fsBold]
+                Layout = tlCenter
+                ParentColor = False
+                ParentFont = False
+                Transparent = False
+              end
+              object GridUserTrades: TStringGrid
+                Left = 0
+                Height = 165
+                Top = 20
+                Width = 318
+                Align = alClient
+                ColCount = 3
+                FixedCols = 0
+                RowCount = 1
+                ScrollBars = ssVertical
+                TabOrder = 0
+                OnResize = GridUserTradesResize
+              end
+            end
+            object TabSheet2: TTabSheet
+              Caption = 'History'
+            end
+          end
+        end
+        object PanelPoolHistory: TPanel
+          Left = 328
+          Height = 215
+          Top = 110
+          Width = 304
+          Align = alRight
+          ClientHeight = 215
+          ClientWidth = 304
+          TabOrder = 2
+          object LabelPoolVolume: TLabel
+            Left = 1
+            Height = 20
+            Top = 1
+            Width = 302
+            Align = alTop
+            AutoSize = False
+            Caption = 'LabelPoolVolume'
+            Color = clHighlight
+            Layout = tlCenter
+            ParentColor = False
+            Transparent = False
+          end
+          object Label2: TLabel
+            Left = 1
+            Height = 20
+            Top = 41
+            Width = 302
+            Align = alTop
+            Alignment = taCenter
+            AutoSize = False
+            Caption = 'Recent trades'
+            Color = clBlack
+            Font.CharSet = ANSI_CHARSET
+            Font.Color = clWhite
+            Font.Height = -16
+            Font.Name = 'Segoe UI'
+            Font.Pitch = fpVariable
+            Font.Quality = fqDraft
+            Font.Style = [fsBold]
+            Layout = tlCenter
+            ParentColor = False
+            ParentFont = False
+            Transparent = False
+          end
+          object GridPoolTrades: TStringGrid
+            Left = 1
+            Height = 153
+            Top = 61
+            Width = 302
+            Align = alClient
+            ColCount = 3
+            FixedCols = 0
+            RowCount = 1
+            ScrollBars = ssVertical
+            TabOrder = 0
+            OnResize = GridPoolTradesResize
+          end
+          object LabelPooMarketCap: TLabel
+            Left = 1
+            Height = 20
+            Top = 21
+            Width = 302
+            Align = alTop
+            AutoSize = False
+            Caption = 'LabelPoolMarketcap'
+            Color = clAqua
+            Layout = tlCenter
+            ParentColor = False
+            Transparent = False
+          end
+        end
+      end
+      object PanelPoolMessages: TPanel
+        Left = 160
+        Height = 192
+        Top = 128
+        Width = 298
+        ClientHeight = 192
+        ClientWidth = 298
+        Color = clScrollBar
+        ParentColor = False
+        TabOrder = 1
+        Visible = False
+        object LabelPoolMessages: TLabel
           Left = 1
-          Height = 20
-          Top = 41
-          Width = 294
+          Height = 31
+          Top = 1
+          Width = 296
           Align = alTop
           Alignment = taCenter
           AutoSize = False
-          Caption = 'Recent trades'
-          Color = clBlack
+          Caption = 'Reconnecting...'
           Font.CharSet = ANSI_CHARSET
-          Font.Color = clWhite
-          Font.Height = -16
+          Font.Color = clBlack
+          Font.Height = -19
           Font.Name = 'Segoe UI'
           Font.Pitch = fpVariable
           Font.Quality = fqDraft
@@ -996,95 +1151,53 @@ object Form1: TForm1
           Layout = tlCenter
           ParentColor = False
           ParentFont = False
-          Transparent = False
         end
-        object GridPoolTrades: TStringGrid
+        object TextPoolMessages: TStaticText
           Left = 1
-          Height = 153
-          Top = 61
-          Width = 294
+          Height = 102
+          Top = 32
+          Width = 296
           Align = alClient
-          ColCount = 3
-          FixedCols = 0
-          RowCount = 1
-          ScrollBars = ssVertical
           TabOrder = 0
-          OnResize = GridPoolTradesResize
         end
-        object LabelPooMarketCap: TLabel
+        object EditPoolMessages: TEdit
           Left = 1
-          Height = 20
-          Top = 21
-          Width = 294
-          Align = alTop
-          AutoSize = False
-          Caption = 'LabelPoolMarketcap'
-          Color = clAqua
-          Layout = tlCenter
-          ParentColor = False
-          Transparent = False
+          Height = 23
+          Top = 134
+          Width = 296
+          Align = alBottom
+          Constraints.MinWidth = 200
+          OnKeyPress = EditPoolMessagesKeyPress
+          TabOrder = 1
         end
-      end
-      object PanelPoolUSer: TPanel
-        Left = 0
-        Height = 215
-        Top = 181
-        Width = 336
-        Align = alLeft
-        ClientHeight = 215
-        ClientWidth = 336
-        TabOrder = 3
-        object PageControl1: TPageControl
+        object PanelButtonsPoolMessage: TPanel
           Left = 1
-          Height = 213
-          Top = 1
-          Width = 334
-          ActivePage = TabSheet1
-          Align = alClient
-          TabIndex = 0
-          TabOrder = 0
-          object TabSheet1: TTabSheet
-            Caption = 'Trades'
-            ClientHeight = 185
-            ClientWidth = 326
-            object Label3: TLabel
-              Left = 0
-              Height = 20
-              Top = 0
-              Width = 326
-              Align = alTop
-              Alignment = taCenter
-              AutoSize = False
-              Caption = 'My trades'
-              Color = clBlack
-              Font.CharSet = ANSI_CHARSET
-              Font.Color = clWhite
-              Font.Height = -16
-              Font.Name = 'Segoe UI'
-              Font.Pitch = fpVariable
-              Font.Quality = fqDraft
-              Font.Style = [fsBold]
-              Layout = tlCenter
-              ParentColor = False
-              ParentFont = False
-              Transparent = False
-            end
-            object GridUserTrades: TStringGrid
-              Left = 0
-              Height = 165
-              Top = 20
-              Width = 326
-              Align = alClient
-              ColCount = 3
-              FixedCols = 0
-              RowCount = 1
-              ScrollBars = ssVertical
-              TabOrder = 0
-              OnResize = GridUserTradesResize
-            end
+          Height = 34
+          Top = 157
+          Width = 296
+          Align = alBottom
+          ClientHeight = 34
+          ClientWidth = 296
+          TabOrder = 2
+          object ButtonPoolOkMessage: TButton
+            Left = 1
+            Height = 32
+            Top = 1
+            Width = 75
+            Align = alLeft
+            Caption = 'Ok'
+            OnClick = ButtonPoolOkMessageClick
+            TabOrder = 0
           end
-          object TabSheet2: TTabSheet
-            Caption = 'History'
+          object ButtonPoolCancelMessage: TButton
+            Left = 220
+            Height = 32
+            Top = 1
+            Width = 75
+            Align = alRight
+            Caption = 'Cancel'
+            OnClick = ButtonPoolCancelMessageClick
+            TabOrder = 1
           end
         end
       end

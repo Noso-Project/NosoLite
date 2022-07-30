@@ -5,7 +5,7 @@ unit nl_functions;
 interface
 
 uses
-  Classes, SysUtils,strutils, nl_data, nl_language, dateutils;
+  Classes, SysUtils,strutils, nl_data, nl_language, dateutils,HlpHashFactory, SbpBase58;
 
 // General functions
 function ThisPercent(percent, thiswidth : integer;RestarBarra : boolean = false):integer;
@@ -34,7 +34,7 @@ Function GetSumaryLastBlock():Integer;
 function GetAddressBalanceFromSumary(address:string):int64;
 function GetAddressPendingPays(address : string):int64;
 function GetAddressToShow(address:string):String;
-function IsAddressOnWallet(address:string):Boolean;
+function IsAddressOnWallet(address:string):integer;
 Procedure ToLog(StringToAdd:String);
 function TryInsertAddress(Address:WalletData):boolean;
 function GetMaximunToSend(ammount:int64):int64;
@@ -64,6 +64,7 @@ Function MasternodesLastBlock():Integer;
 Function GetLabelAddress(Address:String):String;
 Procedure SetLabelValue(Address,LabelStr:String);
 
+function ValidateLitecoin(const Address: String): Boolean;
 
 implementation
 
@@ -452,16 +453,17 @@ for cont := 0 to length(ARRAY_Sumary)-1 do
 End;
 
 // Returns if an address exists in the wallet
-function IsAddressOnWallet(address:string):Boolean;
+function IsAddressOnWallet(address:string):integer;
 var
   Counter : integer;
 Begin
-Result := false;
+Result := -1;
+if Address = '' then exit;
 For Counter := 0 to length(ARRAY_Addresses)-1 do
    begin
    if ((address=ARRAY_Addresses[Counter].Hash) or (address=ARRAY_Addresses[Counter].Custom)) then
       begin
-      result := true;
+      result := Counter;
       break;
       end;
    end;
@@ -479,7 +481,7 @@ End;
 function TryInsertAddress(Address:WalletData):boolean;
 Begin
 result := false;
-if not IsAddressOnWallet(Address.Hash) then
+if IsAddressOnWallet(Address.Hash)<0 then
    begin
    EnterCriticalSection(CS_ARRAY_Addresses);
    Insert(Address,ARRAY_Addresses,length(ARRAY_Addresses));
@@ -802,6 +804,35 @@ If not Added then
    end;
 SaveLabelsToDisk();
 End;
+
+function ValidateLitecoin(const Address: String): Boolean;
+var
+  decoded, body, checksum, good_checksum: TBytes;
+begin
+  Result := False;
+  try
+    decoded := TBase58.BitCoin.Decode(Address.Trim);
+  except
+    Exit;
+  end;
+
+  if (decoded = nil) or (Length(decoded) <> 25) then
+    Exit;
+
+  checksum := Copy(decoded, Length(decoded) - 4, 4);
+  body     := Copy(decoded, 0, Length(decoded) - 4);
+
+  good_checksum := THashFactory.TCrypto.CreateSHA2_256.ComputeBytes(
+      THashFactory.TCrypto.CreateSHA2_256
+        .ComputeBytes(body).GetBytes
+    ).GetBytes;
+
+  if not {%H-}CompareMem(Pointer(checksum), Pointer(good_checksum), 4) then
+    Exit(False);
+
+  if decoded[0] in [$05, $30, $32] then
+  Exit(True);
+end;
 
 END. // END UNIT
 

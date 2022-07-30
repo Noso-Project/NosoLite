@@ -48,7 +48,8 @@ form1.GVTsGrid.FocusRectVisible:=false;
 // Pool Data
 Form1.SBDepositNoso.Parent:=form1.GridPoolData;
 Form1.SBWithdrawNoso.Parent:=form1.GridPoolData;
-
+Form1.SBDepositLTC.Parent:=form1.GridPoolData;
+Form1.SBWithdrawLTC.Parent:=form1.GridPoolData;
 
 Form1.GridPoolData.FocusRectVisible:=false;
 form1.GridPoolData.Cells[0,0] := rsGUI0041;

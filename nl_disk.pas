@@ -161,6 +161,9 @@ rewrite(FILE_Options);
 writeln(FILE_Options,'block '+WO_LastBlock.ToString);
 writeln(FILE_Options,'sumary '+WO_LastSumary);
 writeln(FILE_Options,'multisend '+BoolToStr(WO_MultiSend,true));
+writeln(FILE_Options,'liqpoolhost '+LiqPoolHost);
+writeln(FILE_Options,'liqpoolport '+LiqPoolPort.ToString);
+
 CloseFile(FILE_Options);
 EXCEPT on E:Exception do
    begin
@@ -185,6 +188,8 @@ while not eof(FILE_Options) do
     if parameter(LLine,0) ='block' then WO_LastBlock:=Parameter(LLine,1).ToInteger();
     if parameter(LLine,0) ='sumary' then WO_LastSumary:=Parameter(LLine,1);
     if parameter(LLine,0) ='multisend' then WO_Multisend:=StrToBool(Parameter(LLine,1));
+    if parameter(LLine,0) ='liqpoolhost' then LiqPoolHost:=Parameter(LLine,1);
+    if parameter(LLine,0) ='liqpoolport' then LiqPoolPort:=StrToIntDef(Parameter(LLine,1),0);
    end;
 CloseFile(FILE_Options);
 EXCEPT on E:Exception do

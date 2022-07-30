@@ -178,7 +178,8 @@ var
                              '149.57.242.211;8080:X:X '+
                              '149.57.138.12;8080:X:X '+
                              '159.196.1.198:8080:X:X '+
-                             '101.100.138.125:8080:X:X';
+                             '101.100.138.125:8080:X:X '+
+                             '198.46.218.125:8080:X:X';
 
   LastNodesUpdateTime     : int64 = 0;
   Int_WalletBalance       : int64 = 0;
@@ -218,7 +219,8 @@ var
   CS_Masternodes    : TRTLCriticalSection;
 
   // Apps Related
-  ArrApps           : array of AppData;
+  LiqPoolHost       : String = '';
+  LiqPoolPort       : integer = 0;
 
 
 implementation

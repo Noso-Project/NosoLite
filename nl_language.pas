@@ -72,10 +72,11 @@ Resourcestring
   rsGUI0043 = 'Price';
   rsGUI0044 = '   24 H Volume: %s nUSDo';
   rsGUI0045 = 'Hour';
-  rsGUI0046 = 'Ammount';
+  rsGUI0046 = 'Amount';
   rsGUI0047 = 'Price';
   rsGUI0048 = '   Marketcap : %s US$';
   rsGUI0049 = 'LTC: %s US$';
+  rsGUI0050 = 'Connecting...';
   // Dialogs
   rsDIA0001 = 'Import address keys';
   rsDIA0002 = 'Paste the address keys here';

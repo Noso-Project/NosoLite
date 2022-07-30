@@ -184,6 +184,7 @@ msgstr "Destino"
 #: nl_language.rsgui0015
 #, fuzzy
 #| msgid "Ammount"
+msgctxt "nl_language.rsgui0015"
 msgid "Amount"
 msgstr "Quantidade"
 
@@ -313,7 +314,8 @@ msgid "Hour"
 msgstr ""
 
 #: nl_language.rsgui0046
-msgid "Ammount"
+msgctxt "nl_language.rsgui0046"
+msgid "Amount"
 msgstr ""
 
 #: nl_language.rsgui0047
@@ -327,6 +329,25 @@ msgstr ""
 
 #: nl_language.rsgui0049
 msgid "LTC: %s US$"
+msgstr ""
+
+#: nl_language.rsgui0050
+msgid "Connecting..."
+msgstr ""
+
+#: tform1.buttonpoolcancelmessage.caption
+#, fuzzy
+msgctxt "tform1.buttonpoolcancelmessage.caption"
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: tform1.buttonpoolconnect.caption
+msgctxt "tform1.buttonpoolconnect.caption"
+msgid "Connect"
+msgstr ""
+
+#: tform1.buttonpoolokmessage.caption
+msgid "Ok"
 msgstr ""
 
 #: tform1.caption
@@ -369,10 +390,6 @@ msgstr ""
 msgid "My trades"
 msgstr ""
 
-#: tform1.label4.caption
-msgid "Reconnecting..."
-msgstr ""
-
 #: tform1.label5.caption
 msgid "Noso/nUSDo"
 msgstr ""
@@ -393,6 +410,11 @@ msgstr ""
 
 #: tform1.labelpoolmainprice.caption
 msgid "LabelPoolMainPrice"
+msgstr ""
+
+#: tform1.labelpoolmessages.caption
+msgctxt "tform1.labelpoolmessages.caption"
+msgid "Reconnecting..."
 msgstr ""
 
 #: tform1.labelpooltier.caption
@@ -550,6 +572,10 @@ msgctxt "tform1.panelsync.hint"
 msgid "Synchronizing"
 msgstr "Sincronizando"
 
+#: tform1.sbdepositltc.hint
+msgid "Deposit LTC to your account"
+msgstr ""
+
 #: tform1.sbdepositnoso.hint
 msgid "Deposit Noso to your account"
 msgstr ""
@@ -562,11 +588,16 @@ msgstr "Enviar todos"
 msgid "Paste destination"
 msgstr "Colar destino"
 
+#: tform1.sbwithdrawltc.hint
+msgid "Withdraw LTC from your account"
+msgstr ""
+
 #: tform1.sbwithdrawnoso.hint
 msgid "Withdraw Noso from your account"
 msgstr ""
 
 #: tform1.scbitcancel.caption
+msgctxt "tform1.scbitcancel.caption"
 msgid "Cancel"
 msgstr "Cancelar"
 
