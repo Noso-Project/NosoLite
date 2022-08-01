@@ -14,6 +14,7 @@ function Int2Curr2Dec(Value: int64): string;
 Function EnoughDecimals(value:extended): string;
 Function Parameter(LineText:String;ParamNumber:int64):String;
 Function IsValidCustomName(AddNAme:String):Boolean;
+Function CurrToInt(CurrStr:String):Int64;
 
 // Array nodes functions
 Procedure LoadSeedNodes(STR_Source:string);
@@ -179,6 +180,12 @@ for counter := 1 to length(AddNAme) do
       break;
       end;
    end;
+End;
+
+Function CurrToInt(CurrStr:String):Int64;
+Begin
+CurrStr := StringReplace(CurrStr,'.','',[rfReplaceAll, rfIgnoreCase]);
+Result := StrToInt64Def(CurrStr,0);
 End;
 
 // ******************

@@ -319,6 +319,16 @@ msgstr ""
 msgid "Connecting..."
 msgstr ""
 
+#: tform1.button1.caption
+msgctxt "tform1.button1.caption"
+msgid "Submit"
+msgstr ""
+
+#: tform1.button2.caption
+msgctxt "tform1.button2.caption"
+msgid "Submit"
+msgstr ""
+
 #: tform1.buttonpoolcancelmessage.caption
 #, fuzzy
 msgctxt "tform1.buttonpoolcancelmessage.caption"
@@ -344,6 +354,19 @@ msgid "Check to use all addresses"
 msgstr ""
 
 #: tform1.editscmont.text
+msgctxt "tform1.editscmont.text"
+msgid "0.00000000"
+msgstr "0.00000000"
+
+#: tform1.edittradebuy.text
+#, fuzzy
+msgctxt "tform1.edittradebuy.text"
+msgid "0.00000000"
+msgstr "0.00000000"
+
+#: tform1.edittradesell.text
+#, fuzzy
+msgctxt "tform1.edittradesell.text"
 msgid "0.00000000"
 msgstr "0.00000000"
 
@@ -353,6 +376,28 @@ msgstr ""
 
 #: tform1.label1.caption
 msgid "Liquidity pool"
+msgstr ""
+
+#: tform1.label10.caption
+msgctxt "tform1.label10.caption"
+msgid "Fee"
+msgstr ""
+
+#: tform1.label11.caption
+#, fuzzy
+msgctxt "tform1.label11.caption"
+msgid "0.00000000"
+msgstr "0.00000000"
+
+#: tform1.label12.caption
+#, fuzzy
+msgctxt "tform1.label12.caption"
+msgid "0.00000000"
+msgstr "0.00000000"
+
+#: tform1.label13.caption
+msgctxt "tform1.label13.caption"
+msgid "0 %"
 msgstr ""
 
 #: tform1.label14.caption
@@ -366,16 +411,94 @@ msgctxt "tform1.label15.caption"
 msgid "Destination"
 msgstr "Destino"
 
+#: tform1.label16.caption
+#, fuzzy
+msgctxt "tform1.label16.caption"
+msgid "0.00000000"
+msgstr "0.00000000"
+
+#: tform1.label17.caption
+msgctxt "tform1.label17.caption"
+msgid "Amount"
+msgstr ""
+
+#: tform1.label18.caption
+msgctxt "tform1.label18.caption"
+msgid "Average price"
+msgstr ""
+
+#: tform1.label19.caption
+#, fuzzy
+msgctxt "tform1.label19.caption"
+msgid "0.00000000"
+msgstr "0.00000000"
+
 #: tform1.label2.caption
 msgid "Recent trades"
 msgstr ""
+
+#: tform1.label20.caption
+msgctxt "tform1.label20.caption"
+msgid "Total"
+msgstr ""
+
+#: tform1.label21.caption
+#, fuzzy
+msgctxt "tform1.label21.caption"
+msgid "0.00000000"
+msgstr "0.00000000"
+
+#: tform1.label22.caption
+msgctxt "tform1.label22.caption"
+msgid "Price change / New price"
+msgstr ""
+
+#: tform1.label23.caption
+msgctxt "tform1.label23.caption"
+msgid "0 %"
+msgstr ""
+
+#: tform1.label24.caption
+msgctxt "tform1.label24.caption"
+msgid "Fee"
+msgstr ""
+
+#: tform1.label25.caption
+#, fuzzy
+msgctxt "tform1.label25.caption"
+msgid "0.00000000"
+msgstr "0.00000000"
 
 #: tform1.label3.caption
 msgid "My trades"
 msgstr ""
 
+#: tform1.label4.caption
+msgid "TRADE"
+msgstr ""
+
 #: tform1.label5.caption
 msgid "Noso/nUSDo"
+msgstr ""
+
+#: tform1.label6.caption
+msgctxt "tform1.label6.caption"
+msgid "Amount"
+msgstr ""
+
+#: tform1.label7.caption
+msgctxt "tform1.label7.caption"
+msgid "Average price"
+msgstr ""
+
+#: tform1.label8.caption
+msgctxt "tform1.label8.caption"
+msgid "Price change / New price"
+msgstr ""
+
+#: tform1.label9.caption
+msgctxt "tform1.label9.caption"
+msgid "Total"
 msgstr ""
 
 #: tform1.labellocked.caption
@@ -547,6 +670,10 @@ msgctxt "tform1.paneldownload.hint"
 msgid "Downloading summary"
 msgstr ""
 
+#: tform1.panelpooltrade.caption
+msgid "PanelPoolTrade"
+msgstr ""
+
 #: tform1.panelsync.hint
 msgctxt "tform1.panelsync.hint"
 msgid "Synchronizing"
@@ -560,6 +687,10 @@ msgstr ""
 msgid "Deposit Noso to your account"
 msgstr ""
 
+#: tform1.sbpooltrade.caption
+msgid "Trade"
+msgstr ""
+
 #: tform1.sbscmax.hint
 msgid "Send all"
 msgstr "Enviar todo"
@@ -567,6 +698,14 @@ msgstr "Enviar todo"
 #: tform1.sbscpaste.hint
 msgid "Paste destination"
 msgstr "Pegar destino"
+
+#: tform1.sbsharesbuy.hint
+msgid "Buy shares to fund the pool"
+msgstr ""
+
+#: tform1.sbsharessell.hint
+msgid "Sell your shares"
+msgstr ""
 
 #: tform1.sbwithdrawltc.hint
 msgid "Withdraw LTC from your account"
@@ -632,6 +771,14 @@ msgstr ""
 
 #: tform1.tabsheet2.caption
 msgid "History"
+msgstr ""
+
+#: tform1.tabsheet3.caption
+msgid "Buy"
+msgstr ""
+
+#: tform1.tabsheet4.caption
+msgid "Sell"
 msgstr ""
 
 #: tform1.tabwallet.caption

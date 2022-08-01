@@ -944,6 +944,7 @@ object Form1: TForm1
         Width = 18
         Images = ImageList
         ImageIndex = 5
+        OnClick = SBDepositLTCClick
         ShowHint = True
         ParentShowHint = False
       end
@@ -958,6 +959,40 @@ object Form1: TForm1
         OnClick = SBWithdrawLTCClick
         ShowHint = True
         ParentShowHint = False
+      end
+      object SBSharesBuy: TSpeedButton
+        Left = 98
+        Height = 20
+        Hint = 'Buy shares to fund the pool'
+        Top = 63
+        Width = 20
+        AutoSize = True
+        Images = ImageList
+        ImageIndex = 7
+        OnClick = SBSharesBuyClick
+        ShowHint = True
+        ParentShowHint = False
+      end
+      object SBSharesSell: TSpeedButton
+        Left = 52
+        Height = 20
+        Hint = 'Sell your shares'
+        Top = 29
+        Width = 20
+        AutoSize = True
+        Images = ImageList
+        ImageIndex = 8
+        ShowHint = True
+        ParentShowHint = False
+      end
+      object SBPoolTrade: TSpeedButton
+        Left = 425
+        Height = 20
+        Top = 12
+        Width = 40
+        AllowAllUp = True
+        Caption = 'Trade'
+        OnClick = SBPoolTradeClick
       end
       object PanelPoolMain: TPanel
         Left = 0
@@ -1198,6 +1233,456 @@ object Form1: TForm1
             Caption = 'Cancel'
             OnClick = ButtonPoolCancelMessageClick
             TabOrder = 1
+          end
+        end
+      end
+      object PanelPoolTrade: TPanel
+        Left = 32
+        Height = 240
+        Top = 120
+        Width = 360
+        Caption = 'PanelPoolTrade'
+        ClientHeight = 240
+        ClientWidth = 360
+        TabOrder = 3
+        Visible = False
+        object PageControl2: TPageControl
+          Left = 1
+          Height = 207
+          Top = 32
+          Width = 358
+          ActivePage = TabSheet4
+          Align = alClient
+          TabIndex = 1
+          TabOrder = 0
+          object TabSheet3: TTabSheet
+            Caption = 'Buy'
+            ClientHeight = 179
+            ClientWidth = 350
+            object Panel1: TPanel
+              Left = 0
+              Height = 27
+              Top = 0
+              Width = 350
+              Align = alTop
+              BevelOuter = bvNone
+              ClientHeight = 27
+              ClientWidth = 350
+              TabOrder = 0
+              object Label6: TLabel
+                Left = 5
+                Height = 27
+                Top = 0
+                Width = 44
+                Align = alLeft
+                BorderSpacing.Left = 5
+                Caption = 'Amount'
+                Layout = tlCenter
+                ParentColor = False
+              end
+              object EditTradebuy: TEdit
+                Left = 232
+                Height = 27
+                Top = 0
+                Width = 118
+                Align = alRight
+                Alignment = taRightJustify
+                OnChange = EditTradebuyChange
+                OnKeyPress = EditTradebuyKeyPress
+                ReadOnly = True
+                TabOrder = 0
+                Text = '0.00000000'
+              end
+            end
+            object Panel2: TPanel
+              Left = 0
+              Height = 27
+              Top = 27
+              Width = 350
+              Align = alTop
+              BevelOuter = bvNone
+              ClientHeight = 27
+              ClientWidth = 350
+              TabOrder = 1
+              object Label7: TLabel
+                Left = 5
+                Height = 27
+                Top = 0
+                Width = 72
+                Align = alLeft
+                BorderSpacing.Left = 5
+                Caption = 'Average price'
+                Layout = tlCenter
+                ParentColor = False
+              end
+              object Label11: TLabel
+                Left = 293
+                Height = 27
+                Top = 0
+                Width = 57
+                Align = alRight
+                Caption = '0.00000000'
+                Layout = tlCenter
+                ParentColor = False
+              end
+            end
+            object Panel3: TPanel
+              Left = 0
+              Height = 27
+              Top = 81
+              Width = 350
+              Align = alTop
+              BevelOuter = bvNone
+              ClientHeight = 27
+              ClientWidth = 350
+              TabOrder = 2
+              object Label8: TLabel
+                Left = 5
+                Height = 27
+                Top = 0
+                Width = 132
+                Align = alLeft
+                BorderSpacing.Left = 5
+                Caption = 'Price change / New price'
+                Layout = tlCenter
+                ParentColor = False
+              end
+              object Label13: TLabel
+                Left = 331
+                Height = 27
+                Top = 0
+                Width = 19
+                Align = alRight
+                Caption = '0 %'
+                Layout = tlCenter
+                ParentColor = False
+              end
+            end
+            object Panel4: TPanel
+              Left = 0
+              Height = 27
+              Top = 54
+              Width = 350
+              Align = alTop
+              BevelOuter = bvNone
+              ClientHeight = 27
+              ClientWidth = 350
+              TabOrder = 3
+              object Label9: TLabel
+                Left = 5
+                Height = 27
+                Top = 0
+                Width = 27
+                Align = alLeft
+                BorderSpacing.Left = 5
+                Caption = 'Total'
+                Layout = tlCenter
+                ParentColor = False
+              end
+              object Label12: TLabel
+                Left = 293
+                Height = 27
+                Top = 0
+                Width = 57
+                Align = alRight
+                Caption = '0.00000000'
+                Layout = tlCenter
+                ParentColor = False
+              end
+            end
+            object Panel5: TPanel
+              Left = 0
+              Height = 27
+              Top = 108
+              Width = 350
+              Align = alTop
+              BevelOuter = bvNone
+              ClientHeight = 27
+              ClientWidth = 350
+              TabOrder = 4
+              object Label10: TLabel
+                Left = 5
+                Height = 27
+                Top = 0
+                Width = 18
+                Align = alLeft
+                BorderSpacing.Left = 5
+                Caption = 'Fee'
+                Layout = tlCenter
+                ParentColor = False
+              end
+              object Label16: TLabel
+                Left = 293
+                Height = 27
+                Top = 0
+                Width = 57
+                Align = alRight
+                Caption = '0.00000000'
+                Layout = tlCenter
+                ParentColor = False
+              end
+            end
+            object Button1: TButton
+              Left = 0
+              Height = 44
+              Top = 135
+              Width = 350
+              Align = alClient
+              Caption = 'Submit'
+              TabOrder = 5
+            end
+          end
+          object TabSheet4: TTabSheet
+            Caption = 'Sell'
+            ClientHeight = 179
+            ClientWidth = 350
+            object Panel6: TPanel
+              Left = 0
+              Height = 27
+              Top = 0
+              Width = 350
+              Align = alTop
+              BevelOuter = bvNone
+              ClientHeight = 27
+              ClientWidth = 350
+              TabOrder = 0
+              object Label17: TLabel
+                Left = 5
+                Height = 27
+                Top = 0
+                Width = 44
+                Align = alLeft
+                BorderSpacing.Left = 5
+                Caption = 'Amount'
+                Layout = tlCenter
+                ParentColor = False
+              end
+              object EditTradeSell: TEdit
+                Left = 232
+                Height = 27
+                Top = 0
+                Width = 118
+                Align = alRight
+                Alignment = taRightJustify
+                OnChange = EditTradeSellChange
+                OnKeyPress = EditTradeSellKeyPress
+                ReadOnly = True
+                TabOrder = 0
+                Text = '0.00000000'
+              end
+            end
+            object Panel7: TPanel
+              Left = 0
+              Height = 27
+              Top = 27
+              Width = 350
+              Align = alTop
+              BevelOuter = bvNone
+              ClientHeight = 27
+              ClientWidth = 350
+              TabOrder = 1
+              object Label18: TLabel
+                Left = 5
+                Height = 27
+                Top = 0
+                Width = 72
+                Align = alLeft
+                BorderSpacing.Left = 5
+                Caption = 'Average price'
+                Layout = tlCenter
+                ParentColor = False
+              end
+              object Label19: TLabel
+                Left = 293
+                Height = 27
+                Top = 0
+                Width = 57
+                Align = alRight
+                Caption = '0.00000000'
+                Layout = tlCenter
+                ParentColor = False
+              end
+            end
+            object Panel8: TPanel
+              Left = 0
+              Height = 27
+              Top = 54
+              Width = 350
+              Align = alTop
+              BevelOuter = bvNone
+              ClientHeight = 27
+              ClientWidth = 350
+              TabOrder = 2
+              object Label20: TLabel
+                Left = 5
+                Height = 27
+                Top = 0
+                Width = 27
+                Align = alLeft
+                BorderSpacing.Left = 5
+                Caption = 'Total'
+                Layout = tlCenter
+                ParentColor = False
+              end
+              object Label21: TLabel
+                Left = 293
+                Height = 27
+                Top = 0
+                Width = 57
+                Align = alRight
+                Caption = '0.00000000'
+                Layout = tlCenter
+                ParentColor = False
+              end
+            end
+            object Panel9: TPanel
+              Left = 0
+              Height = 27
+              Top = 81
+              Width = 350
+              Align = alTop
+              BevelOuter = bvNone
+              ClientHeight = 27
+              ClientWidth = 350
+              TabOrder = 3
+              object Label22: TLabel
+                Left = 5
+                Height = 27
+                Top = 0
+                Width = 132
+                Align = alLeft
+                BorderSpacing.Left = 5
+                Caption = 'Price change / New price'
+                Layout = tlCenter
+                ParentColor = False
+              end
+              object Label23: TLabel
+                Left = 331
+                Height = 27
+                Top = 0
+                Width = 19
+                Align = alRight
+                Caption = '0 %'
+                Layout = tlCenter
+                ParentColor = False
+              end
+            end
+            object Panel10: TPanel
+              Left = 0
+              Height = 27
+              Top = 108
+              Width = 350
+              Align = alTop
+              BevelOuter = bvNone
+              ClientHeight = 27
+              ClientWidth = 350
+              TabOrder = 4
+              object Label24: TLabel
+                Left = 5
+                Height = 27
+                Top = 0
+                Width = 18
+                Align = alLeft
+                BorderSpacing.Left = 5
+                Caption = 'Fee'
+                Layout = tlCenter
+                ParentColor = False
+              end
+              object Label25: TLabel
+                Left = 293
+                Height = 27
+                Top = 0
+                Width = 57
+                Align = alRight
+                Caption = '0.00000000'
+                Layout = tlCenter
+                ParentColor = False
+              end
+            end
+            object Button2: TButton
+              Left = 0
+              Height = 44
+              Top = 135
+              Width = 350
+              Align = alClient
+              Caption = 'Submit'
+              TabOrder = 5
+            end
+          end
+        end
+        object Paneltradetop: TPanel
+          Left = 1
+          Height = 31
+          Top = 1
+          Width = 358
+          Align = alTop
+          BevelOuter = bvNone
+          ClientHeight = 31
+          ClientWidth = 358
+          TabOrder = 1
+          object Label4: TLabel
+            Left = 0
+            Height = 31
+            Top = 0
+            Width = 329
+            Align = alClient
+            Alignment = taCenter
+            Caption = 'TRADE'
+            Color = clInactiveCaption
+            Font.CharSet = ANSI_CHARSET
+            Font.Color = clBlack
+            Font.Height = -19
+            Font.Name = 'Segoe UI'
+            Font.Pitch = fpVariable
+            Font.Quality = fqDraft
+            Font.Style = [fsBold]
+            ParentColor = False
+            ParentFont = False
+            Transparent = False
+          end
+          object SpeedButton1: TSpeedButton
+            Left = 329
+            Height = 31
+            Top = 0
+            Width = 29
+            Align = alRight
+            Glyph.Data = {
+              36040000424D3604000000000000360000002800000010000000100000000100
+              2000000000000004000064000000640000000000000000000000000000000000
+              000000000000000000010000000C0000002D0000005400000064000000660000
+              005A000000360000001100000002000000000000000000000000000000000000
+              00000000000400002B3600017BAB01108FEB021993FE021683FF021479FE010A
+              63F300014FD30000108D00000036000000050000000000000000000000000000
+              00040000705F0119B0F0042DD2FF042EC6FF052DBFFF052DBAFF052BAFFF0527
+              9AFF041E7CFF010D66F900003AB8000000450000000500000000000000010000
+              7755011FC4F90333E6FF0333E1FF0432DDFF0432D9FF0532D4FF0532D0FF0632
+              C9FF072FBAFF052591FF02126DFD00003FB70000003300000001000059170019
+              BBEB0233F0FF0233ECFF9099EFFF5467E6FF0432DEFF0432DAFF0532D5FF324E
+              D5FF969FE0FF0630C0FF052693FF020E73F9000013850000000D00019382012F
+              F2FF0133F6FF6F81F5FFFEFEFEFFEBEEFCFF5467E7FF0432DFFF324EDEFFE4E7
+              F8FFFEFEFEFF9DA5E1FF062FBCFF05228DFF000164CD0000002E0014B9D30033
+              FFFF0033FBFF153FF7FFD7DCFCFFFEFEFEFFEBEEFCFF6076EAFFE4E7F9FFFEFE
+              FEFFE4E7F8FF324ED6FF0632CCFF052AABFF020F84F0000000520123D3FC0638
+              FFFF0134FFFF0033FCFF153FF8FFD7DCFCFFFEFEFEFFFEFEFEFFFEFEFEFFE4E7
+              FAFF324EDFFF0532D7FF0532D3FF062FC3FF031EA7FE0000005F0629D4FF2D56
+              FFFF0738FFFF0033FFFF0033FDFF3657F9FFFAFBFEFFFEFEFEFFFEFEFEFF6076
+              EBFF0333E1FF0432DDFF0432D8FF0532D2FF0322B6FF0000005F082BD3FC5A7A
+              FFFF264DFFFF0033FFFF2F4FFFFFE3E7FEFFFEFEFEFFFAFBFEFFFEFEFEFFEBEE
+              FCFF5467EAFF0333E2FF0432DDFF0432D9FF0321B8FE00000052031ABFCE6984
+              FFFF6B85FFFF274BFFFFE3E7FEFFFEFEFEFFE3E7FEFF3657FBFFD7DCFDFFFEFE
+              FEFFEBEEFCFF5467EAFF0333E3FF0432DEFF0112A0EA0000002D00029C793E5E
+              F6FFA7B8FFFF7B93FFFFFAFBFEFFE3E7FEFF2F4FFFFF0033FEFF153FFBFFD7DC
+              FDFFFEFEFEFF9099F3FF0333E8FF032FDDFF00017DAB0000000C0000940D0A25
+              C4E47C92FFFFB7C5FFFF8CA0FFFF3456FFFF0134FFFF0033FFFF0033FFFF153F
+              FCFF6479F9FF0233F2FF0233EEFF0119B3F000002B3600000001000000000000
+              983D1834D4F48096FFFFBFCBFFFFA1B2FFFF6B84FFFF4868FFFF3F61FFFF3B5F
+              FFFF1E49FCFF0234F8FF011FC8F90000705F0000000400000000000000000000
+              00000000983D0B26C4E44865F6FF879CFFFF9EB0FFFF94A8FFFF758FFFFF4265
+              FFFF0F3AF6FF0019BEEB00007755000000040000000000000000000000000000
+              0000000000000000940D01029C79051BBECE0E30D3FC1032D4FF072AD3FC0116
+              B9D3000193820000591700000001000000000000000000000000
+            }
+            OnClick = SpeedButton1Click
           end
         end
       end
@@ -1700,7 +2185,7 @@ object Form1: TForm1
     Left = 384
     Top = 520
     Bitmap = {
-      4C69070000001000000010000000FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      4C69090000001000000010000000FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -1924,6 +2409,70 @@ object Form1: TForm1
       FA08BFBFC06D818183F3CBCBCC77CBCBCC7778777AF3BCBBBC6DFAFAFB08FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FCFCFD05CCCCCD72757477F8706F71F8C8C7C872FCFCFC05FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FC00FFFFF7008A6245FF8A6245FF8A6245FF8A6245FFFFFFF700FFFFFC00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FB00FFFFF2008A6245FFE8CDB8FFE8CDB8FF8A6245FFFFFFF200FFFFFA00FFFF
+      FF00FFFFFE00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFC00FFFFFB00FFFF
+      F500FFFFED008A6245FFE8CDB8FFE8CDB8FF8A6245FFFFFFEB00FFFFF500FFFF
+      F900FFFFFC00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFF700FFFFF200FFFF
+      EB00FFFFE6008A6245FFE8CDB8FFE8CDB8FF8A6245FFFFFFE600FFFFEB00FFFF
+      F100FFFFF700FFFFFF00FFFFFF00FFFFFF00FFFFFF008A6245FF8A6245FF8A62
+      45FF8A6245FF8A6245FFE8CDB8FFE8CDB8FF8A6245FF8A6245FF8A6245FF8A62
+      45FF8A6245FFFFFFFF00FFFFFF00FFFFFF00FFFFFF008A6245FFE8CDB8FFE8CD
+      B8FFE8CDB8FFE8CDB8FFE8CDB8FFE8CDB8FFE8CDB8FFE8CDB8FFE8CDB8FFE8CD
+      B8FF8A6245FFFFFFFF00FFFFFF00FFFFFF00FFFFFF008A6245FFE8CDB8FFE8CD
+      B8FFE8CDB8FFE8CDB8FFE8CDB8FFE8CDB8FFE8CDB8FFE8CDB8FFE8CDB8FFE8CD
+      B8FF8A6245FFFFFFFF00FFFFFF00FFFFFF00FFFFFF008A6245FF8A6245FF8A62
+      45FF8A6245FF8A6245FFE8CDB8FFE8CDB8FF8A6245FF8A6245FF8A6245FF8A62
+      45FF8A6245FFFFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFF800FFFFF200FFFF
+      ED00FFFFE6008A6245FFE8CDB8FFE8CDB8FF8A6245FFFFFFE600FFFFED00FFFF
+      F200FFFFF700FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFC00FFFFFB00FFFF
+      F500FFFFED008A6245FFE8CDB8FFE8CDB8FF8A6245FFFFFFEB00FFFFF500FFFF
+      FB00FFFFFC00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FB00FFFFF2008A6245FFE8CDB8FFE8CDB8FF8A6245FFFFFFF200FFFFFB00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FC00FFFFF7008A6245FF8A6245FF8A6245FF8A6245FFFFFFF700FFFFFC00FDFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FC00FFFFF7008A6245008A6245008A6245008A624500FFFFF700FFFFFC00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FB00FFFFF2008A624500CFAC8B00CFAC8B008A624500FFFFF200FFFFFA00FFFF
+      FF00FFFFFE00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFC00FFFFFB00FFFF
+      F500FFFFED008A624500CFAC8B00CFAC8B008A624500FFFFEB00FFFFF500FFFF
+      F900FFFFFC00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFF700FFFFF200FFFF
+      EB00FFFFE6008A624500CFAC8B00CFAC8B008A624500FFFFE600FFFFEB00FFFF
+      F100FFFFF700FFFFFF00FFFFFF00FFFFFF00FFFFFF008A6245FF8A6245FF8A62
+      45FF8A6245FF8A6245FF8A6245FF8A6245FF8A6245FF8A6245FF8A6245FF8A62
+      45FF8A6245FFFFFFFF00FFFFFF00FFFFFF00FFFFFF008A6245FFE8CDB8FFE8CD
+      B8FFE8CDB8FFE8CDB8FFE8CDB8FFE8CDB8FFE8CDB8FFE8CDB8FFE8CDB8FFE8CD
+      B8FF8A6245FFFFFFFF00FFFFFF00FFFFFF00FFFFFF008A6245FFE8CDB8FFE8CD
+      B8FFE8CDB8FFE8CDB8FFE8CDB8FFE8CDB8FFE8CDB8FFE8CDB8FFE8CDB8FFE8CD
+      B8FF8A6245FFFFFFFF00FFFFFF00FFFFFF00FFFFFF008A6245FF8A6245FF8A62
+      45FF8A6245FF8A6245FF8A6245FF8A6245FF8A6245FF8A6245FF8A6245FF8A62
+      45FF8A6245FFFFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFF800FFFFF200FFFF
+      ED00FFFFE6008A624500CFAC8B00CFAC8B008A624500FFFFE600FFFFED00FFFF
+      F200FFFFF700FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFC00FFFFFB00FFFF
+      F500FFFFED008A624500CFAC8B00CFAC8B008A624500FFFFEB00FFFFF500FFFF
+      FB00FFFFFC00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FB00FFFFF2008A624500CFAC8B00CFAC8B008A624500FFFFF200FFFFFB00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FC00FFFFF7008A6245008A6245008A6245008A624500FFFFF700FFFFFC00FDFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00
     }
   end

@@ -29,6 +29,8 @@ Procedure RefreshPoolDataGrid(useraddress,ltcTier:string;usernoso,usernusdo,user
           poolshares,PoolVolume:int64);
 Procedure ShowAppPanel(LabMessage:String;InText:String;showEdit:integer;ShowButtons:boolean);
 Procedure HideAppPanel();
+Procedure ShowTradePanel();
+Procedure HideTradePanel();
 Function GetPoolRanSeed():String;
 Procedure ProcessStatusResponse(LineText:String);
 
@@ -45,6 +47,11 @@ var
   PoolAddress    : String = 'N3yzCQtd6MEDwkPK6SpXpMpxPACgbF3';
   MessagePro     : string = '';
   PoolEditStyle  : integer;
+  PoolNoso       : int64 = 0;
+  PoolnUSDo      : int64 = 0;
+  PoolShares     : integer = 0;
+  PoolBuyFee     : integer = 0;
+  PoolSellFee    : integer = 100;
 
 implementation
 
@@ -184,6 +191,7 @@ else if showedit = 1 then // Normal
 else if showedit = 2 then // Readonly
    begin
    Form1.EditPoolMessages.Text    :='';
+   if MessagePro = 'DEPNUSDO' then Form1.EditPoolMessages.Text := PoolUser.DepoLTC;
    Form1.EditPoolMessages.visible := true;
    Form1.EditPoolMessages.ReadOnly:=true;
    Form1.ButtonPoolCancelMessage.Visible:=true;
@@ -230,6 +238,28 @@ if MessagePro = 'WITHLTCNOADOK' then
    end;
 End;
 
+Procedure ShowTradePanel();
+Begin
+Form1.PanelPoolTop.Enabled:=false;
+Form1.PanelPoolMain.Enabled:=false;
+Form1.PanelPoolMain.Enabled:=false;
+Form1.PanelPoolTrade.Visible:=true;
+Form1.PanelPoolTrade.BringToFront;
+MessagePro := 'TRADE';
+Form1.Label10.Caption:=Format('Fee %s %%',[FormatFLoat('0.00',PoolBuyFee*100/10000)]);
+Form1.Label24.Caption:=Format('Fee %s %%',[FormatFLoat('0.00',PoolSellFee*100/10000)]);;
+End;
+
+Procedure HideTradePanel();
+Begin
+Form1.PanelPoolTop.Enabled:=true;
+Form1.PanelPoolMain.Enabled:=true;
+Form1.PanelPoolMain.Enabled:=true;
+Form1.PanelPoolTrade.Visible:=false;
+Form1.PanelPoolTrade.SendToBack;
+MessagePro := '';
+End;
+
 Function GetPoolRanSeed():String;
 var
   TNumber : integer;
@@ -248,8 +278,6 @@ var
   Shares     : integer;
   Address    : string;
   LTCTicker  : String;
-  PoolNoso,PoolnUSDo  : int64;
-  PoolShares : integer;
   PoolVolume : int64;
 Begin
 if Parameter(LineText,0) = 'STATUS' then
@@ -263,6 +291,8 @@ if Parameter(LineText,0) = 'STATUS' then
    PoolnUSDo    := StrToInt64Def(Parameter(LineText,9),0);
    PoolShares   := StrToIntDef(Parameter(LineText,10),0);
    PoolVolume   := StrToInt64Def(Parameter(LineText,11),0);
+   PoolBuyFee   := StrToInt64Def(Parameter(LineText,12),PoolBuyFee);
+   PoolSellFee   := StrToInt64Def(Parameter(LineText,13),PoolSellFee);
    RefreshPoolDataGrid(Address,LTCTicker,NosoBalance,nUSDoBalance,Shares,PoolNoso,PoolnUSDo,PoolShares,PoolVolume);
    end;
 End;

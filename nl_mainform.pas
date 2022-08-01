@@ -16,10 +16,14 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
+    Button1: TButton;
+    Button2: TButton;
     ButtonPoolCancelMessage: TButton;
     ButtonPoolOkMessage: TButton;
     ButtonPoolConnect: TButton;
     CBMultisend: TCheckBox;
+    EditTradebuy: TEdit;
+    EditTradeSell: TEdit;
     EditPoolMessages: TEdit;
     EditPoolAddress: TEdit;
     Edit2: TEdit;
@@ -34,10 +38,29 @@ type
     ImgSCDest: TImage;
     ImgSCMont: TImage;
     Label1: TLabel;
+    Label10: TLabel;
+    Label11: TLabel;
+    Label12: TLabel;
+    Label13: TLabel;
     Label14: TLabel;
     Label15: TLabel;
+    Label16: TLabel;
+    Label17: TLabel;
+    Label18: TLabel;
+    Label19: TLabel;
     Label2: TLabel;
+    Label20: TLabel;
+    Label21: TLabel;
+    Label22: TLabel;
+    Label23: TLabel;
+    Label24: TLabel;
+    Label25: TLabel;
     Label3: TLabel;
+    Label4: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
     LabelPoolMessages: TLabel;
     Label5: TLabel;
     LabelPoolMainPrice: TLabel;
@@ -81,6 +104,19 @@ type
     MM_File: TMenuItem;
     PageControl: TPageControl;
     PageControl1: TPageControl;
+    PageControl2: TPageControl;
+    Panel1: TPanel;
+    Panel10: TPanel;
+    Panel2: TPanel;
+    Panel3: TPanel;
+    Panel4: TPanel;
+    Panel5: TPanel;
+    Panel6: TPanel;
+    Panel7: TPanel;
+    Panel8: TPanel;
+    Panel9: TPanel;
+    Paneltradetop: TPanel;
+    PanelPoolTrade: TPanel;
     PanelButtonsPoolMessage: TPanel;
     PanelPoolMain: TPanel;
     PanelPoolHeader: TPanel;
@@ -120,6 +156,12 @@ type
     SBDepositNoso: TSpeedButton;
     SBWithdrawNoso: TSpeedButton;
     GridPoolTrades: TStringGrid;
+    SBSharesBuy: TSpeedButton;
+    SBSharesSell: TSpeedButton;
+    SBPoolTrade: TSpeedButton;
+    SpeedButton1: TSpeedButton;
+    TabSheet3: TTabSheet;
+    TabSheet4: TTabSheet;
     TextPoolMessages: TStaticText;
     TabNodes: TTabSheet;
     TabLog: TTabSheet;
@@ -139,6 +181,10 @@ type
     procedure EditSCDestChange(Sender: TObject);
     procedure EditSCMontChange(Sender: TObject);
     procedure EditSCMontKeyPress(Sender: TObject; var Key: char);
+    procedure EditTradebuyChange(Sender: TObject);
+    procedure EditTradebuyKeyPress(Sender: TObject; var Key: char);
+    procedure EditTradeSellChange(Sender: TObject);
+    procedure EditTradeSellKeyPress(Sender: TObject; var Key: char);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -164,9 +210,13 @@ type
     procedure MenuItem8Click(Sender: TObject);
     procedure MenuItem9Click(Sender: TObject);
     procedure MM_File_ExitClick(Sender: TObject);
+    procedure SBDepositLTCClick(Sender: TObject);
     procedure SBDepositNosoClick(Sender: TObject);
+    procedure SBPoolTradeClick(Sender: TObject);
+    procedure SBSharesBuyClick(Sender: TObject);
     procedure SBWithdrawLTCClick(Sender: TObject);
     procedure SBWithdrawNosoClick(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
     Procedure StartTimerRun(Sender: TObject);
     Procedure RunAppStart();
 
@@ -1075,11 +1125,20 @@ SBDepositNoso.Top:=24;SBDepositNoso.Left:=ThisPercent(20,GridWidth)-20;
 SBWithdrawNoso.Top:=24;SBWithdrawNoso.Left:=ThisPercent(20,GridWidth)-44;
 SBDepositLTC.Top:=46;SBDepositLTC.Left:=ThisPercent(20,GridWidth)-20;
 SBWithdrawLTC.Top:=46;SBWithdrawLTC.Left:=ThisPercent(20,GridWidth)-44;
+SBSharesBuy.Top:=68;SBSharesBuy.Left:=ThisPercent(20,GridWidth)-20;
+SBSharesSell.Top:=68;SBSharesSell.Left:=ThisPercent(20,GridWidth)-44;
+SBPoolTrade.Top:=24;SBPoolTrade.Left:=ThisPercent(70,GridWidth)+4;
+
 
 PanelPoolMessages.Top:=(TabLiqPool.Height div 2) - (PanelPoolMessages.Height div 2);
 PanelPoolMessages.left:=(TabLiqPool.width div 2) - (PanelPoolMessages.width div 2);
 ButtonPoolOkMessage.Width:=PanelButtonsPoolMessage.Width div 2;
 ButtonPoolCancelMessage.Width:=PanelButtonsPoolMessage.Width div 2;
+
+PanelPoolTrade.Top:=(TabLiqPool.Height div 2) - (PanelPoolTrade.Height div 2);
+PanelPoolTrade.left:=(TabLiqPool.width div 2) - (PanelPoolTrade.width div 2);
+
+
 
 End;
 
@@ -1168,7 +1227,7 @@ if ValidAddress = 0 then
       labelPoolUser.Visible:=true;
       ProcessStatusResponse(RequestRespo);
       // Initialize pool sesion
-      SetPoolUser(Address,Parameter(RequestRespo,4),Parameter(RequestRespo,5));
+      SetPoolUser(Address,Parameter(RequestRespo,5),Parameter(RequestRespo,6));
       LastPoolUpdate := UTCTime;
       StartPoolThread;
       end
@@ -1193,6 +1252,13 @@ MessagePro := 'WITHNOSO';
 ShowAppPanel('Withdraw Noso','Enter amount.',peCoin,true);
 End;
 
+// Button deposit nUSDo
+procedure TForm1.SBDepositLTCClick(Sender: TObject);
+Begin
+MessagePro := 'DEPNUSDO';
+ShowAppPanel('Deposit nUSDo','Send LTC to the following address. Funds received will be inmediately converted into nUSDo',2,true);
+End;
+
 // Button withdraw nUSDo
 procedure TForm1.SBWithdrawLTCClick(Sender: TObject);
 Begin
@@ -1201,6 +1267,25 @@ If PoolUser.WithLTC= '' then
    ShowAppPanel('Withdraw nUSDo','Enter your LiteCoin address',1,true);
    MessagePro := 'WITHLTCNOAD';
    end;
+End;
+
+// Button buy liquishares
+procedure TForm1.SBSharesBuyClick(Sender: TObject);
+Begin
+MessagePro := 'BUYSHARES';
+ShowAppPanel('Buy liqshares','Enter the number of shares you want buy.'+slinebreak+Format('Price each: %s Noso and %s nUSDo',[Int2Curr2Dec(PoolNoso div Poolshares),Int2Curr2Dec(PoolnUSDo div PoolShares)]),1,true);
+End;
+
+// BUTTON TRADE NOSO
+procedure TForm1.SBPoolTradeClick(Sender: TObject);
+Begin
+ShowTradePanel();
+End;
+
+// BUTTON CLOSE TRADE NOSO
+procedure TForm1.SpeedButton1Click(Sender: TObject);
+Begin
+HideTradePanel();
 End;
 
 // Button OK message
@@ -1296,6 +1381,212 @@ if PoolEditStyle = peCoin then
       end;
    end;
 End;
+
+// EDIT TRADE BUY on KEYPRESS
+procedure TForm1.EditTradebuyKeyPress(Sender: TObject; var Key: char);
+var
+  Permitido : string = '1234567890.';
+  Ultimo    : char;
+  Actualmente : string;
+  currpos : integer;
+  ParteEntera : string;
+  ParteDecimal : string;
+  PosicionEnElPunto : integer;
+Begin
+if key = chr(27) then          // ESC keys clears
+  begin
+  EditTradebuy.Text := '0.00000000';
+  EditTradebuy.SelStart := 1;
+  exit;
+  end;
+ultimo := char(key);
+if pos(ultimo,permitido)= 0 then exit;  // Not valid key
+Actualmente := EditTradebuy.Text;
+PosicionEnElPunto := Length(Actualmente)-9;
+currpos := EditTradebuy.SelStart;
+if key = '.' then                      // decimal point
+   begin
+   EditTradebuy.SelStart := length(EditTradebuy.Text)-8;
+   exit;
+   end;
+if ((EditTradebuy.SelStart > length(EditTradebuy.Text)-9) and
+   (EditTradebuy.SelStart < length(EditTradebuy.Text)))    then // it is in decimals
+   begin
+   Actualmente[currpos+1] := ultimo;
+   EditTradebuy.Text:=Actualmente;
+   EditTradebuy.SelStart := currpos+1;
+   end;
+if EditTradebuy.SelStart <= length(EditTradebuy.Text)-9 then // it is in integers
+   begin
+   ParteEntera := copy(actualmente,1,length(Actualmente)-9);
+   ParteDecimal := copy(actualmente,length(Actualmente)-7,8);
+   if currpos = PosicionEnElPunto then // esta justo antes del punto
+      begin
+      if length(parteentera)>7 then exit;
+      ParteEntera := ParteEntera+Ultimo;
+      ParteEntera := IntToStr(StrToIntDef(ParteEntera,0));
+      actualmente := parteentera+'.'+partedecimal;
+      EditTradebuy.Text:=Actualmente;
+      EditTradebuy.SelStart := Length(Actualmente)-9;
+      end
+   else
+      begin
+      Actualmente[currpos+1] := ultimo;
+      ParteEntera := copy(actualmente,1,length(Actualmente)-9);
+      ParteEntera := IntToStr(StrToIntDef(ParteEntera,0));
+      actualmente := parteentera+'.'+partedecimal;
+      EditTradebuy.Text:=Actualmente;
+      EditTradebuy.SelStart := currpos+1;
+      if ((currpos=0) and (ultimo='0')) then EditTradebuy.SelStart := 0;
+      end;
+   end;
+End;
+
+// EDIT TRADE SELL on KEYPRESS
+procedure TForm1.EditTradeSellKeyPress(Sender: TObject; var Key: char);
+var
+  Permitido : string = '1234567890.';
+  Ultimo    : char;
+  Actualmente : string;
+  currpos : integer;
+  ParteEntera : string;
+  ParteDecimal : string;
+  PosicionEnElPunto : integer;
+Begin
+if key = chr(27) then          // ESC keys clears
+  begin
+  EditTradeSell.Text := '0.00000000';
+  EditTradeSell.SelStart := 1;
+  exit;
+  end;
+ultimo := char(key);
+if pos(ultimo,permitido)= 0 then exit;  // Not valid key
+Actualmente := EditTradeSell.Text;
+PosicionEnElPunto := Length(Actualmente)-9;
+currpos := EditTradeSell.SelStart;
+if key = '.' then                      // decimal point
+   begin
+   EditTradeSell.SelStart := length(EditTradeSell.Text)-8;
+   exit;
+   end;
+if ((EditTradeSell.SelStart > length(EditTradeSell.Text)-9) and
+   (EditTradeSell.SelStart < length(EditTradeSell.Text)))    then // it is in decimals
+   begin
+   Actualmente[currpos+1] := ultimo;
+   EditTradeSell.Text:=Actualmente;
+   EditTradeSell.SelStart := currpos+1;
+   end;
+if EditTradeSell.SelStart <= length(EditTradeSell.Text)-9 then // it is in integers
+   begin
+   ParteEntera := copy(actualmente,1,length(Actualmente)-9);
+   ParteDecimal := copy(actualmente,length(Actualmente)-7,8);
+   if currpos = PosicionEnElPunto then // esta justo antes del punto
+      begin
+      if length(parteentera)>7 then exit;
+      ParteEntera := ParteEntera+Ultimo;
+      ParteEntera := IntToStr(StrToIntDef(ParteEntera,0));
+      actualmente := parteentera+'.'+partedecimal;
+      EditTradeSell.Text:=Actualmente;
+      EditTradeSell.SelStart := Length(Actualmente)-9;
+      end
+   else
+      begin
+      Actualmente[currpos+1] := ultimo;
+      ParteEntera := copy(actualmente,1,length(Actualmente)-9);
+      ParteEntera := IntToStr(StrToIntDef(ParteEntera,0));
+      actualmente := parteentera+'.'+partedecimal;
+      EditTradeSell.Text:=Actualmente;
+      EditTradeSell.SelStart := currpos+1;
+      if ((currpos=0) and (ultimo='0')) then EditTradeSell.SelStart := 0;
+      end;
+   end;
+End;
+
+// EDIT TRADE BUY ON CHANGE
+procedure TForm1.EditTradebuyChange(Sender: TObject);
+var
+  BuyAmount : int64;
+  Remainning : int64;
+  StepSize, thisStep  : int64;
+  CurrNoso, CurrUSD : int64;
+  TotalBuy  : Int64 = 0;
+  ThisBuy   : int64;
+  PriceStart : Extended;
+  CurrPrice  : Extended;
+  AverPrice  : extended;
+  PriceChange: Extended;
+  NextPrice  : Extended;
+Begin
+BuyAmount  := CurrToInt(EditTradebuy.Text);
+if BuyAmount > PoolNoso then
+   begin
+   BuyAmount := PoolNoso;
+   EditTradebuy.Text := Int2Curr(PoolNoso);
+   end;
+Remainning := BuyAmount;
+StepSize := PoolNoso div 200;
+CurrNoso := PoolNoso;
+CurrUSD := PoolnUSDo;
+PriceStart := PoolNusdo/PoolNoso;
+Repeat
+   if Remainning>= StepSize then thisStep:= StepSize
+   else ThisStep := Remainning;
+     CurrPrice := CurrUSD/CurrNoso;
+     ThisBuy   := Round(ThisStep*CurrPrice);
+     TotalBuy  := TotalBuy + ThisBuy;
+     CurrNoso  := CurrNoso - ThisStep;
+     CurrUSD   := CurrUSD + ThisBuy;
+     Remainning := Remainning-ThisStep;
+until Remainning = 0;
+if BuyAmount>0 then AverPRice := TotalBuy/BuyAmount
+else AverPRice := 0;
+PriceChange := ((AverPRice/PRiceStart)*100)-100;
+NextPrice   := CurrUSD/CurrNoso;
+Label11.Caption := FormatFLoat('0.00000000',AverPrice);
+Label12.Caption:=Int2Curr(TotalBuy); // Total USD of BUY
+Label13.Caption:=Format(' %s %% / %s',[FormatFLoat('0.00',PriceChange),FormatFloat('0.00000000',NextPrice)]);
+End;
+
+// EDIT TRADE SELL ON CHANGE
+procedure TForm1.EditTradeSellChange(Sender: TObject);
+var
+  SellAmount : int64;
+  Remainning : int64;
+  StepSize, thisStep  : int64;
+  CurrNoso, CurrUSD : int64;
+  TotalSell  : Int64 = 0;
+  ThisSell   : int64;
+  PriceStart : Extended;
+  CurrPrice  : Extended;
+  AverPrice  : extended;
+  PriceChange: Extended;
+  NextPrice  : Extended;
+Begin
+SellAmount  := CurrToInt(EditTradeSell.Text);
+Remainning := SellAmount;
+StepSize := PoolNoso div 200;
+CurrNoso := PoolNoso;
+CurrUSD := PoolnUSDo;
+PriceStart := PoolNusdo/PoolNoso;
+Repeat
+   if Remainning>= StepSize then thisStep:= StepSize
+   else ThisStep := Remainning;
+     CurrPrice := CurrUSD/CurrNoso;
+     ThisSell   := Round(ThisStep*CurrPrice);
+     TotalSell  := TotalSell + ThisSell;
+     CurrNoso  := CurrNoso + ThisStep;
+     CurrUSD   := CurrUSD - ThisSell;
+     Remainning := Remainning-ThisStep;
+until Remainning = 0;
+if SellAmount>0 then AverPRice := TotalSell/SellAmount
+else AverPRice := 0;
+PriceChange := ((AverPRice/PRiceStart)*100)-100;
+NextPrice   := CurrUSD/CurrNoso;
+Label19.Caption := FormatFLoat('0.00000000',AverPrice);
+Label21.Caption:=Int2Curr(TotalSell); // Total USD of Sell
+Label23.Caption:=Format(' %s %% / %s',[FormatFLoat('0.00',PriceChange),FormatFloat('0.00000000',NextPrice)]);
+End;
+
 
 END. // END PROGRAM
 
