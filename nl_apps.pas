@@ -9,6 +9,8 @@ uses
 
 Type
   TPoolThread = class(TThread)
+  private
+      procedure RefreshData;
   protected
     procedure Execute; override;
   public
@@ -73,9 +75,14 @@ While not terminated do
    sleep(100);
    if LastPoolUpdate+10<UTCTime then
       begin
-      RunPoolStatusRequest();
+      Synchronize(@RefreshData)
       end;
    end;
+End;
+
+procedure TPoolThread.RefreshData();
+Begin
+RunPoolStatusRequest;
 End;
 
 Procedure RunPoolStatusRequest;

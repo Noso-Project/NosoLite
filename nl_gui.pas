@@ -54,6 +54,9 @@ Form1.SBSharesBuy.Parent:=form1.GridPoolData;
 Form1.SBSharesSell.Parent:=form1.GridPoolData;
 Form1.SBPoolTrade.Parent:=form1.GridPoolData;
 
+{$IFDEF LINUX}
+   Form1.GridPoolData.Font.Size:= 8;
+{$ENDIF}
 
 Form1.GridPoolData.FocusRectVisible:=false;
 form1.GridPoolData.Cells[0,0] := rsGUI0041;

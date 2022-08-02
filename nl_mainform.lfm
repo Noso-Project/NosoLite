@@ -873,15 +873,15 @@ object Form1: TForm1
             Visible = False
           end
           object labelPoolUser: TLabel
-            Left = 21
+            Left = 6
             Height = 44
             Top = 26
             Width = 1
             Align = alLeft
-            BorderSpacing.Left = 20
+            BorderSpacing.Left = 5
             Font.CharSet = ANSI_CHARSET
             Font.Color = clBlack
-            Font.Height = -16
+            Font.Height = -15
             Font.Name = 'Segoe UI'
             Font.Pitch = fpVariable
             Font.Quality = fqDraft
@@ -892,7 +892,7 @@ object Form1: TForm1
             Visible = False
           end
           object EditPoolAddress: TEdit
-            Left = 22
+            Left = 7
             Height = 44
             Top = 26
             Width = 225
@@ -901,7 +901,7 @@ object Form1: TForm1
             TabOrder = 0
           end
           object ButtonPoolConnect: TButton
-            Left = 247
+            Left = 232
             Height = 44
             Top = 26
             Width = 75
