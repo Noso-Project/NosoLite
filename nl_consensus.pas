@@ -87,8 +87,8 @@ ThisNode := GetNodeIndex(Slot);
 TCPClient := TidTCPClient.Create(nil);
 TCPclient.Host:=ThisNode.host;
 TCPclient.Port:=ThisNode.port;
-TCPclient.ConnectTimeout:= 800;
-TCPclient.ReadTimeout:=800;
+TCPclient.ConnectTimeout:= 500;
+TCPclient.ReadTimeout:=500;
 REPEAT
    TRY
    TCPclient.Connect;
@@ -200,7 +200,7 @@ Var
   Counter   : integer;
   UseThread : TTGetNodeStatus;
   StartTime : int64;
-  Cycles    : integer = 0;
+  LCycles    : integer = 0;
 Begin
 SetSyncingThreads(ArrayNodesLength);
 StartTime := GetTickCount64;
@@ -211,15 +211,14 @@ For Counter := 0 to ArrayNodesLength-1 do
    UseThread.Start;
    Sleep(1);
    end;
+LCycles := 0;
 REPEAT
    sleep(1);
-   Inc(Cycles);
-UNTIL ( (GetSyncingThreads <= 0) or (Cycles>=5000) );
-if GetSyncingThreads>0 then
-   begin
-   // ToLog('ERROR: Open threads '+GetSyncingThreads.ToString);
-   end;
+   //Inc(LCycles);
+   LCycles := LCycles+1;
+UNTIL ( (GetSyncingThreads <= 0) or (GetTickCount64-StartTime>=5000) );
 Result := GetTickCount64-StartTime;
+ToLog(Format('FN: %d ms / %d Cyc / %d OT',[result,Lcycles,GetSyncingThreads]));
 End;
 
 Procedure RunFillNodes();
@@ -360,26 +359,7 @@ For counter := 0 to length (ARRAY_Nodes)-1 do
    AddValue(ARRAY_Nodes[counter].GVTHash);
    Result.GVTHash := GetHighest;
    End;
-{
 
-if ((CBlock=WO_LastBlock) and (CBranch=WO_LastSumary) and (not Wallet_Synced)) then
-   Wallet_Synced := true;
-
-if (CBlock>WO_LastBlock) then
-   begin
-   result := true;
-   WO_LastBlock := CBlock;
-   WO_LastSumary := CBranch;
-   Int_LastPendingCount := 0;
-   end;
-
-if cPending>Int_LastPendingCount  then
-   begin
-   Pendings_String := GetPendings();
-   ProcessPendings();
-   Int_LastPendingCount := cPending;
-   end;
-}
 For counter := 0 to length (ARRAY_Nodes)-1 do
    begin
    if ( (ARRAY_Nodes[counter].block=Result.block) and (ARRAY_Nodes[counter].Branch = Result.Branch) ) then

@@ -76,6 +76,11 @@ Form1.GridPoolTrades.Cells[2,0] :=rsGUI0047;
 Form1.GridUserTrades.Cells[0,0] :=rsGUI0045;
 Form1.GridUserTrades.Cells[1,0] :=rsGUI0046;
 Form1.GridUserTrades.Cells[2,0] :=rsGUI0047;
+
+Form1.GridUserOrders.Cells[0,0] :=rsGUI0045;
+Form1.GridUserOrders.Cells[1,0] :=rsGUI0046;
+Form1.GridUserOrders.Cells[2,0] :=rsGUI0047;
+
 End;
 
 // Refresh the adressess grid

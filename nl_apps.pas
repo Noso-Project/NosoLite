@@ -19,12 +19,11 @@ Type
 
   TActiveUser = packed record
      Address  : string;
-     WithLTC  : string;
      DepoLTC  : String;
      end;
 
 Procedure RunPoolStatusRequest;
-Procedure SetPoolUser(Address, deposit, withdraw: string);
+Procedure SetPoolUser(Address, deposit: string);
 Procedure StartPoolThread();
 Function PostMessageToHost(host:string;port:integer;message:string):string;
 Procedure RefreshPoolDataGrid(useraddress,ltcTier:string;usernoso,usernusdo,usershares,poolnoso,poolnusdo,
@@ -33,6 +32,8 @@ Procedure ShowAppPanel(LabMessage:String;InText:String;showEdit:integer;ShowButt
 Procedure HideAppPanel();
 Procedure ShowTradePanel();
 Procedure HideTradePanel();
+Procedure ShowWithdrawPanel();
+Procedure HideWithdrawPanel();
 Function GetPoolRanSeed():String;
 Procedure ProcessStatusResponse(LineText:String);
 
@@ -41,6 +42,7 @@ CONST
   peNormal = 1;
   peROnly  = 2;
   peCoin   = 3;
+  PoolPub  = 'BImqS58bt56WV2yg4+HqtVCdEC2C1h0KYNyN2kjP0DKGDZXhn1uYtvKnkCcoX1t9FOVNu27jt4bK7l92K3AwPho=';
 
 var
   PoolThread     : TPoolThread;
@@ -105,11 +107,10 @@ else if parameter(ReqResponse,0)= 'ERROR' then
 
 End;
 
-Procedure SetPoolUser(Address, deposit, withdraw: string);
+Procedure SetPoolUser(Address, deposit: string);
 Begin
 PoolUser.Address:=Address;
 PoolUser.DepoLTC:=deposit;
-PoolUser.WithLTC:=withdraw;
 End;
 
 Procedure StartPoolThread();
@@ -194,6 +195,7 @@ else if showedit = 1 then // Normal
    Form1.EditPoolMessages.Text    :='';
    Form1.EditPoolMessages.visible := true;
    Form1.ButtonPoolCancelMessage.Visible:=true;
+   if MessagePro = 'WITHLTCNOAD' then form1.ButtonPoolOkMessage.Enabled:=false;
    end
 else if showedit = 2 then // Readonly
    begin
@@ -222,11 +224,12 @@ Form1.PanelPoolMain.Enabled:=true;
 Form1.PanelPoolMain.Enabled:=true;
 Form1.PanelPoolMessages.Visible:=false;
 Form1.PanelPoolMessages.SendToBack;
+form1.ButtonPoolOkMessage.Enabled:=true;
 if MessagePro = 'DEPNOSOOK' then
    begin
    Form1.PageCOntrol.ActivePage:= Form1.TabWallet;
    Form1.TabWallet.TabVisible:=true;
-   Form1.EditSCDest.Text := PoolAddress;
+   Form1.EditSCDest.Text := 'liqpool';
    Form1.MemoSCCon.Text:=PoolUser.Address;
    MessagePro := '';
    end;
@@ -267,6 +270,25 @@ Form1.PanelPoolTrade.SendToBack;
 MessagePro := '';
 End;
 
+Procedure ShowWithdrawPanel();
+Begin
+Form1.PanelPoolTop.Enabled:=false;
+Form1.PanelPoolMain.Enabled:=false;
+Form1.PanelPoolMain.Enabled:=false;
+Form1.PanelWithdraw.Visible:=true;
+Form1.PanelWithdraw.BringToFront;
+End;
+
+Procedure HideWithdrawPanel();
+Begin
+Form1.PanelPoolTop.Enabled:=true;
+Form1.PanelPoolMain.Enabled:=true;
+Form1.PanelPoolMain.Enabled:=true;
+Form1.PanelWithdraw.Visible:=false;
+Form1.PanelWithdraw.SendToBack;
+MessagePro := '';
+End;
+
 Function GetPoolRanSeed():String;
 var
   TNumber : integer;
@@ -293,13 +315,13 @@ if Parameter(LineText,0) = 'STATUS' then
    NosoBalance  := StrToInt64Def(Parameter(LineText,2),0);
    nUSDoBalance := StrToInt64Def(Parameter(LineText,3),0);
    Shares       := StrToIntDef(Parameter(LineText,4),0);
-   LTCTicker    := Parameter(LineText,7);
-   PoolNoso     := StrToInt64Def(Parameter(LineText,8),0);
-   PoolnUSDo    := StrToInt64Def(Parameter(LineText,9),0);
-   PoolShares   := StrToIntDef(Parameter(LineText,10),0);
-   PoolVolume   := StrToInt64Def(Parameter(LineText,11),0);
-   PoolBuyFee   := StrToInt64Def(Parameter(LineText,12),PoolBuyFee);
-   PoolSellFee   := StrToInt64Def(Parameter(LineText,13),PoolSellFee);
+   LTCTicker    := Parameter(LineText,6);
+   PoolNoso     := StrToInt64Def(Parameter(LineText,7),0);
+   PoolnUSDo    := StrToInt64Def(Parameter(LineText,8),0);
+   PoolShares   := StrToIntDef(Parameter(LineText,9),0);
+   PoolVolume   := StrToInt64Def(Parameter(LineText,10),0);
+   PoolBuyFee   := StrToInt64Def(Parameter(LineText,11),PoolBuyFee);
+   PoolSellFee   := StrToInt64Def(Parameter(LineText,12),PoolSellFee);
    RefreshPoolDataGrid(Address,LTCTicker,NosoBalance,nUSDoBalance,Shares,PoolNoso,PoolnUSDo,PoolShares,PoolVolume);
    end;
 End;

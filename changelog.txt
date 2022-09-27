@@ -2,6 +2,7 @@
 
 - Fixed wrong data showed on status bar.
 - Added splash form.
+- New def nodes list
 
 * Version 1.24
 

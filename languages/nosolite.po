@@ -273,7 +273,7 @@ msgid "   24 H Volume: %s nUSDo"
 msgstr ""
 
 #: nl_language.rsgui0045
-msgid "Hour"
+msgid "Time"
 msgstr ""
 
 #: nl_language.rsgui0046
@@ -308,6 +308,10 @@ msgctxt "tform1.button2.caption"
 msgid "Submit"
 msgstr ""
 
+#: tform1.button3.caption
+msgid "Withdraw"
+msgstr ""
+
 #: tform1.buttonpoolcancelmessage.caption
 msgctxt "tform1.buttonpoolcancelmessage.caption"
 msgid "Cancel"
@@ -329,6 +333,11 @@ msgstr ""
 
 #: tform1.cbmultisend.hint
 msgid "Check to use all addresses"
+msgstr ""
+
+#: tform1.edit3.text
+msgctxt "tform1.edit3.text"
+msgid "0.00000000"
 msgstr ""
 
 #: tform1.editscmont.text
@@ -438,8 +447,34 @@ msgctxt "tform1.label25.caption"
 msgid "0.00000000"
 msgstr ""
 
+#: tform1.label26.caption
+msgid "Withdraw nUSDo"
+msgstr ""
+
+#: tform1.label27.caption
+msgid "Coin"
+msgstr ""
+
+#: tform1.label28.caption
+msgctxt "tform1.label28.caption"
+msgid "Amount"
+msgstr ""
+
+#: tform1.label29.caption
+msgctxt "tform1.label29.caption"
+msgid "Address"
+msgstr ""
+
 #: tform1.label3.caption
 msgid "My trades"
+msgstr ""
+
+#: tform1.label30.caption
+msgid "Max: 0.00000000"
+msgstr ""
+
+#: tform1.label31.caption
+msgid "My History"
 msgstr ""
 
 #: tform1.label4.caption
@@ -752,6 +787,10 @@ msgstr ""
 
 #: tform1.tabwallet.caption
 msgid "Wallet"
+msgstr ""
+
+#: tform1.textpoolmessages.caption
+msgid "TextPoolMessages"
 msgstr ""
 
 #: tform2.button1.caption

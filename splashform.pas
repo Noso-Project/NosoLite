@@ -29,6 +29,9 @@ var
 
 implementation
 
+uses
+  nl_data;
+
 {$R *.lfm}
 
 { TForm4 }
@@ -39,7 +42,7 @@ var
 begin
 MyRegion := CreateEllipticRgn(10, 10, 310, 310);
 SetWindowRgn(Handle, MyRegion, True);
-Label1.Caption:='Nosolite v1.25';
+Label1.Caption:='Nosolite v'+ProgramVersion;
 end;
 
 END. // END UNIT

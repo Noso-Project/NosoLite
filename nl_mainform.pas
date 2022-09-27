@@ -18,10 +18,14 @@ type
   TForm1 = class(TForm)
     Button1: TButton;
     Button2: TButton;
+    Button3: TButton;
     ButtonPoolCancelMessage: TButton;
     ButtonPoolOkMessage: TButton;
     ButtonPoolConnect: TButton;
     CBMultisend: TCheckBox;
+    ComboBox1: TComboBox;
+    Edit3: TEdit;
+    Edit4: TEdit;
     EditTradebuy: TEdit;
     EditTradeSell: TEdit;
     EditPoolMessages: TEdit;
@@ -30,6 +34,7 @@ type
     EditSCDest: TEdit;
     EditSCMont: TEdit;
     GridUserTrades: TStringGrid;
+    GridUserOrders: TStringGrid;
     GVTsGrid: TStringGrid;
     ImageBlockInfo: TImage;
     ImageList: TImageList;
@@ -55,6 +60,19 @@ type
     Label23: TLabel;
     Label24: TLabel;
     Label25: TLabel;
+    Label26: TLabel;
+    Label27: TLabel;
+    Label28: TLabel;
+    Label29: TLabel;
+    Label30: TLabel;
+    Label31: TLabel;
+    Panel11: TPanel;
+    Panel12: TPanel;
+    Panel13: TPanel;
+    Panel14: TPanel;
+    PanelWithdraw: TPanel;
+    SpeedButton2: TSpeedButton;
+    TextPoolMessages: TLabel;
     Label3: TLabel;
     Label4: TLabel;
     Label6: TLabel;
@@ -162,7 +180,6 @@ type
     SpeedButton1: TSpeedButton;
     TabSheet3: TTabSheet;
     TabSheet4: TTabSheet;
-    TextPoolMessages: TStaticText;
     TabNodes: TTabSheet;
     TabLog: TTabSheet;
     TabLiqPool: TTabSheet;
@@ -192,6 +209,7 @@ type
     procedure GridPoolDataPrepareCanvas(sender: TObject; aCol, aRow: Integer;
       aState: TGridDrawState);
     procedure GridPoolTradesResize(Sender: TObject);
+    procedure GridUserOrdersResize(Sender: TObject);
     procedure GridUserTradesResize(Sender: TObject);
     procedure GVTsGridResize(Sender: TObject);
     procedure MenuItem10Click(Sender: TObject);
@@ -217,6 +235,7 @@ type
     procedure SBWithdrawLTCClick(Sender: TObject);
     procedure SBWithdrawNosoClick(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
+    procedure SpeedButton2Click(Sender: TObject);
     Procedure StartTimerRun(Sender: TObject);
     Procedure RunAppStart();
 
@@ -1138,7 +1157,8 @@ ButtonPoolCancelMessage.Width:=PanelButtonsPoolMessage.Width div 2;
 PanelPoolTrade.Top:=(TabLiqPool.Height div 2) - (PanelPoolTrade.Height div 2);
 PanelPoolTrade.left:=(TabLiqPool.width div 2) - (PanelPoolTrade.width div 2);
 
-
+PanelWithdraw.Top:=(TabLiqPool.Height div 2) - (PanelWithdraw.Height div 2);
+PanelWithdraw.left:=(TabLiqPool.width div 2) - (PanelWithdraw.width div 2);
 
 End;
 
@@ -1181,6 +1201,16 @@ form1.GridPoolTrades.ColWidths[1] := ThisPercent(40,GridWidth);
 form1.GridPoolTrades.ColWidths[2] := ThisPercent(40,GridWidth,true);
 End;
 
+procedure TForm1.GridUserOrdersResize(Sender: TObject);
+var
+  GridWidth : integer;
+begin
+GridWidth := form1.PanelPoolUser.Width;
+form1.GridUserOrders.ColWidths[0] := ThisPercent(20,GridWidth);
+form1.GridUserOrders.ColWidths[1] := ThisPercent(40,GridWidth);
+form1.GridUserOrders.ColWidths[2] := ThisPercent(40,GridWidth,true);
+end;
+
 // Resize user trades grid
 procedure TForm1.GridUserTradesResize(Sender: TObject);
 var
@@ -1202,6 +1232,7 @@ var
   RequestMessage : String;
   RanSeed        : string;
   ReqTime        : String;
+  LSignature     : string;
 Begin
 Address := EditPoolAddress.Text;
 ReqTime := UTCTime.ToString;
@@ -1219,17 +1250,25 @@ if ValidAddress = 0 then
    RequestRespo:=PostMessageToHost(LiqPoolHost,LiqPoolPort,RequestMessage);
    if parameter(RequestRespo,0)= 'STATUS' then
       begin
-      PanelPoolMain.Visible:=true;
-      EditPoolAddress.Visible:=false;
-      ButtonPoolConnect.Visible:=false;
-      LAbelPoolTier.Visible:=true;
-      PanelPoolMarketPrice.Visible:=true;
-      labelPoolUser.Visible:=true;
-      ProcessStatusResponse(RequestRespo);
-      // Initialize pool sesion
-      SetPoolUser(Address,Parameter(RequestRespo,5),Parameter(RequestRespo,6));
-      LastPoolUpdate := UTCTime;
-      StartPoolThread;
+      LSignature := Parameter(RequestRespo,15);
+      if VerifySignedString(Address+ReqTime+RanSeed+Parameter(RequestRespo,5),LSignature,PoolPub) then
+         begin
+         PanelPoolMain.Visible:=true;
+         EditPoolAddress.Visible:=false;
+         ButtonPoolConnect.Visible:=false;
+         LAbelPoolTier.Visible:=true;
+         PanelPoolMarketPrice.Visible:=true;
+         labelPoolUser.Visible:=true;
+         ProcessStatusResponse(RequestRespo);
+         // Initialize pool sesion
+         SetPoolUser(Address,Parameter(RequestRespo,5));
+         LastPoolUpdate := UTCTime;
+         StartPoolThread;
+         end
+      else
+         begin
+         ToLog('Invalid credentials response');
+         end;
       end
    else if parameter(RequestRespo,0)= 'ERROR' then
       ToLog(RequestRespo);
@@ -1262,11 +1301,15 @@ End;
 // Button withdraw nUSDo
 procedure TForm1.SBWithdrawLTCClick(Sender: TObject);
 Begin
+{
 If PoolUser.WithLTC= '' then
    begin
-   ShowAppPanel('Withdraw nUSDo','Enter your LiteCoin address',1,true);
    MessagePro := 'WITHLTCNOAD';
+   ShowAppPanel('Withdraw nUSDo','Enter your LiteCoin address',1,true);
    end;
+}
+MessagePro := 'WITHLTCNOAD';
+ShowWithdrawPanel;
 End;
 
 // Button buy liquishares
@@ -1287,6 +1330,12 @@ procedure TForm1.SpeedButton1Click(Sender: TObject);
 Begin
 HideTradePanel();
 End;
+
+// Button close withdraw panel
+procedure TForm1.SpeedButton2Click(Sender: TObject);
+begin
+HideWithdrawPanel
+end;
 
 // Button OK message
 procedure TForm1.ButtonPoolOkMessageClick(Sender: TObject);
@@ -1379,6 +1428,10 @@ if PoolEditStyle = peCoin then
          if ((currpos=0) and (ultimo='0')) then EditPoolMessages.SelStart := 0;
          end;
       end;
+   end;
+if ((MessagePro = 'WITHLTCNOAD') and (ValidateLitecoin(EditPoolMessages.Text))) then
+   begin
+
    end;
 End;
 

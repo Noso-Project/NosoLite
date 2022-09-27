@@ -71,7 +71,7 @@ Resourcestring
   rsGUI0042 = 'Pool';
   rsGUI0043 = 'Price';
   rsGUI0044 = '   24 H Volume: %s nUSDo';
-  rsGUI0045 = 'Hour';
+  rsGUI0045 = 'Time';
   rsGUI0046 = 'Amount';
   rsGUI0047 = 'Price';
   rsGUI0048 = '   Marketcap : %s US$';
