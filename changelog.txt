@@ -1,3 +1,7 @@
+* verison 1.27
+
+- Liqpool engine created.
+
 * Version 1.25
 
 - Fixed wrong data showed on status bar.

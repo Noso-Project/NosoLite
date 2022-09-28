@@ -765,6 +765,7 @@ object Form1: TForm1
       ClientHeight = 396
       ClientWidth = 632
       OnResize = TabLiqPoolResize
+      TabVisible = False
       object PanelWithdraw: TPanel
         Left = 288
         Height = 200
