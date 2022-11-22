@@ -30,7 +30,7 @@ The best way to ensure that the latest versions of all packages are used is to i
 
 ## Supported Platforms
 
-Currently, Nosolite is supported for recent versions of Windows and Linux (Unix). The development team reviews presently future support of macOS (Darwin). 
+Currently, Nosolite is supported for recent versions of Windows and Linux (Unix). macOS (Darwin) support is currently on beta.
 
 ### Supported Windows versions
 

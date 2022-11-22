@@ -1,0 +1,5 @@
+* version 1.29
+
+- Log moved to a separated form.
+- Nodes moved to a separated form.
+

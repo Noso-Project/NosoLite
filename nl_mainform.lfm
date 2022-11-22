@@ -24,9 +24,9 @@ object Form1: TForm1
     Height = 424
     Top = 0
     Width = 640
-    ActivePage = TabLiqPool
+    ActivePage = TabNodes
     Align = alClient
-    TabIndex = 3
+    TabIndex = 2
     TabOrder = 0
     object TabWallet: TTabSheet
       Caption = 'Wallet'
@@ -735,6 +735,7 @@ object Form1: TForm1
       Caption = 'Nodes'
       ClientHeight = 396
       ClientWidth = 632
+      TabVisible = False
       object SGridNodes: TStringGrid
         Left = 0
         Height = 381
@@ -1947,6 +1948,7 @@ object Form1: TForm1
       Caption = 'Log'
       ClientHeight = 396
       ClientWidth = 632
+      TabVisible = False
       object MemoLog: TMemo
         Left = 0
         Height = 396
@@ -2263,6 +2265,7 @@ object Form1: TForm1
       ParentShowHint = False
       ShowHint = True
       TabOrder = 0
+      OnClick = PanelBlockInfoClick
       object ImageBlockInfo: TImage
         Left = 6
         Height = 19
@@ -2371,6 +2374,10 @@ object Form1: TForm1
       object MenuItem20: TMenuItem
         Caption = 'ZIP Backup'
         OnClick = MenuItem20Click
+      end
+      object MenuItem12: TMenuItem
+        Caption = 'Show log'
+        OnClick = MenuItem12Click
       end
       object MM_File_Exit: TMenuItem
         Caption = 'E&xit'

@@ -9,7 +9,7 @@ uses
   Grids, Menus, StdCtrls, nl_GUI, nl_disk, nl_data, nl_functions, IdTCPClient,
   nl_language, nl_cripto, Clipbrd, Buttons, Spin, nl_explorer, IdComponent,
   strutils, Types, nl_qrcode, DefaultTranslator, infoform, nl_apps, nl_consensus,
-  nl_network, splashform;
+  nl_network, splashform, formlog, formnetwork;
 
 type
 
@@ -66,6 +66,7 @@ type
     Label29: TLabel;
     Label30: TLabel;
     Label31: TLabel;
+    MenuItem12: TMenuItem;
     Panel11: TPanel;
     Panel12: TPanel;
     Panel13: TPanel;
@@ -214,6 +215,7 @@ type
     procedure GVTsGridResize(Sender: TObject);
     procedure MenuItem10Click(Sender: TObject);
     procedure MenuItem11Click(Sender: TObject);
+    procedure MenuItem12Click(Sender: TObject);
     procedure MenuItem15Click(Sender: TObject);
     procedure MenuItem16Click(Sender: TObject);
     procedure MenuItem17Click(Sender: TObject);
@@ -228,6 +230,7 @@ type
     procedure MenuItem8Click(Sender: TObject);
     procedure MenuItem9Click(Sender: TObject);
     procedure MM_File_ExitClick(Sender: TObject);
+    procedure PanelBlockInfoClick(Sender: TObject);
     procedure SBDepositLTCClick(Sender: TObject);
     procedure SBDepositNosoClick(Sender: TObject);
     procedure SBPoolTradeClick(Sender: TObject);
@@ -922,6 +925,18 @@ procedure TForm1.MM_File_ExitClick(Sender: TObject);
 Begin
   Close;
 End;
+
+// Show log
+procedure TForm1.MenuItem12Click(Sender: TObject);
+Begin
+Form5.Show;
+End;
+
+// Click on panel
+procedure TForm1.PanelBlockInfoClick(Sender: TObject);
+begin
+form6.Show;
+end;
 
 //******************************************************************************
 // Send coins panel

@@ -58,7 +58,7 @@ jobs:
     - name: Build the Main App (macOS)
       if: ${{ matrix.operating-system == 'macos-latest' }}
       run: |
-        lazbuild -B --bm=Release "nosolite.lpi"
+        lazbuild -B --bm=Release --ws="cocoa" "nosolite.lpi"
         mv nosolite nosolite-x86_64-darwin
 
     - name: Upload binary (Windows)

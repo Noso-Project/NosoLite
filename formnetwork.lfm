@@ -1,0 +1,37 @@
+object Form6: TForm6
+  Left = 342
+  Height = 400
+  Top = 251
+  Width = 640
+  Caption = 'Noso network'
+  ClientHeight = 400
+  ClientWidth = 640
+  Constraints.MinHeight = 400
+  Constraints.MinWidth = 640
+  Position = poMainFormCenter
+  LCLVersion = '2.2.4.0'
+  object LabelNodes: TLabel
+    Left = 0
+    Height = 15
+    Top = 0
+    Width = 640
+    Align = alTop
+    Caption = ' '
+    ParentColor = False
+  end
+  object SGridNodes: TStringGrid
+    Left = 0
+    Height = 385
+    Top = 15
+    Width = 640
+    Align = alClient
+    ColCount = 8
+    FixedCols = 0
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goSmoothScroll]
+    RowCount = 1
+    ScrollBars = ssVertical
+    TabOrder = 0
+    OnPrepareCanvas = SGridNodesPrepareCanvas
+    OnResize = SGridNodesResize
+  end
+end

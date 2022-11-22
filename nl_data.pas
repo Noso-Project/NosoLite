@@ -5,7 +5,7 @@ unit nl_data;
 interface
 
 uses
-  Classes, SysUtils, IdTCPClient, dateutils, strutils;
+  Classes, SysUtils, IdTCPClient, dateutils, strutils, formlog;
 
 Type
 
@@ -142,7 +142,7 @@ CONST
   Comisiontrfr = 10000;
   MinimunFee = 10;
   Protocol = 2;
-  ProgramVersion = '1.28';
+  ProgramVersion = '1.29';
 
   HexAlphabet : string = '0123456789ABCDEF';
   B58Alphabet : string = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
@@ -254,7 +254,8 @@ Begin
 EnterCriticalSection(CS_LOG);
 While LogLines.Count>0 do
    begin
-   Form1.MemoLog.lines.Add(LogLines[0]);
+   //Form1.MemoLog.lines.Add(LogLines[0]);
+   Form5.memolog.lines.Add(LogLines[0]);
    LogLines.Delete(0);
    end;
 LeaveCriticalSection(CS_LOG);

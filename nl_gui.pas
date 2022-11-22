@@ -5,7 +5,7 @@ unit nl_GUI;
 interface
 
 uses
-  Classes, SysUtils, nl_functions, nl_language, nl_data, graphics, DateUtils;
+  Classes, SysUtils, nl_functions, nl_language, nl_data, graphics, DateUtils, formnetwork;
 
 Procedure LoadGUIInterface();
 Procedure RefreshAddresses();
@@ -28,15 +28,15 @@ form1.SGridAddresses.Cells[0,0] := rsGUI0001;
 form1.SGridAddresses.Cells[1,0] := rsGUI0002;
 form1.SGridAddresses.Cells[2,0] := rsGUI0003;
 form1.SGridAddresses.Cells[3,0] := rsGUI0004;
-form1.SGridNodes.FocusRectVisible:=false;
-form1.SGridNodes.Cells[0,0] := rsGUI0005;
-form1.SGridNodes.Cells[1,0] := rsGUI0006;
-form1.SGridNodes.Cells[2,0] := rsGUI0007;
-form1.SGridNodes.Cells[3,0] := rsGUI0008;
-form1.SGridNodes.Cells[4,0] := rsGUI0018;
-form1.SGridNodes.Cells[5,0] := rsGUI0019;
-form1.SGridNodes.Cells[6,0] := rsGUI0029;
-form1.SGridNodes.Cells[7,0] := 'Version';
+form6.SGridNodes.FocusRectVisible:=false;
+form6.SGridNodes.Cells[0,0] := rsGUI0005;
+form6.SGridNodes.Cells[1,0] := rsGUI0006;
+form6.SGridNodes.Cells[2,0] := rsGUI0007;
+form6.SGridNodes.Cells[3,0] := rsGUI0008;
+form6.SGridNodes.Cells[4,0] := rsGUI0018;
+form6.SGridNodes.Cells[5,0] := rsGUI0019;
+form6.SGridNodes.Cells[6,0] := rsGUI0029;
+form6.SGridNodes.Cells[7,0] := 'Version';
 Form1.SGridSC.Cells[0,0]:=rsGUI0014;
 Form1.SGridSC.Cells[0,1]:=rsGUI0015;
 Form1.SGridSC.Cells[0,2]:=rsGUI0016;
@@ -116,23 +116,23 @@ Procedure RefreshNodes();
 var
   counter : integer = 0;
 Begin
-Form1.LabelNodes.caption := 'Block: '+MasternodesLastBlock.ToString+'+';
-form1.SGridNodes.RowCount:=length(ARRAY_Nodes)+1;
+Form6.LabelNodes.caption := 'Block: '+MasternodesLastBlock.ToString+'+';
+form6.SGridNodes.RowCount:=length(ARRAY_Nodes)+1;
 if length(ARRAY_Nodes)>0 then
    begin
    for counter := 0 to length(ARRAY_Nodes)-1 do
       begin
-      form1.SGridNodes.Cells[0,counter+1] := ARRAY_Nodes[counter].Host;
-      form1.SGridNodes.Cells[1,counter+1] := ARRAY_Nodes[counter].Block.ToString;
-      form1.SGridNodes.Cells[2,counter+1] := ARRAY_Nodes[counter].Pending.ToString;
-      form1.SGridNodes.Cells[3,counter+1] := ARRAY_Nodes[counter].Branch+'/'+ARRAY_Nodes[counter].SumHash;
-      form1.SGridNodes.Cells[4,counter+1] := ARRAY_Nodes[counter].MNsHash+'-'+ARRAY_Nodes[counter].MNsCount.ToString+'-'+ARRAY_Nodes[counter].Checks.ToString;
-      form1.SGridNodes.Cells[5,counter+1] := ARRAY_Nodes[counter].Peers.ToString;
-      form1.SGridNodes.Cells[6,counter+1] := BestHashReadeable(ARRAY_Nodes[counter].NMSDiff);
-      form1.SGridNodes.Cells[7,counter+1] := ARRAY_Nodes[counter].version;
+      form6.SGridNodes.Cells[0,counter+1] := ARRAY_Nodes[counter].Host;
+      form6.SGridNodes.Cells[1,counter+1] := ARRAY_Nodes[counter].Block.ToString;
+      form6.SGridNodes.Cells[2,counter+1] := ARRAY_Nodes[counter].Pending.ToString;
+      form6.SGridNodes.Cells[3,counter+1] := ARRAY_Nodes[counter].Branch+'/'+ARRAY_Nodes[counter].SumHash;
+      form6.SGridNodes.Cells[4,counter+1] := ARRAY_Nodes[counter].MNsHash+'-'+ARRAY_Nodes[counter].MNsCount.ToString+'-'+ARRAY_Nodes[counter].Checks.ToString;
+      form6.SGridNodes.Cells[5,counter+1] := ARRAY_Nodes[counter].Peers.ToString;
+      form6.SGridNodes.Cells[6,counter+1] := BestHashReadeable(ARRAY_Nodes[counter].NMSDiff);
+      form6.SGridNodes.Cells[7,counter+1] := ARRAY_Nodes[counter].version;
       end;
    end;
-Form1.TabNodes.Caption:=Format('Nodes (%d)',[length(ARRAY_Nodes)]);
+Form6.Caption:=Format('Noso network (%d nodes)',[length(ARRAY_Nodes)]);
 End;
 
 // Refresh the status bar

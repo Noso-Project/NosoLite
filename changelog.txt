@@ -1,3 +1,8 @@
+* version 1.29
+
+- Log moved to a separated form.
+- Nodes moved to a separated form.
+
 * verison 1.28
 
 - Splashform background adjusted.

@@ -95,6 +95,7 @@
 {"hash":47168149,"name":"tform1.menuitem18.caption","sourcebytes":[67,104,101,99,107,32,67,101,114,116,105,102,105,99,97,116,101],"value":"Check Certificate"},
 {"hash":190252786,"name":"tform1.menuitem19.caption","sourcebytes":[87,97,108,108,101,116,32,102,111,108,100,101,114],"value":"Wallet folder"},
 {"hash":75664608,"name":"tform1.menuitem20.caption","sourcebytes":[90,73,80,32,66,97,99,107,117,112],"value":"ZIP Backup"},
+{"hash":258570439,"name":"tform1.menuitem12.caption","sourcebytes":[83,104,111,119,32,108,111,103],"value":"Show log"},
 {"hash":4710148,"name":"tform1.mm_file_exit.caption","sourcebytes":[69,38,120,105,116],"value":"E&xit"},
 {"hash":21703,"name":"tform1.menuitem5.caption","sourcebytes":[78,101,119],"value":"New"},
 {"hash":5404860,"name":"tform1.menuitem11.caption","sourcebytes":[76,97,98,101,108],"value":"Label"},

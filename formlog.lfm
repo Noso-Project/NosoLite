@@ -1,0 +1,29 @@
+object Form5: TForm5
+  Left = 266
+  Height = 320
+  Top = 119
+  Width = 480
+  Caption = 'Log'
+  ClientHeight = 320
+  ClientWidth = 480
+  Constraints.MinHeight = 320
+  Constraints.MinWidth = 480
+  LCLVersion = '2.2.4.0'
+  object memolog: TMemo
+    Left = 0
+    Height = 320
+    Top = 0
+    Width = 480
+    Align = alClient
+    Color = clBlack
+    Font.CharSet = ANSI_CHARSET
+    Font.Color = clWhite
+    Font.Height = -12
+    Font.Name = 'Consolas'
+    Font.Pitch = fpFixed
+    Font.Quality = fqDraft
+    ParentFont = False
+    ScrollBars = ssAutoVertical
+    TabOrder = 0
+  end
+end

@@ -584,6 +584,7 @@ msgid "Locked balance"
 msgstr ""
 
 #: tform1.labelnodes.caption
+msgctxt "tform1.labelnodes.caption"
 msgid " "
 msgstr ""
 
@@ -667,6 +668,10 @@ msgstr "Destrancar"
 #: tform1.menuitem11.caption
 msgctxt "tform1.menuitem11.caption"
 msgid "Label"
+msgstr ""
+
+#: tform1.menuitem12.caption
+msgid "Show log"
 msgstr ""
 
 #: tform1.menuitem15.caption
@@ -834,6 +839,7 @@ msgid "Liqpool"
 msgstr ""
 
 #: tform1.tablog.caption
+msgctxt "tform1.tablog.caption"
 msgid "Log"
 msgstr "Diário"
 
@@ -903,6 +909,21 @@ msgstr ""
 
 #: tform4.label2.caption
 msgid "Starting..."
+msgstr ""
+
+#: tform5.caption
+#, fuzzy
+msgctxt "tform5.caption"
+msgid "Log"
+msgstr "Diário"
+
+#: tform6.caption
+msgid "Noso network"
+msgstr ""
+
+#: tform6.labelnodes.caption
+msgctxt "tform6.labelnodes.caption"
+msgid " "
 msgstr ""
 
 #: tformexplorer.butaccept.hint
