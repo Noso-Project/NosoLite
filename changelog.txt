@@ -2,8 +2,11 @@
 
 - Splashform background adjusted.
 - STR_SeedNodes fixed.
+- Included darwin support.
+- Workflow updated.
+- Readme updated.
 
-* verison 1.27
+* version 1.27
 
 - Liqpool engine created.
 

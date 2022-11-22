@@ -34,14 +34,14 @@ msgid "Passwords do not match"
 msgstr "Palavras passe não são iguais"
 
 #: nl_language.rserror0001
-#, fuzzy
+#, object-pascal-format, fuzzy
 #| msgid "Error: creating new wallet file-> %s"
 msgctxt "nl_language.rserror0001"
 msgid "Error: Creating new wallet file-> %s"
 msgstr "Erro: Criando novo ficheiro de carteira -> %s"
 
 #: nl_language.rserror0002
-#, fuzzy
+#, object-pascal-format, fuzzy
 #| msgid "Error: loading wallet from file-> %s"
 msgid "Error: Loading wallet from file-> %s"
 msgstr "Erro: Carregando carteira do ficheiro -> %s"
@@ -53,26 +53,29 @@ msgid "Error"
 msgstr "FALHOU"
 
 #: nl_language.rserror0004
+#, object-pascal-format
 msgid "Error: Saving wallet to disk-> %s"
 msgstr "Erro: Guardando carteira no disco -> %s"
 
 #: nl_language.rserror0005
+#, object-pascal-format
 msgid "Error: Disconnecting client-> %s"
 msgstr "Erro: Desligando o cliente -> %s"
 
 #: nl_language.rserror0006
-#, fuzzy
+#, object-pascal-format, fuzzy
 #| msgid "Error: connecting node %s-> %s"
 msgid "Error: Connecting node %s-> %s"
 msgstr "Erro: Ligando ao nó %s-> %s"
 
 #: nl_language.rserror0007
-#, fuzzy
+#, object-pascal-format, fuzzy
 #| msgid "Error: Address already exists on wallet-> %s"
 msgid "Error: Address already exists in wallet-> %s"
 msgstr "Erro: Conta já existe na carteira-> %s"
 
 #: nl_language.rserror0008
+#, object-pascal-format
 msgid "Error: Downloading summary from -> %s"
 msgstr "Erro: Baixando sumario de -> %s"
 
@@ -87,6 +90,7 @@ msgid "Error: Invalid parameters for sending coins"
 msgstr "Erro: Parâmetros inválidos ao tentar enviar moedas"
 
 #: nl_language.rserror0011
+#, object-pascal-format
 msgid "Error: Invalid password for address %s"
 msgstr "Erro: Palavra passe inválida para conta %s"
 
@@ -101,12 +105,13 @@ msgid "Error: Cannot generate certificates from locked addresses"
 msgstr "Erro: Impossível gerar certificados de uma conta trancada"
 
 #: nl_language.rserror0014
-#, fuzzy
+#, object-pascal-format, fuzzy
 #| msgid "Error: Retrieving pendings -> %s"
 msgid "Error: Retrieving pending -> %s"
 msgstr "Erro: Recebendo pendentes -> %s"
 
 #: nl_language.rserror0015
+#, object-pascal-format
 msgid "Error: Sending order -> %s"
 msgstr "Erro: Enviando transação -> %s"
 
@@ -155,6 +160,7 @@ msgid "Branch"
 msgstr "Ramo"
 
 #: nl_language.rsgui0009
+#, object-pascal-format
 msgid "%s NOSO"
 msgstr "%s NOSO"
 
@@ -163,15 +169,17 @@ msgid "Import from file"
 msgstr "Importar de ficheiro"
 
 #: nl_language.rsgui0011
+#, object-pascal-format
 msgid "[%s] %s"
 msgstr "[%s] %s"
 
 #: nl_language.rsgui0012
+#, object-pascal-format
 msgid "Added new wallet: %s"
 msgstr "Nova carteira adicionada: %s"
 
 #: nl_language.rsgui0013
-#, fuzzy
+#, object-pascal-format, fuzzy
 #| msgid "Sumary downloaded: %d kb"
 msgid "Summary downloaded: %d kb"
 msgstr "Sumario baixado: %d kb"
@@ -193,6 +201,7 @@ msgid "Reference"
 msgstr "Referencia"
 
 #: nl_language.rsgui0017
+#, object-pascal-format
 msgid "Downloading summary %s"
 msgstr "Baixando sumario %s"
 
@@ -205,6 +214,7 @@ msgid "Peers"
 msgstr ""
 
 #: nl_language.rsgui0020
+#, object-pascal-format
 msgid "Certificate for address: %s"
 msgstr ""
 
@@ -213,9 +223,10 @@ msgid "Processing..."
 msgstr ""
 
 #: nl_language.rsgui0022
+#, object-pascal-format
 msgid ""
 "Send %s NOSO to %s\n"
-"Reference: %s\n"
+"Reference: %s"
 msgstr ""
 
 #: nl_language.rsgui0023
@@ -223,10 +234,12 @@ msgid "Failed"
 msgstr ""
 
 #: nl_language.rsgui0024
+#, object-pascal-format
 msgid "Successful: %s"
 msgstr ""
 
 #: nl_language.rsgui0025
+#, object-pascal-format
 msgid "Noso circulating supply is %s millions"
 msgstr ""
 
@@ -235,6 +248,7 @@ msgid "Check certificate"
 msgstr ""
 
 #: nl_language.rsgui0027
+#, object-pascal-format
 msgid "%s verified %s ago"
 msgstr ""
 
@@ -247,10 +261,12 @@ msgid "BH"
 msgstr ""
 
 #: nl_language.rsgui0030
+#, object-pascal-format
 msgid "Order Failed Error: %s"
 msgstr ""
 
 #: nl_language.rsgui0031
+#, object-pascal-format
 msgid "Customize: %s"
 msgstr ""
 
@@ -306,6 +322,7 @@ msgid "Price"
 msgstr ""
 
 #: nl_language.rsgui0044
+#, object-pascal-format
 msgid "   24 H Volume: %s nUSDo"
 msgstr ""
 
@@ -324,10 +341,12 @@ msgid "Price"
 msgstr ""
 
 #: nl_language.rsgui0048
+#, object-pascal-format
 msgid "   Marketcap : %s US$"
 msgstr ""
 
 #: nl_language.rsgui0049
+#, object-pascal-format
 msgid "LTC: %s US$"
 msgstr ""
 

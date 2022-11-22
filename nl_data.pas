@@ -142,7 +142,7 @@ CONST
   Comisiontrfr = 10000;
   MinimunFee = 10;
   Protocol = 2;
-  ProgramVersion = '1.27';
+  ProgramVersion = '1.28';
 
   HexAlphabet : string = '0123456789ABCDEF';
   B58Alphabet : string = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';

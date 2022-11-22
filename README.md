@@ -1,11 +1,12 @@
 # Nosolite
 
-[![Build Status](https://github.com/DevTeamNoso/NosoLite/workflows/Build%20NosoLite/badge.svg?branch=main)](https://github.com/DevTeamNoso/NosoLite/actions)
-[![Supports Windows](https://img.shields.io/badge/support-Windows-blue?logo=Windows)](https://github.com/DevTeamNoso/NosoLite/releases/latest)
-[![Supprts Linux](https://img.shields.io/badge/support-Linux-yellow?logo=Linux)](https://github.com/DevTeamNoso/NosoLite/releases/latest)
-[![License](https://img.shields.io/github/license/DevTeamNoso/NosoLite)](https://github.com/DevTeamNoso/NosoLite/blob/master/LICENSE)
-[![Latest Release](https://img.shields.io/github/v/release/DevTeamNoso/NosoLite?label=latest%20release)](https://github.com/DevTeamNoso/NosoLite/releases/latest)
-[![Downloads](https://img.shields.io/github/downloads/DevTeamNoso/NosoLite/total)](https://github.com/DevTeamNoso/NosoLite/releases)
+[![Build Status](https://github.com/Noso-Project/NosoLite/workflows/Build%20NosoLite/badge.svg?branch=main)](https://github.com/Noso-Project/NosoLite/actions)
+[![Supports Windows](https://img.shields.io/badge/support-Windows-blue?logo=Windows)](https://github.com/Noso-Project/NosoLite/releases/latest)
+[![Supprts Linux](https://img.shields.io/badge/support-Linux-yellow?logo=Linux)](https://github.com/Noso-Project/NosoLite/releases/latest)
+[![Supports macOS](https://img.shields.io/badge/support-macOS-black?logo=macOS)](https://github.com/Noso-Project/NosoLite/releases/latest)
+[![License](https://img.shields.io/github/license/Noso-Project/NosoLite)](https://github.com/Noso-Project/NosoLite/blob/master/LICENSE)
+[![Latest Release](https://img.shields.io/github/v/release/Noso-Project/NosoLite?label=latest%20release)](https://github.com/Noso-Project/NosoLite/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/Noso-Project/NosoLite/total)](https://github.com/Noso-Project/NosoLite/releases)
 
 NOSO project cryptocurrency wallet
 
@@ -44,11 +45,8 @@ Currently, Nosolite is supported for recent versions of Windows and Linux (Unix)
 - Debian 11 64bit (Bullseye)
 
 
-## Support the Project
-If you want to support the development of NOSO, please consider donating to the development team. 
+## Donations
 
-BTC: **3H1VzdL3QFQpc62DUhbtCFV5dG4K1yPwVB**
+Donate to project sending Noso to the address:
 
-LTC: **LUUWwzfeQtJ4dc8A5xJVz3Zacray55f1WH**
-
-NosoCoin: **devteam_donations**
+### NpryectdevepmentfundsGE

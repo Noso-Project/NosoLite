@@ -1,38 +1,37 @@
 name: Build NosoLite
 
 on:
-  pull_request:
   push:
-    paths-ignore:
-    - "README.md"
-    branches:
-      - "*"
-    tags:
-      - "*"
+    branches: [ main ]
+    tags: [ "*" ]
+    paths-ignore: [ "README.md", "changelog.txt", "releasenotes.txt" ]
+
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build:
+    name: Build and/or Test
     runs-on: ${{ matrix.operating-system }}
+
     strategy:
       matrix:
-        operating-system: [ubuntu-latest, windows-latest]
-        lazarus-versions: [2.0.12]
+        operating-system: [ ubuntu-latest, windows-latest, macos-latest ]
+        lazarus-versions: [ stable]
+
     steps:
-    - uses: actions/cache@v2
+    - name: Checkout Repository
+      uses: actions/checkout@v3
       with:
-        path: |
-          ~/.cache/instantfpc
-          ~/.lazarus
-          /usr/share/lazarus/${{ matrix.lazarus-versions }}
-          /usr/bin/lazbuild
-        key: ${{ runner.os }}-laz-${{ matrix.lazarus-versions }}-v1
-        restore-keys: |
-          ${{ runner.os }}-laz-
+        clean: true
+        set-safe-directory: true
+
     - name: Install Lazarus
-      uses: gcarreno/setup-lazarus@v2.2.9
+      uses: gcarreno/setup-lazarus@v3.2
       with:
         lazarus-version: ${{ matrix.lazarus-versions }}
-    - uses: actions/checkout@v2
+        with-cache: false
+
     - name: Unzip packages
       run: unzip -q Packages/\*.zip -d Packages
     - name: Install packages
@@ -43,45 +42,81 @@ jobs:
         lazbuild -qqq Packages/CryptoLib4Pascal-master/CryptoLib/src/Packages/FPC/CryptoLib4PascalPackage.lpk
         lazbuild -qqq Packages/lazbarcodes/packages/lazbarcodes_runtimeonly.lpk
         lazbuild -qqq Packages/lazbarcodes/packages/lazbarcodes.lpk
-    - name: Build the Main Application
-      run: lazbuild -B --bm="Release" "nosolite.lpi"
-    - uses: actions/upload-artifact@v2
+        - name: Build the Main App (Windows)
+      if: ${{ matrix.operating-system == 'windows-latest' }}
+      run: |
+        lazbuild -B --bm=Release "nosolite.lpi"
+        mv nosolite.exe nosolite-x86_64-win64.exe
+
+    - name: Build the Main App (Ubuntu)
+      if: ${{ matrix.operating-system == 'ubuntu-latest' }}
+      run: |
+        lazbuild -B --bm=Release "nosolite.lpi"
+        mv nosolite nosolite-x86_64-linux
+
+    - name: Build the Main App (macOS)
+      if: ${{ matrix.operating-system == 'macos-latest' }}
+      run: |
+        lazbuild -B --bm=Release "nosolite.lpi"
+        mv nosolite nosolite-x86_64-darwin
+
+    - name: Upload binary (Windows)
+      if: ${{ (matrix.operating-system == 'windows-latest')  &&  (matrix.lazarus-versions == 'stable') }}
+      uses: actions/upload-artifact@v2
       with:
-        name: ${{ matrix.operating-system }}
-        path: |
-          nosolite
-          nosolite.exe
+        name: nosolite
+        path: nosolite-x86_64-win64.exe
+
+    - name: Upload binary (Ubuntu)
+      if: ${{ (matrix.operating-system == 'ubuntu-latest')  &&  (matrix.lazarus-versions == 'stable') }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: nosolite
+        path: nosolite-x86_64-linux
+
+    - name: Upload binary (macOS)
+      if: ${{ (matrix.operating-system == 'macos-latest')  &&  (matrix.lazarus-versions == 'stable') }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: nosolite
+        path: nosolite-x86_64-darwin
 
   package-release:
     if: contains(github.ref, '/tags/')
-    name: Package and Upload
+
+    name: Package and create GitHub Release
     runs-on: ubuntu-latest
-    needs: [build]
+    needs: build
+
     steps:
-      - uses: actions/download-artifact@v2
-        name: Download Artifacts
-      - name: List everything
-        run: |
-          ls -al
-          ls -al windows-latest
-          ls -al ubuntu-latest
-      - name: Package Windows
-        run: |
-          cp windows-latest/nosolite.exe .
-          tag=${{ github.event.ref }}
-          tag=${tag#"refs/tags/"}
-          zip nosolite-${tag}-x86_64-win64.zip nosolite.exe
-      - name: Package Linux
-        run: |
-          cp ubuntu-latest/nosolite .
-          tag=${{ github.event.ref }}
-          tag=${tag#"refs/tags/"}
-          tar -zcvf nosolite-${tag}-x86_64-linux.tgz nosolite
-      - name: Upload Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            nosolite-*.zip
-            nosolite-*.tgz
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Set output
+      id: vars
+      run: echo "tag=${GITHUB_REF#refs/*/}" >> ${GITHUB_OUTPUT}
+
+    - name: Download the Release binary
+      uses: actions/download-artifact@v2
+
+    - name: List files
+      run: ls -alF nosolite
+
+    - name: Create release files
+      run: |
+        cd nosolite
+        chmod +x nosolite-x86_64-linux nosolite-x86_64-darwin
+        zip -r nosolite-${{ steps.vars.outputs.tag }}-x86_64-win64.zip nosolite-x86_64-win64.exe
+        tar -zcvf nosolite-${{ steps.vars.outputs.tag }}-x86_64-linux.tar.gz nosolite-x86_64-linux
+        tar -zcvf nosolite-${{ steps.vars.outputs.tag }}-x86_64-darwin.tar.gz nosolite-x86_64-darwin
+
+    - name: Create GitHub release
+      uses: softprops/action-gh-release@v1
+      with:
+        name: nosolite ${{ steps.vars.outputs.tag }}
+        body_path: releasenotes.txt
+        files: |
+          nosolite/*.tar.gz
+          nosolite/*.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

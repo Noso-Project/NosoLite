@@ -1,25 +1,13 @@
 msgid ""
-msgstr ""
-"Content-Type: text/plain; charset=UTF-8\n"
-"Project-Id-Version: \n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: \n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"MIME-Version: 1.0\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Language: es\n"
-"X-Generator: Poedit 3.0\n"
+msgstr "Content-Type: text/plain; charset=UTF-8"
 
 #: nl_language.rsdia0001
 msgid "Import address keys"
-msgstr "Importar claves de dirección"
+msgstr ""
 
 #: nl_language.rsdia0002
-#, fuzzy
-#| msgid "Paste here the address keys"
 msgid "Paste the address keys here"
-msgstr "Pega aquí las claves de dirección"
+msgstr ""
 
 #: nl_language.rsdia0003
 msgid "Error: Invalid keys"
@@ -27,15 +15,14 @@ msgstr ""
 
 #: nl_language.rsdia0004
 msgid "Password length must be 8 chars or more"
-msgstr "La longitud de la contraseña debe ser de 8 caracteres o más"
+msgstr ""
 
 #: nl_language.rsdia0005
 msgid "Passwords do not match"
-msgstr "Las contraseñas no coinciden"
+msgstr ""
 
 #: nl_language.rserror0001
 #, object-pascal-format
-msgctxt "nl_language.rserror0001"
 msgid "Error: Creating new wallet file-> %s"
 msgstr ""
 
@@ -45,10 +32,8 @@ msgid "Error: Loading wallet from file-> %s"
 msgstr ""
 
 #: nl_language.rserror0003
-#, fuzzy
-#| msgid "FAILED"
 msgid "Error"
-msgstr "FALLO"
+msgstr ""
 
 #: nl_language.rserror0004
 #, object-pascal-format
@@ -113,42 +98,38 @@ msgstr ""
 #: nl_language.rsgui0001
 msgctxt "nl_language.rsgui0001"
 msgid "Address"
-msgstr "Direccion"
+msgstr ""
 
 #: nl_language.rsgui0002
-#, fuzzy
-#| msgid "Incoming"
 msgctxt "nl_language.rsgui0002"
 msgid "Label"
-msgstr "Entrante"
+msgstr ""
 
 #: nl_language.rsgui0003
-#, fuzzy
-#| msgid "Outgoing"
 msgctxt "nl_language.rsgui0003"
 msgid "Pending"
-msgstr "Saliente"
+msgstr ""
 
 #: nl_language.rsgui0004
 msgid "Balance"
-msgstr "Saldo"
+msgstr ""
 
 #: nl_language.rsgui0005
 msgid "Host"
-msgstr "Anfitrion"
+msgstr ""
 
 #: nl_language.rsgui0006
 msgid "Block"
-msgstr "Bloque"
+msgstr ""
 
 #: nl_language.rsgui0007
 msgctxt "nl_language.rsgui0007"
 msgid "Pending"
-msgstr "Pendiente"
+msgstr ""
 
 #: nl_language.rsgui0008
 msgid "Branch"
-msgstr "Rama"
+msgstr ""
 
 #: nl_language.rsgui0009
 #, object-pascal-format
@@ -157,7 +138,7 @@ msgstr ""
 
 #: nl_language.rsgui0010
 msgid "Import from file"
-msgstr "Importar desde un archivo"
+msgstr ""
 
 #: nl_language.rsgui0011
 #, object-pascal-format
@@ -177,18 +158,16 @@ msgstr ""
 #: nl_language.rsgui0014
 msgctxt "nl_language.rsgui0014"
 msgid "Destination"
-msgstr "Destino"
+msgstr ""
 
 #: nl_language.rsgui0015
-#, fuzzy
-#| msgid "Ammount"
 msgctxt "nl_language.rsgui0015"
 msgid "Amount"
-msgstr "Ammount"
+msgstr ""
 
 #: nl_language.rsgui0016
 msgid "Reference"
-msgstr "Referencia"
+msgstr ""
 
 #: nl_language.rsgui0017
 #, object-pascal-format
@@ -277,10 +256,9 @@ msgid "#"
 msgstr ""
 
 #: nl_language.rsgui0036
-#, fuzzy
 msgctxt "nl_language.rsgui0036"
 msgid "Address"
-msgstr "Direccion"
+msgstr ""
 
 #: nl_language.rsgui0037
 msgid "Address already have a custom alias"
@@ -359,13 +337,11 @@ msgid "Withdraw"
 msgstr ""
 
 #: tform1.buttonpoolcancelmessage.caption
-#, fuzzy
 msgctxt "tform1.buttonpoolcancelmessage.caption"
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr ""
 
 #: tform1.buttonpoolconnect.caption
-msgctxt "tform1.buttonpoolconnect.caption"
 msgid "Connect"
 msgstr ""
 
@@ -374,7 +350,6 @@ msgid "Ok"
 msgstr ""
 
 #: tform1.caption
-msgctxt "tform1.caption"
 msgid "Nosolite"
 msgstr ""
 
@@ -383,27 +358,24 @@ msgid "Check to use all addresses"
 msgstr ""
 
 #: tform1.edit3.text
-#, fuzzy
 msgctxt "tform1.edit3.text"
 msgid "0.00000000"
-msgstr "0.00000000"
+msgstr ""
 
 #: tform1.editscmont.text
 msgctxt "tform1.editscmont.text"
 msgid "0.00000000"
-msgstr "0.00000000"
+msgstr ""
 
 #: tform1.edittradebuy.text
-#, fuzzy
 msgctxt "tform1.edittradebuy.text"
 msgid "0.00000000"
-msgstr "0.00000000"
+msgstr ""
 
 #: tform1.edittradesell.text
-#, fuzzy
 msgctxt "tform1.edittradesell.text"
 msgid "0.00000000"
-msgstr "0.00000000"
+msgstr ""
 
 #: tform1.imagesync.hint
 msgid "Checking nodes"
@@ -419,16 +391,14 @@ msgid "Fee"
 msgstr ""
 
 #: tform1.label11.caption
-#, fuzzy
 msgctxt "tform1.label11.caption"
 msgid "0.00000000"
-msgstr "0.00000000"
+msgstr ""
 
 #: tform1.label12.caption
-#, fuzzy
 msgctxt "tform1.label12.caption"
 msgid "0.00000000"
-msgstr "0.00000000"
+msgstr ""
 
 #: tform1.label13.caption
 msgctxt "tform1.label13.caption"
@@ -441,16 +411,14 @@ msgid "Transfer"
 msgstr ""
 
 #: tform1.label15.caption
-#, fuzzy
 msgctxt "tform1.label15.caption"
 msgid "Destination"
-msgstr "Destino"
+msgstr ""
 
 #: tform1.label16.caption
-#, fuzzy
 msgctxt "tform1.label16.caption"
 msgid "0.00000000"
-msgstr "0.00000000"
+msgstr ""
 
 #: tform1.label17.caption
 msgctxt "tform1.label17.caption"
@@ -463,10 +431,9 @@ msgid "Average price"
 msgstr ""
 
 #: tform1.label19.caption
-#, fuzzy
 msgctxt "tform1.label19.caption"
 msgid "0.00000000"
-msgstr "0.00000000"
+msgstr ""
 
 #: tform1.label2.caption
 msgid "Recent trades"
@@ -478,10 +445,9 @@ msgid "Total"
 msgstr ""
 
 #: tform1.label21.caption
-#, fuzzy
 msgctxt "tform1.label21.caption"
 msgid "0.00000000"
-msgstr "0.00000000"
+msgstr ""
 
 #: tform1.label22.caption
 msgctxt "tform1.label22.caption"
@@ -499,10 +465,9 @@ msgid "Fee"
 msgstr ""
 
 #: tform1.label25.caption
-#, fuzzy
 msgctxt "tform1.label25.caption"
 msgid "0.00000000"
-msgstr "0.00000000"
+msgstr ""
 
 #: tform1.label26.caption
 msgid "Withdraw nUSDo"
@@ -518,10 +483,9 @@ msgid "Amount"
 msgstr ""
 
 #: tform1.label29.caption
-#, fuzzy
 msgctxt "tform1.label29.caption"
 msgid "Address"
-msgstr "Direccion"
+msgstr ""
 
 #: tform1.label3.caption
 msgid "My trades"
@@ -581,7 +545,6 @@ msgid "LabelPoolMainPrice"
 msgstr ""
 
 #: tform1.labelpoolmessages.caption
-msgctxt "tform1.labelpoolmessages.caption"
 msgid "Reconnecting..."
 msgstr ""
 
@@ -598,12 +561,10 @@ msgid "LabelPoolMarketcap"
 msgstr ""
 
 #: tform1.labelstake.caption
-msgctxt "tform1.labelstake.caption"
 msgid "Stake"
 msgstr ""
 
 #: tform1.labelstake.hint
-msgctxt "tform1.labelstake.hint"
 msgid "Required Noso for staked address"
 msgstr ""
 
@@ -616,12 +577,10 @@ msgid "Addresses on sumary"
 msgstr ""
 
 #: tform1.labelsupply.caption
-msgctxt "tform1.labelsupply.caption"
 msgid "Supply"
 msgstr ""
 
 #: tform1.labelsupply.hint
-msgctxt "tform1.labelsupply.hint"
 msgid "Total noso supply"
 msgstr ""
 
@@ -636,7 +595,7 @@ msgstr ""
 
 #: tform1.lsctop.caption
 msgid "Send coins"
-msgstr "Enviar fondos"
+msgstr ""
 
 #: tform1.lsctop1.caption
 msgid "Trx Info"
@@ -644,11 +603,11 @@ msgstr ""
 
 #: tform1.menuitem1.caption
 msgid "Import"
-msgstr "Importar"
+msgstr ""
 
 #: tform1.menuitem10.caption
 msgid "Unlock"
-msgstr "Desbloquear"
+msgstr ""
 
 #: tform1.menuitem11.caption
 msgctxt "tform1.menuitem11.caption"
@@ -678,7 +637,7 @@ msgstr ""
 #: tform1.menuitem2.caption
 msgctxt "tform1.menuitem2.caption"
 msgid "File"
-msgstr "Archivo"
+msgstr ""
 
 #: tform1.menuitem20.caption
 msgid "ZIP Backup"
@@ -687,19 +646,19 @@ msgstr ""
 #: tform1.menuitem3.caption
 msgctxt "tform1.menuitem3.caption"
 msgid "Keys"
-msgstr "Claves"
+msgstr ""
 
 #: tform1.menuitem4.caption
 msgid "Copy"
-msgstr "Copiar"
+msgstr ""
 
 #: tform1.menuitem5.caption
 msgid "New"
-msgstr "Nuevo"
+msgstr ""
 
 #: tform1.menuitem6.caption
 msgid "Set as Default"
-msgstr "Como predeterminado"
+msgstr ""
 
 #: tform1.menuitem7.caption
 msgid "Delete"
@@ -708,7 +667,7 @@ msgstr ""
 #: tform1.menuitem8.caption
 msgctxt "tform1.menuitem8.caption"
 msgid "Confirm"
-msgstr "Confirmar"
+msgstr ""
 
 #: tform1.menuitem9.caption
 msgid "Lock"
@@ -717,7 +676,7 @@ msgstr ""
 #: tform1.mm_file.caption
 msgctxt "tform1.mm_file.caption"
 msgid "File"
-msgstr "Archivo"
+msgstr ""
 
 #: tform1.mm_file_exit.caption
 msgid "E&xit"
@@ -728,7 +687,6 @@ msgid "Last block"
 msgstr ""
 
 #: tform1.paneldownload.hint
-msgctxt "tform1.paneldownload.hint"
 msgid "Downloading summary"
 msgstr ""
 
@@ -737,9 +695,8 @@ msgid "PanelPoolTrade"
 msgstr ""
 
 #: tform1.panelsync.hint
-msgctxt "tform1.panelsync.hint"
 msgid "Synchronizing"
-msgstr "Sincronizar"
+msgstr ""
 
 #: tform1.sbdepositltc.hint
 msgid "Deposit LTC to your account"
@@ -755,11 +712,11 @@ msgstr ""
 
 #: tform1.sbscmax.hint
 msgid "Send all"
-msgstr "Enviar todo"
+msgstr ""
 
 #: tform1.sbscpaste.hint
 msgid "Paste destination"
-msgstr "Pegar destino"
+msgstr ""
 
 #: tform1.sbsharesbuy.hint
 msgid "Buy shares to fund the pool"
@@ -780,20 +737,20 @@ msgstr ""
 #: tform1.scbitcancel.caption
 msgctxt "tform1.scbitcancel.caption"
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr ""
 
 #: tform1.scbitclea.caption
 msgid "Clear"
-msgstr "Limpiar"
+msgstr ""
 
 #: tform1.scbitconf.caption
 msgctxt "tform1.scbitconf.caption"
 msgid "Confirm"
-msgstr "Confirmar"
+msgstr ""
 
 #: tform1.scbitsend.caption
 msgid "Send"
-msgstr "Enviar"
+msgstr ""
 
 #: tform1.scbitsend1.caption
 msgctxt "tform1.scbitsend1.caption"
@@ -815,17 +772,16 @@ msgid "Polls"
 msgstr ""
 
 #: tform1.tabliqpool.caption
-msgctxt "tform1.tabliqpool.caption"
 msgid "Liqpool"
 msgstr ""
 
 #: tform1.tablog.caption
 msgid "Log"
-msgstr "Historial"
+msgstr ""
 
 #: tform1.tabnodes.caption
 msgid "Nodes"
-msgstr "Nodos"
+msgstr ""
 
 #: tform1.tabsheet1.caption
 msgid "Trades"
@@ -845,23 +801,21 @@ msgstr ""
 
 #: tform1.tabwallet.caption
 msgid "Wallet"
-msgstr "Cartera"
+msgstr ""
 
 #: tform1.textpoolmessages.caption
 msgid "TextPoolMessages"
 msgstr ""
 
 #: tform2.button1.caption
-#, fuzzy
 msgctxt "tform2.button1.caption"
 msgid "Address"
-msgstr "Direccion"
+msgstr ""
 
 #: tform2.button2.caption
-#, fuzzy
 msgctxt "tform2.button2.caption"
 msgid "Keys"
-msgstr "Claves"
+msgstr ""
 
 #: tform2.caption
 msgid "Nosolite QR code"
@@ -892,31 +846,28 @@ msgid "Starting..."
 msgstr ""
 
 #: tformexplorer.butaccept.hint
-msgctxt "tformexplorer.butaccept.hint"
 msgid "Accept"
-msgstr "Aceptar"
+msgstr ""
 
 #: tformexplorer.butcanceladd.hint
 msgid "Back to explorer"
-msgstr "Volver al explorador"
+msgstr ""
 
 #: tformexplorer.butfolderup.hint
-msgctxt "tformexplorer.butfolderup.hint"
 msgid "Go up"
-msgstr "Subir"
+msgstr ""
 
 #: tformexplorer.butokadd.hint
 msgid "Import selected addresses"
-msgstr "Importar direcciones seleccionadas"
+msgstr ""
 
 #: tformexplorer.caption
 msgid "FormExplorer"
 msgstr ""
 
 #: tformexplorer.checkboxselectall.caption
-msgctxt "tformexplorer.checkboxselectall.caption"
 msgid "Select all"
-msgstr "Seleccionar todos"
+msgstr ""
 
 #: tformexplorer.comboxmask.text
 msgid "*.*"
@@ -924,5 +875,5 @@ msgstr ""
 
 #: tformexplorer.labadd.caption
 msgid "Select addresses to be imported"
-msgstr "Seleccione las direcciones que se van a importar"
+msgstr ""
 

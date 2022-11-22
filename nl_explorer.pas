@@ -231,7 +231,10 @@ else
       CHLBAddresses.Clear;
       for counter := 0 to length(filearray)-1 do
          begin
-         CHLBAddresses.AddItem(GetAddressToShow(filearray[counter].Hash),nil);
+         if filearray[counter].Custom = '' then
+            CHLBAddresses.AddItem(GetAddressToShow(filearray[counter].Hash),nil)
+         else
+            CHLBAddresses.AddItem(GetAddressToShow(filearray[counter].custom),nil)
          end;
       end;
    end;
