@@ -142,7 +142,7 @@ CONST
   Comisiontrfr = 10000;
   MinimunFee = 10;
   Protocol = 2;
-  ProgramVersion = '1.29';
+  ProgramVersion = '1.30';
 
   HexAlphabet : string = '0123456789ABCDEF';
   B58Alphabet : string = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
@@ -169,20 +169,10 @@ var
 
   THREAD_Update : TUpdateThread;
 
-  STR_SeedNodes : String = '0 192.3.85.196;8080:X:X '+
-                             '192.3.254.186;8080:X:X '+
-                             //'149.57.235.14;8080:X:X '+
-                             '47.87.181.190;8080:X:X '+
-                             //'149.57.226.244;8080:X:X '+
-                             '47.87.178.205;8080:X:X '+
-                             '81.22.38.101;8080:X:X '+
-                             '66.151.117.247;8080:X:X '+
-                             //'149.57.229.81;8080:X:X '+
-                             '47.87.180.219;8080:X:X '+
-                             //'149.57.138.12;8080:X:X '+
-                             '47.87.137.96;8080:X:X '+
-                             '101.100.138.125:8080:X:X '+
-                             '198.46.218.125:8080:X:X';
+  STR_SeedNodes : String = '0 192.3.85.196;8080:X:X 192.3.254.186;8080:X:X 47.87.181.190;8080:X:X '+
+                           '47.87.178.205;8080:X:X 81.22.38.101;8080:X:X 66.151.117.247;8080:X:X '+
+                           '47.87.180.219;8080:X:X 47.87.137.96;8080:X:X 101.100.138.125:8080:X:X '+
+                           '198.46.218.125:8080:X:X 63.227.69.162:8080:X:X';
 
   LastNodesUpdateTime     : int64 = 0;
   Int_WalletBalance       : int64 = 0;
@@ -214,6 +204,7 @@ var
   G_FirstRun     : boolean = true;
   MainNetOffSet  : int64 = 0;
   G_UpdatedMNs   : String = '';
+  G_NosoCFGStr   : string = '';
 
   // Critical Sections
   CS_ARRAY_Addresses: TRTLCriticalSection;
@@ -352,6 +343,7 @@ While not terminated do
             FillArrayNodes;
             LastNodesUpdateTime := 0;
             end;
+         G_NosoCFGStr := GetNosoCFGFromNode;
          end;
       SumReceived := false;
       end;

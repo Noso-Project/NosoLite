@@ -1,0 +1,45 @@
+object Form7: TForm7
+  Left = 381
+  Height = 400
+  Top = 331
+  Width = 640
+  Caption = 'Liquidity pool'
+  ClientHeight = 400
+  ClientWidth = 640
+  Position = poDesktopCenter
+  ShowInTaskBar = stAlways
+  LCLVersion = '2.2.4.0'
+  object PageControl1: TPageControl
+    Left = 0
+    Height = 400
+    Top = 0
+    Width = 640
+    ActivePage = TabConsole
+    Align = alClient
+    TabIndex = 1
+    TabOrder = 0
+    object TabTrade: TTabSheet
+      Caption = 'Trade'
+    end
+    object TabConsole: TTabSheet
+      Caption = 'Console'
+      ClientHeight = 372
+      ClientWidth = 632
+      object Memo1: TMemo
+        Left = 0
+        Height = 372
+        Top = 0
+        Width = 632
+        Align = alClient
+        Color = clBlack
+        Font.CharSet = ANSI_CHARSET
+        Font.Color = clWhite
+        Font.Name = 'Consolas'
+        Font.Pitch = fpFixed
+        Font.Quality = fqDraft
+        ParentFont = False
+        TabOrder = 0
+      end
+    end
+  end
+end

@@ -120,6 +120,7 @@ PoolThread.FreeOnTerminate:=true;
 PoolThread.Start;
 End;
 
+
 Function PostMessageToHost(host:string;port:integer;message:string):string;
 var
   HTTPClient: TFPHTTPClient;
@@ -130,7 +131,7 @@ begin
 Result := '';
 HTTPClient := TFPHTTPClient.Create(nil);
 RequestBodyStream:= TStringStream.Create(message, TEncoding.UTF8);
-HTTPClient.IOTimeout:=3000; // <-- THIS is too restrictive, ONLY needed if you get stuck for more than 1 minute
+HTTPClient.IOTimeout:=3000; //
    TRY
    HTTPClient.AllowRedirect := True; // <-- I always forget this LOL!!
    HTTPClient.RequestBody:= RequestBodyStream;
@@ -142,6 +143,7 @@ Result := Resultado;
 RequestBodyStream.Free;
 HTTPClient.Free;
 End;
+
 
 Procedure RefreshPoolDataGrid(useraddress, ltcTier:string;usernoso,usernusdo,usershares,poolnoso,
           poolnusdo,poolshares,PoolVolume:int64);

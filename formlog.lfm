@@ -3,11 +3,13 @@ object Form5: TForm5
   Height = 320
   Top = 119
   Width = 480
-  Caption = 'Log'
+  Caption = 'Log - Nosolite'
   ClientHeight = 320
   ClientWidth = 480
   Constraints.MinHeight = 320
   Constraints.MinWidth = 480
+  Position = poWorkAreaCenter
+  ShowInTaskBar = stAlways
   LCLVersion = '2.2.4.0'
   object memolog: TMemo
     Left = 0

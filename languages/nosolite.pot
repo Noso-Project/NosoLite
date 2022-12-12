@@ -322,6 +322,14 @@ msgstr ""
 msgid "Connecting..."
 msgstr ""
 
+#: nl_language.rsgui0051
+msgid "Connect to Liquidity pool"
+msgstr ""
+
+#: nl_language.rsgui0052
+msgid "Entered Noso address not present on wallet"
+msgstr ""
+
 #: tform1.button1.caption
 msgctxt "tform1.button1.caption"
 msgid "Submit"
@@ -382,6 +390,7 @@ msgid "Checking nodes"
 msgstr ""
 
 #: tform1.label1.caption
+msgctxt "tform1.label1.caption"
 msgid "Liquidity pool"
 msgstr ""
 
@@ -536,11 +545,6 @@ msgstr ""
 msgid "Locked balance"
 msgstr ""
 
-#: tform1.labelnodes.caption
-msgctxt "tform1.labelnodes.caption"
-msgid " "
-msgstr ""
-
 #: tform1.labelpoolmainprice.caption
 msgid "LabelPoolMainPrice"
 msgstr ""
@@ -617,6 +621,10 @@ msgstr ""
 
 #: tform1.menuitem12.caption
 msgid "Show log"
+msgstr ""
+
+#: tform1.menuitem13.caption
+msgid "Liquidity Pool"
 msgstr ""
 
 #: tform1.menuitem15.caption
@@ -712,6 +720,7 @@ msgid "Deposit Noso to your account"
 msgstr ""
 
 #: tform1.sbpooltrade.caption
+msgctxt "tform1.sbpooltrade.caption"
 msgid "Trade"
 msgstr ""
 
@@ -780,15 +789,6 @@ msgstr ""
 msgid "Liqpool"
 msgstr ""
 
-#: tform1.tablog.caption
-msgctxt "tform1.tablog.caption"
-msgid "Log"
-msgstr ""
-
-#: tform1.tabnodes.caption
-msgid "Nodes"
-msgstr ""
-
 #: tform1.tabsheet1.caption
 msgid "Trades"
 msgstr ""
@@ -840,7 +840,7 @@ msgid "Request"
 msgstr ""
 
 #: tform4.caption
-msgid "Form4"
+msgid "Starting"
 msgstr ""
 
 #: tform4.label1.caption
@@ -853,7 +853,7 @@ msgstr ""
 
 #: tform5.caption
 msgctxt "tform5.caption"
-msgid "Log"
+msgid "Log - Nosolite"
 msgstr ""
 
 #: tform6.caption
@@ -863,6 +863,20 @@ msgstr ""
 #: tform6.labelnodes.caption
 msgctxt "tform6.labelnodes.caption"
 msgid " "
+msgstr ""
+
+#: tform7.caption
+msgctxt "tform7.caption"
+msgid "Liquidity pool"
+msgstr ""
+
+#: tform7.tabconsole.caption
+msgid "Console"
+msgstr ""
+
+#: tform7.tabtrade.caption
+msgctxt "tform7.tabtrade.caption"
+msgid "Trade"
 msgstr ""
 
 #: tformexplorer.butaccept.hint

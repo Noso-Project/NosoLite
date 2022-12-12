@@ -1,0 +1,5 @@
+{"version":1,"strings":[
+{"hash":188446316,"name":"tform7.caption","sourcebytes":[76,105,113,117,105,100,105,116,121,32,112,111,111,108],"value":"Liquidity pool"},
+{"hash":5998501,"name":"tform7.tabtrade.caption","sourcebytes":[84,114,97,100,101],"value":"Trade"},
+{"hash":174433893,"name":"tform7.tabconsole.caption","sourcebytes":[67,111,110,115,111,108,101],"value":"Console"}
+]}

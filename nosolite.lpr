@@ -9,7 +9,8 @@ uses
   Interfaces, // this includes the LCL widgetset
   Forms, nl_mainform, nl_language, nl_GUI, nl_data, nl_functions, nl_disk,
   nl_cripto, nl_network, nl_signerUtils, indylaz, nl_explorer, nl_qrcode,
-  infoform, NosoCoreUnit, nl_apps, nl_consensus, splashform, formlog, formnetwork;
+  infoform, NosoCoreUnit, nl_apps, nl_consensus, splashform, formlog,
+  formnetwork, formliqpool;
 
 {$R *.res}
 
@@ -24,6 +25,7 @@ begin
   Application.CreateForm(TForm4, Form4);
   Application.CreateForm(TForm5, Form5);
   Application.CreateForm(TForm6, Form6);
+  Application.CreateForm(TForm7, Form7);
   Application.Run;
 end.
 

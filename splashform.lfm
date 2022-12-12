@@ -6,13 +6,13 @@ object Form4: TForm4
   AlphaBlend = True
   BorderIcons = []
   BorderStyle = bsNone
-  Caption = 'Form4'
+  Caption = 'Starting'
   ClientHeight = 320
   ClientWidth = 320
   OnCreate = FormCreate
   Position = poScreenCenter
   ShowInTaskBar = stAlways
-  LCLVersion = '2.0.10.0'
+  LCLVersion = '2.2.4.0'
   Visible = True
   object Image1: TImage
     Left = 0

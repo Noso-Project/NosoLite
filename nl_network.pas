@@ -12,6 +12,7 @@ function SendOrder(OrderString:String):String;
 function GetPendings():string;
 function GetMainnetTimestamp(MaxTrys:integer=5):int64;
 function GetMNsFromNode(MaxTrys:integer=5):string;
+function GetNosoCFGFromNode(MaxTrys:integer=5):string;
 
 implementation
 
@@ -133,6 +134,38 @@ REPEAT
    TRY
    Client.Connect;
    Client.IOHandler.WriteLn('NSLMNS');
+   Result := Client.IOHandler.ReadLn(IndyTextEncoding_UTF8);
+   WasDone := true;
+   EXCEPT on E:Exception do
+      begin
+      WasDone := False;
+      end;
+   END{Try};
+Inc(Trys);
+UNTIL ( (WasDone) or (Trys = MaxTrys) );
+if client.Connected then Client.Disconnect();
+client.Free;
+End;
+
+function GetNosoCFGFromNode(MaxTrys:integer=5):string;
+var
+  Client   : TidTCPClient;
+  RanNode  : integer;
+  ThisNode : NodeData;
+  WasDone  : boolean = false;
+  Trys     : integer = 0;
+Begin
+Result := '';
+Client := TidTCPClient.Create(nil);
+REPEAT
+   ThisNode := PickRandomNode;
+   Client.Host:=ThisNode.host;
+   Client.Port:=ThisNode.port;
+   Client.ConnectTimeout:= 3000;
+   Client.ReadTimeout:= 3000;
+   TRY
+   Client.Connect;
+   Client.IOHandler.WriteLn('NSLCFG');
    Result := Client.IOHandler.ReadLn(IndyTextEncoding_UTF8);
    WasDone := true;
    EXCEPT on E:Exception do

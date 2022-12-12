@@ -5,11 +5,11 @@ unit nl_mainform;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, ExtCtrls,
+  Classes, lclintf, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, ExtCtrls,
   Grids, Menus, StdCtrls, nl_GUI, nl_disk, nl_data, nl_functions, IdTCPClient,
   nl_language, nl_cripto, Clipbrd, Buttons, Spin, nl_explorer, IdComponent,
   strutils, Types, nl_qrcode, DefaultTranslator, infoform, nl_apps, nl_consensus,
-  nl_network, splashform, formlog, formnetwork;
+  nl_network, splashform, formlog, formnetwork, formliqpool;
 
 type
 
@@ -67,6 +67,7 @@ type
     Label30: TLabel;
     Label31: TLabel;
     MenuItem12: TMenuItem;
+    MenuItem13: TMenuItem;
     Panel11: TPanel;
     Panel12: TPanel;
     Panel13: TPanel;
@@ -86,7 +87,6 @@ type
     LabelPoolVolume: TLabel;
     LAbelPoolTier: TLabel;
     labelPoolUser: TLabel;
-    LabelNodes: TLabel;
     LabelPooMarketCap: TLabel;
     Labelsupply: TLabel;
     Labelstake: TLabel;
@@ -100,7 +100,6 @@ type
     LSCTop: TLabel;
     LSCTop1: TLabel;
     MainMenu: TMainMenu;
-    MemoLog: TMemo;
     MemoSCCon: TMemo;
     MenuItem1: TMenuItem;
     MenuItem10: TMenuItem;
@@ -169,7 +168,6 @@ type
     SCBitSend: TBitBtn;
     SCBitSend1: TBitBtn;
     SGridAddresses: TStringGrid;
-    SGridNodes: TStringGrid;
     SGridSC: TStringGrid;
     GridPoolData: TStringGrid;
     SBDepositNoso: TSpeedButton;
@@ -181,8 +179,6 @@ type
     SpeedButton1: TSpeedButton;
     TabSheet3: TTabSheet;
     TabSheet4: TTabSheet;
-    TabNodes: TTabSheet;
-    TabLog: TTabSheet;
     TabLiqPool: TTabSheet;
     TabGVTs: TTabSheet;
     TabGVTsGVTs: TTabSheet;
@@ -216,6 +212,7 @@ type
     procedure MenuItem10Click(Sender: TObject);
     procedure MenuItem11Click(Sender: TObject);
     procedure MenuItem12Click(Sender: TObject);
+    procedure MenuItem13Click(Sender: TObject);
     procedure MenuItem15Click(Sender: TObject);
     procedure MenuItem16Click(Sender: TObject);
     procedure MenuItem17Click(Sender: TObject);
@@ -257,9 +254,6 @@ type
     procedure SGridAddressesPrepareCanvas(sender: TObject; aCol, aRow: Integer;
       aState: TGridDrawState);
     procedure SGridAddressesResize(Sender: TObject);
-    procedure SGridNodesPrepareCanvas(sender: TObject; aCol, aRow: Integer;
-      aState: TGridDrawState);
-    procedure SGridNodesResize(Sender: TObject);
     procedure TabLiqPoolResize(Sender: TObject);
 
   private
@@ -360,6 +354,7 @@ ToLog(Format('Offset: %d seconds',[MainNetOffSet]));
   ToStartLog('Mainnet time synced');
 
 UpdatedMNs := GetMNsFromNode;
+G_NosoCFGStr := GetNosoCFGFromNode;
 if StrToIntDef(Parameter(UpdatedMNs,0),-1)> MasternodesLastBlock then
    begin
    SaveMnsToFile(UpdatedMNs);
@@ -425,6 +420,13 @@ if ( (Acol=2) and (ARow>0) ) then
    else if ARRAY_Pending[Currpos].incoming-ARRAY_Pending[Currpos].outgoing > 0 then
       (Sender as TStringGrid).Canvas.Brush.Color := clMoneyGreen;
    end;
+if ( (Acol=0) and (ARow>0) ) then
+   begin
+   if AnsiContainsStr(Parameter(G_NosoCFGStr,5),ARRAY_Addresses[currpos].Hash) then
+      begin
+      (sender as TStringGrid).Canvas.Brush.Color :=  clRed;
+      end;
+   end;
 End;
 
 // Grid addresses on resize
@@ -448,38 +450,6 @@ GridWidth := form1.GVTsGrid.Width;
 form1.GVTsGrid.ColWidths[0] := ThisPercent(20,GridWidth);
 form1.GVTsGrid.ColWidths[1] := ThisPercent(79,GridWidth,true);
 End;
-
-// Set nodes grid prepare canvas
-procedure TForm1.SGridNodesPrepareCanvas(sender: TObject; aCol, aRow: Integer;
-  aState: TGridDrawState);
-var
-  ts: TTextStyle;
-Begin
-ts := (Sender as TStringGrid).Canvas.TextStyle;
-if aRow > 0 then
-   begin
-   if ARRAY_Nodes[aRow-1].Updated=0 then (Sender as TStringGrid).Canvas.Brush.Color :=  clgreen;
-   if ((ARRAY_Nodes[aRow-1].Updated>0) and (ARRAY_Nodes[aRow-1].Updated<6)) then (Sender as TStringGrid).Canvas.Brush.Color :=  clyellow;
-   if ARRAY_Nodes[aRow-1].Updated>5 then (Sender as TStringGrid).Canvas.Brush.Color := clRed;
-   if ( (ARRAY_Nodes[aRow-1].Updated=0) and (not ARRAY_Nodes[aRow-1].Synced) ) then (Sender as TStringGrid).Canvas.Brush.Color := clAqua;
-   end;
-End;
-
-// Grid nodes resize
-procedure TForm1.SGridNodesResize(Sender: TObject);
-var
-  GridWidth : integer;
-Begin
-GridWidth := form1.SGridNodes.Width;
-form1.SGridNodes.ColWidths[0] := ThisPercent(17,GridWidth);
-form1.SGridNodes.ColWidths[1] := ThisPercent(10,GridWidth);
-form1.SGridNodes.ColWidths[2] := ThisPercent(10,GridWidth);
-form1.SGridNodes.ColWidths[3] := ThisPercent(15,GridWidth);
-form1.SGridNodes.ColWidths[4] := ThisPercent(15,GridWidth);
-form1.SGridNodes.ColWidths[5] := ThisPercent(8,GridWidth);
-form1.SGridNodes.ColWidths[6] := ThisPercent(8,GridWidth);
-form1.SGridNodes.ColWidths[7] := ThisPercent(17,GridWidth,true);
-end;
 
 // Grid addresses draw cell
 procedure TForm1.SGridAddressesDrawCell(Sender: TObject; aCol, aRow: Integer;
@@ -891,7 +861,9 @@ pubkey := Parameter(InString,0);
 SignTime := Parameter(InString,1);
 Signhash := Parameter(InString,2);
 Address := GetAddressFromPublicKey(pubkey);
-if ARRAY_Sumary[AddressSumaryIndex(Address)].custom <> '' then Address := ARRAY_Sumary[AddressSumaryIndex(Address)].custom;
+if AddressSumaryIndex(Address) >= 0 then
+   if ARRAY_Sumary[AddressSumaryIndex(Address)].custom <> '' then Address := ARRAY_Sumary[AddressSumaryIndex(Address)].custom;
+
 if VerifySignedString('I OWN THIS ADDRESS '+Address+SignTime,Signhash,pubkey) then
    begin
    form3.BorderIcons:=form3.BorderIcons+[bisystemmenu];
@@ -911,7 +883,11 @@ End;
 // Open wallet folder
 procedure TForm1.MenuItem19Click(Sender: TObject);
 Begin
-SysUtils.ExecuteProcess('explorer.exe', GetCurrentDir+directoryseparator+'wallet', []);
+TRY
+OpenDocument(GetCurrentDir+directoryseparator+'wallet');
+EXCEPT ON E:Exception do
+   ToLog(e.Message);
+END; {TRY}
 End;
 
 // Zip wallet folder (To be implemented)
@@ -929,13 +905,70 @@ End;
 // Show log
 procedure TForm1.MenuItem12Click(Sender: TObject);
 Begin
-Form5.Show;
+if not form5.Visible then Form5.Show;
+End;
+
+// Launch liquidity pool
+procedure TForm1.MenuItem13Click(Sender: TObject);
+var
+  LoginAddress     : string;
+  AddressIndex     : integer;
+  ReqTime, RanSeed : string;
+  RequestMessage   : string;
+  RequestRespo     : string;
+  LSignature       : string;
+Begin
+if not Form7.Visible then
+   begin
+   LoginAddress := InputBox(ARRAY_Addresses[SGridAddresses.Row-1].hash,'Enter address', (ARRAY_Addresses[SGridAddresses.Row-1].hash));
+   AddressIndex := IsAddressOnWallet(LoginAddress);
+   if AddressIndex <0 then
+      begin
+      form3.BorderIcons:=form3.BorderIcons+[bisystemmenu];
+      form3.memorequest.Text:=rsGUI0051;
+      form3.memoresult.Text:=format(rsGUI0052,[]);
+      form3.ShowModal;
+      end
+   else
+      begin
+      form3.BorderIcons:=form3.BorderIcons+[bisystemmenu];
+      form3.memorequest.Text:='Connect to pool with address '+LoginAddress;
+      form3.memoresult.Text:='Connecting...';
+      form1.Enabled:=false;
+      form3.Show;
+      application.ProcessMessages;
+      ReqTime := UTCTime.ToString;
+      RanSeed := GetPoolRanSeed();
+      RequestMessage := 'CONNECT '+LoginAddress+' '+ReqTime+' '+RanSeed+' '+
+                  ARRAY_Addresses[AddressIndex].PublicKey+' '+
+                  GetStringSigned('CONNECT'+LoginAddress+ReqTime+RanSeed,ARRAY_Addresses[AddressIndex].PrivateKey);
+                  //signstring=CONNECT+ADDRESS+UTCTIME+RANSEED
+      RequestRespo:=PostMessageToHost(LiqPoolHost,LiqPoolPort,RequestMessage);
+      if parameter(RequestRespo,0)= 'STATUS' then
+         begin
+         LSignature := Parameter(RequestRespo,15);
+         if VerifySignedString(LoginAddress+ReqTime+RanSeed+Parameter(RequestRespo,5),LSignature,PoolPub) then
+            begin
+            form3.Close;
+            form7.Visible:=true;
+            ToLog(RequestRespo);
+            end
+         else
+            begin
+            form3.memoresult.Text := 'Invalid credentials response';
+            ToLog('Invalid credentials response');
+            end;
+         end
+      else if parameter(RequestRespo,0)= 'ERROR' then
+         form3.memoresult.Text := RequestRespo;
+      end;
+   end;
 End;
 
 // Click on panel
 procedure TForm1.PanelBlockInfoClick(Sender: TObject);
 begin
-form6.Show;
+if not form6.Visible then form6.Show;
 end;
 
 //******************************************************************************

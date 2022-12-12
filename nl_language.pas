@@ -77,6 +77,8 @@ Resourcestring
   rsGUI0048 = '   Marketcap : %s US$';
   rsGUI0049 = 'LTC: %s US$';
   rsGUI0050 = 'Connecting...';
+  rsGUI0051 = 'Connect to Liquidity pool';
+  rsGUI0052 = 'Entered Noso address not present on wallet';
   // Dialogs
   rsDIA0001 = 'Import address keys';
   rsDIA0002 = 'Paste the address keys here';

@@ -331,8 +331,17 @@ Function DecodeCertificate(certificate:string):string;
    End;
 
 Begin
+result := '';
 Certificate := UnSplitCertificate(certificate);
+TRY
 result := XorDecode(HashSha256String('noso'), Certificate);
+
+EXCEPT ON E:Exception do
+   begin
+   result := '';
+   ToLog('Error decoding certificate: '+E.Message);
+   end;
+END; {TRY}
 End;
 
 Function NosoHash(source:string):string;
