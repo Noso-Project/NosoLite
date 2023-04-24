@@ -170,9 +170,10 @@ var
   THREAD_Update : TUpdateThread;
 
   STR_SeedNodes : String = '0 192.3.85.196;8080:X:X 192.3.254.186;8080:X:X 47.87.181.190;8080:X:X '+
-                           '47.87.178.205;8080:X:X 81.22.38.101;8080:X:X 66.151.117.247;8080:X:X '+
-                           '47.87.180.219;8080:X:X 47.87.137.96;8080:X:X 101.100.138.125:8080:X:X '+
-                           '198.46.218.125:8080:X:X 63.227.69.162:8080:X:X';
+                           '47.87.178.205;8080:X:X 140.99.161.224;8080:X:X '+
+                           '47.87.180.219;8080:X:X 47.87.137.96;8080:X:X '+
+                           '198.46.218.125:8080:X:X 63.227.69.162:8080:X:X 20.199.50.27:8080:X:X '+
+                           '45.83.151.30:8080:X:X 107.172.21.121:8080:X:X';
 
   LastNodesUpdateTime     : int64 = 0;
   Int_WalletBalance       : int64 = 0;
@@ -188,7 +189,7 @@ var
   WO_LastSumary   : string = '';
   WO_Refreshrate  : integer = 15;
   WO_Multisend    : boolean = false;
-  WO_UseSeedNodes : Boolean = false;
+  WO_UseSeedNodes : Boolean = true;
 
   // Global variables
   SAVE_Wallet    : Boolean = false;

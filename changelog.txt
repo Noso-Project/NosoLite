@@ -1,9 +1,13 @@
 * version 1.29
 
+- New default seed node.
+
+* version 1.29
+
 - Log moved to a separated form.
 - Nodes moved to a separated form.
 
-* verison 1.28
+* version 1.28
 
 - Splashform background adjusted.
 - STR_SeedNodes fixed.
