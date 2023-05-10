@@ -725,7 +725,9 @@ msgid "New"
 msgstr "Novo"
 
 #: tform1.menuitem6.caption
-msgid "Set as Default"
+#, fuzzy
+#| msgid "Set as Default"
+msgid "Send from here"
 msgstr "Definir como padrão"
 
 #: tform1.menuitem7.caption

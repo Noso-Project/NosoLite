@@ -517,6 +517,7 @@ Begin
 Available := ammount;
 maximum := (Available * Comisiontrfr) div (Comisiontrfr+1);
 Fee := maximum div Comisiontrfr;
+if Fee < MinimunFee then fee := MinimunFee;
 SenT := maximum + Fee;
 Diff := Available-SenT;
 result := maximum+Diff;

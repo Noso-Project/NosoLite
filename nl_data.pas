@@ -140,9 +140,9 @@ CONST
   StartLogFilename  = DataDirectory+'startlog.txt';
   Customizationfee =25000;
   Comisiontrfr = 10000;
-  MinimunFee = 10;
+  MinimunFee = 1000000;
   Protocol = 2;
-  ProgramVersion = '1.30';
+  ProgramVersion = '1.40';
 
   HexAlphabet : string = '0123456789ABCDEF';
   B58Alphabet : string = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
@@ -189,7 +189,7 @@ var
   WO_LastSumary   : string = '';
   WO_Refreshrate  : integer = 15;
   WO_Multisend    : boolean = false;
-  WO_UseSeedNodes : Boolean = true;
+  WO_UseSeedNodes : Boolean = false;
 
   // Global variables
   SAVE_Wallet    : Boolean = false;

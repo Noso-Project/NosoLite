@@ -670,7 +670,7 @@ msgid "New"
 msgstr ""
 
 #: tform1.menuitem6.caption
-msgid "Set as Default"
+msgid "Send from here"
 msgstr ""
 
 #: tform1.menuitem7.caption
