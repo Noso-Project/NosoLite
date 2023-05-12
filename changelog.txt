@@ -1,3 +1,19 @@
+* version 1.50
+
+- Completely adapted to new crypto functions.
+- Upgraded to new fees calculation.
+
+* version 1.30
+
+- Added try-catch on show wallet folder.
+- Opendocument implemented for cross compatibility.
+- Removed old nodes tab.
+- Removed old log tab.
+- Fixed bug on check certificate when it is incorrect.
+- Added form for liqpool.
+- Implemented secure login to liqpool.
+- Nosocfg download.
+
 * version 1.29
 
 - New default seed node.

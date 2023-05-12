@@ -616,7 +616,11 @@ var
   InputResult : boolean;
 Begin
 InputResult := InputQuery(rsDIA0001, rsDIA0002, TRUE, UserString);
-if ((InputResult) and (UserString<>'')) then ImportKeys(UserString);
+if ((InputResult) and (UserString<>'')) then
+   begin
+   ImportKeys(UserString);
+   REF_Addresses := true;
+   end;
 End;
 
 // Copy address to clipboard
@@ -800,6 +804,7 @@ if ARRAY_Addresses[CurrPos].PrivateKey[1]='*' then
 else
    begin
    QRKeys := ARRAY_Addresses[CurrPos].PublicKey+' '+ARRAY_Addresses[CurrPos].PrivateKey;
+   //ToLog(ARRAY_Addresses[CurrPos].PublicKey+' '+ARRAY_Addresses[CurrPos].PrivateKey);
    form2.Button2.Visible:=true;
    end;
 form2.show;

@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, nl_data, nl_signerutils, HlpHashFactory, Base64, nl_language,
-  nl_GUI, nl_network, MD5, infoform, forms, StrUtils;
+  nl_GUI, nl_network, MD5, infoform, forms, StrUtils, ClpConverters,ClpBigInteger,SbpBase58;
 
 Function CreateNewAddress(keysData:string = ''):WalletData;
 function GetAddressFromPublicKey(PubKey:String):String;
@@ -36,6 +36,11 @@ function BMHexTo58(numerohex:string;alphabetnumber:integer):string;
 function BMB58resumen(numero58:string):string;
 function BMDecTo58(numero:string):string;
 function BMDecToHex(numero:string):string;
+
+// NEw Crypto
+Function B16ToB58(const sHex: String): String;
+Function B10ToB58(const sVal: String): String;
+
 
 implementation
 
@@ -75,9 +80,9 @@ var
 Begin
 PubSHAHashed := HashSha256String(PubKey);
 Hash1 := HashMD160String(PubSHAHashed);
-hash1 := BMHexTo58(Hash1,58);
+hash1 := B16ToB58(Hash1);
 sumatoria := BMB58resumen(Hash1);
-clave := BMDecTo58(sumatoria);
+clave := B10ToB58(sumatoria);
 hash2 := hash1+clave;
 Result := 'N'+hash2;
 End;
@@ -712,6 +717,38 @@ if StrToInt(decimalValue) >= 16 then
    end;
 if StrToInt(decimalvalue) > 0 then resultado := HexAlphabet[StrToInt(decimalvalue)+1]+resultado;
 result := resultado;
+End;
+
+// NEw crypto function
+
+Function B16ToB58(const sHex: String): String;
+var
+  bytes: TBytes;
+  S: String;
+Begin
+  Result := '1';
+  S := sHex.Trim;
+  if (Length(S) = 0) then
+    Exit;
+  if (Length(S) mod 2) <> 0 then
+    S := Concat('0', S);
+  try
+    bytes := TConverters.ConvertHexStringToBytes(S);
+  except
+    Exit { invalid HEX input }
+  end;
+  Result := TBase58.BitCoin.Encode(TBigInteger.Create(bytes).ToByteArrayUnsigned);
+End;
+
+Function B10ToB58(const sVal: String): String;
+var
+  S: String;
+Begin
+  Result := '1';
+  S := sVal.Trim;
+  if (Length(S) = 0) then
+    Exit;
+  Result := TBase58.BitCoin.Encode(TBigInteger.Create(S).ToByteArrayUnsigned);
 End;
 
 End. // END UNIT
