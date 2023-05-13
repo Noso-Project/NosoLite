@@ -38,7 +38,6 @@ Client.Host:=ThisNode.host;
 Client.Port:=thisnode.port;
 Client.ConnectTimeout:= 3000;
 Client.ReadTimeout:=3000;
-//Tolog(OrderString);
 TRY
 Client.Connect;
 Client.IOHandler.WriteLn(OrderString);

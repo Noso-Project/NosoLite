@@ -1,3 +1,7 @@
+* version 1.60
+
+- Updated label for stake size.
+
 * version 1.50
 
 - Completely adapted to new crypto functions.

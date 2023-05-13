@@ -80,9 +80,9 @@ var
 Begin
 PubSHAHashed := HashSha256String(PubKey);
 Hash1 := HashMD160String(PubSHAHashed);
-hash1 := B16ToB58(Hash1);
+hash1 := BMHexTo58(Hash1,58);
 sumatoria := BMB58resumen(Hash1);
-clave := B10ToB58(sumatoria);
+clave := BMDecTo58(sumatoria);
 hash2 := hash1+clave;
 Result := 'N'+hash2;
 End;
