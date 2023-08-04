@@ -142,7 +142,7 @@ CONST
   Comisiontrfr = 10000;
   MinimunFee = 1000000;
   Protocol = 2;
-  ProgramVersion = '1.60';
+  ProgramVersion = '1.61';
 
   HexAlphabet : string = '0123456789ABCDEF';
   B58Alphabet : string = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
@@ -169,11 +169,12 @@ var
 
   THREAD_Update : TUpdateThread;
 
-  STR_SeedNodes : String = '0 192.3.85.196;8080:X:X 192.3.254.186;8080:X:X 47.87.181.190;8080:X:X '+
-                           '47.87.178.205;8080:X:X 140.99.161.224;8080:X:X '+
+  STR_SeedNodes : String = '0 47.87.132.148:X:X 45.83.151.30:8080:X:X '+
+                           '47.87.178.205;8080:X:X 47.87.174.224;8080:X:X '+
                            '47.87.180.219;8080:X:X 47.87.137.96;8080:X:X '+
-                           '198.46.218.125:8080:X:X 63.227.69.162:8080:X:X 20.199.50.27:8080:X:X '+
-                           '45.83.151.30:8080:X:X 107.172.21.121:8080:X:X';
+                           '107.172.214.53;8080:X:X 198.23.134.105;8080:X:X '+
+                           '107.173.210.55:8080:X:X 107.172.21.121:8080:X:X '+
+                           '63.227.69.162:8080:X:X 20.199.50.27:8080:X:X';
 
   LastNodesUpdateTime     : int64 = 0;
   Int_WalletBalance       : int64 = 0;
