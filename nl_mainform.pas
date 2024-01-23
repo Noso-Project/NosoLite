@@ -354,7 +354,9 @@ ToLog(Format('Offset: %d seconds',[MainNetOffSet]));
   ToStartLog('Mainnet time synced');
 
 UpdatedMNs := GetMNsFromNode;
+  ToStartLog('MNs file retrieved');
 G_NosoCFGStr := GetNosoCFGFromNode;
+  ToStartLog('NOSOCfg retrieved');
 if StrToIntDef(Parameter(UpdatedMNs,0),-1)> MasternodesLastBlock then
    begin
    SaveMnsToFile(UpdatedMNs);
@@ -362,7 +364,7 @@ if StrToIntDef(Parameter(UpdatedMNs,0),-1)> MasternodesLastBlock then
    ToStartLog('Nodes updated');
    end;
 Pendings_String := GetPendings();
-ProcessPendings();
+//ProcessPendings();
 Sleep(500);
    Form1.Visible:=true;
    form4.Visible:=false;
@@ -370,10 +372,7 @@ Sleep(500);
    THREAD_Update.FreeOnTerminate:=true;
    THREAD_Update.Start;
    form1.PageControl.ActivePage := form1.TabWallet;
-
-//RefreshPoolDataGrid('N3rUKKedwDrTBAvjQrz5d8fUjeKipFy','54,01',0,0,0,3000000000000,180000000000,100,0);
 EditPoolAddress.Text:=ARRAY_Addresses[0].Hash;
-
 End;
 
 // On close query form events

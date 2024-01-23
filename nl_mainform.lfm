@@ -8,7 +8,7 @@ object Form1: TForm1
   VertScrollBar.Page = 357
   VertScrollBar.Range = 357
   Caption = 'Nosolite'
-  ClientHeight = 460
+  ClientHeight = 480
   ClientWidth = 640
   Constraints.MinHeight = 480
   Constraints.MinWidth = 640
@@ -18,10 +18,10 @@ object Form1: TForm1
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '2.2.6.0'
+  LCLVersion = '3.0.0.3'
   object PageControl: TPageControl
     Left = 0
-    Height = 424
+    Height = 444
     Top = 0
     Width = 640
     ActivePage = TabLiqPool
@@ -30,7 +30,7 @@ object Form1: TForm1
     TabOrder = 0
     object TabWallet: TTabSheet
       Caption = 'Wallet'
-      ClientHeight = 396
+      ClientHeight = 416
       ClientWidth = 632
       object PanelBalance: TPanel
         Left = 0
@@ -42,6 +42,7 @@ object Form1: TForm1
         ClientHeight = 50
         ClientWidth = 632
         Color = clBlack
+        ParentBackground = False
         ParentColor = False
         TabOrder = 0
         object LabelLocked: TLabel
@@ -95,7 +96,7 @@ object Form1: TForm1
       end
       object SGridAddresses: TStringGrid
         Left = 0
-        Height = 215
+        Height = 235
         Top = 50
         Width = 632
         Align = alClient
@@ -121,7 +122,7 @@ object Form1: TForm1
       object PanelDown: TPanel
         Left = 0
         Height = 131
-        Top = 265
+        Top = 285
         Width = 632
         Align = alBottom
         AutoSize = True
@@ -295,9 +296,9 @@ object Form1: TForm1
             Font.Name = 'Consolas'
             Font.Pitch = fpFixed
             Font.Quality = fqDraft
-            OnChange = EditSCDestChange
             ParentFont = False
             TabOrder = 1
+            OnChange = EditSCDestChange
           end
           object ImgSCDest: TImage
             Left = 369
@@ -543,10 +544,10 @@ object Form1: TForm1
             Top = 42
             Width = 20
             AutoSize = False
-            OnChange = CBMultisendChange
             ParentShowHint = False
             ShowHint = True
             TabOrder = 7
+            OnChange = CBMultisendChange
           end
           object EditSCMont: TEdit
             Left = 160
@@ -561,12 +562,12 @@ object Form1: TForm1
             Font.Name = 'Consolas'
             Font.Pitch = fpFixed
             Font.Quality = fqDraft
-            OnChange = EditSCMontChange
-            OnKeyPress = EditSCMontKeyPress
             ParentFont = False
             ReadOnly = True
             TabOrder = 8
             Text = '0.00000000'
+            OnChange = EditSCMontChange
+            OnKeyPress = EditSCMontKeyPress
           end
         end
         object PanelTrxInfo: TPanel
@@ -578,6 +579,7 @@ object Form1: TForm1
           ClientHeight = 127
           ClientWidth = 238
           Color = clInactiveCaption
+          ParentBackground = False
           ParentColor = False
           TabOrder = 1
           Visible = False
@@ -607,11 +609,11 @@ object Form1: TForm1
     end
     object TabGVTs: TTabSheet
       Caption = 'GVTs'
-      ClientHeight = 396
+      ClientHeight = 416
       ClientWidth = 632
       object PC_GVTs: TPageControl
         Left = 0
-        Height = 396
+        Height = 416
         Top = 0
         Width = 632
         ActivePage = TabGVTsGVTs
@@ -620,11 +622,11 @@ object Form1: TForm1
         TabOrder = 0
         object TabGVTsGVTs: TTabSheet
           Caption = 'GVTs'
-          ClientHeight = 368
+          ClientHeight = 388
           ClientWidth = 624
           object GVTsGrid: TStringGrid
             Left = 0
-            Height = 302
+            Height = 322
             Top = 0
             Width = 624
             Align = alClient
@@ -639,7 +641,7 @@ object Form1: TForm1
           object PanelTransferGVT: TPanel
             Left = 0
             Height = 66
-            Top = 302
+            Top = 322
             Width = 624
             Align = alBottom
             ClientHeight = 66
@@ -733,7 +735,7 @@ object Form1: TForm1
     end
     object TabLiqPool: TTabSheet
       Caption = 'Liqpool'
-      ClientHeight = 396
+      ClientHeight = 416
       ClientWidth = 632
       OnResize = TabLiqPoolResize
       TabVisible = False
@@ -959,6 +961,7 @@ object Form1: TForm1
         ClientHeight = 200
         ClientWidth = 300
         Color = clScrollBar
+        ParentBackground = False
         ParentColor = False
         TabOrder = 1
         Visible = False
@@ -989,8 +992,8 @@ object Form1: TForm1
           Width = 298
           Align = alBottom
           Constraints.MinWidth = 200
-          OnKeyPress = EditPoolMessagesKeyPress
           TabOrder = 0
+          OnKeyPress = EditPoolMessagesKeyPress
         end
         object PanelButtonsPoolMessage: TPanel
           Left = 1
@@ -1000,6 +1003,7 @@ object Form1: TForm1
           Align = alBottom
           ClientHeight = 34
           ClientWidth = 298
+          ParentBackground = False
           TabOrder = 1
           object ButtonPoolOkMessage: TButton
             Left = 1
@@ -1008,8 +1012,8 @@ object Form1: TForm1
             Width = 75
             Align = alLeft
             Caption = 'Ok'
-            OnClick = ButtonPoolOkMessageClick
             TabOrder = 0
+            OnClick = ButtonPoolOkMessageClick
           end
           object ButtonPoolCancelMessage: TButton
             Left = 222
@@ -1018,8 +1022,8 @@ object Form1: TForm1
             Width = 75
             Align = alRight
             Caption = 'Cancel'
-            OnClick = ButtonPoolCancelMessageClick
             TabOrder = 1
+            OnClick = ButtonPoolCancelMessageClick
           end
         end
         object TextPoolMessages: TLabel
@@ -1086,11 +1090,11 @@ object Form1: TForm1
                 Width = 118
                 Align = alRight
                 Alignment = taRightJustify
-                OnChange = EditTradebuyChange
-                OnKeyPress = EditTradebuyKeyPress
                 ReadOnly = True
                 TabOrder = 0
                 Text = '0.00000000'
+                OnChange = EditTradebuyChange
+                OnKeyPress = EditTradebuyKeyPress
               end
             end
             object Panel2: TPanel
@@ -1263,11 +1267,11 @@ object Form1: TForm1
                 Width = 118
                 Align = alRight
                 Alignment = taRightJustify
-                OnChange = EditTradeSellChange
-                OnKeyPress = EditTradeSellKeyPress
                 ReadOnly = True
                 TabOrder = 0
                 Text = '0.00000000'
+                OnChange = EditTradeSellChange
+                OnKeyPress = EditTradeSellKeyPress
               end
             end
             object Panel7: TPanel
@@ -1504,6 +1508,7 @@ object Form1: TForm1
           ClientHeight = 71
           ClientWidth = 136
           Color = clBlack
+          ParentBackground = False
           ParentColor = False
           TabOrder = 0
           Visible = False
@@ -1627,8 +1632,8 @@ object Form1: TForm1
             Width = 75
             Align = alLeft
             Caption = 'Connect'
-            OnClick = ButtonPoolConnectClick
             TabOrder = 1
+            OnClick = ButtonPoolConnectClick
           end
         end
       end
@@ -1716,14 +1721,15 @@ object Form1: TForm1
       end
       object PanelPoolMain: TPanel
         Left = 0
-        Height = 325
+        Height = 345
         Top = 71
         Width = 632
         Align = alClient
         BevelOuter = bvNone
-        ClientHeight = 325
+        ClientHeight = 345
         ClientWidth = 632
         Color = clBackground
+        ParentBackground = False
         ParentColor = False
         TabOrder = 2
         Visible = False
@@ -1743,16 +1749,17 @@ object Form1: TForm1
         end
         object PanelPoolUSer: TPanel
           Left = 0
-          Height = 215
+          Height = 235
           Top = 110
           Width = 328
           Align = alLeft
-          ClientHeight = 215
+          ClientHeight = 235
           ClientWidth = 328
+          ParentBackground = False
           TabOrder = 1
           object PageControl1: TPageControl
             Left = 1
-            Height = 213
+            Height = 233
             Top = 1
             Width = 326
             ActivePage = TabSheet1
@@ -1761,7 +1768,7 @@ object Form1: TForm1
             TabOrder = 0
             object TabSheet1: TTabSheet
               Caption = 'Trades'
-              ClientHeight = 185
+              ClientHeight = 205
               ClientWidth = 318
               object Label3: TLabel
                 Left = 0
@@ -1787,7 +1794,7 @@ object Form1: TForm1
               end
               object GridUserTrades: TStringGrid
                 Left = 0
-                Height = 165
+                Height = 185
                 Top = 20
                 Width = 318
                 Align = alClient
@@ -1801,11 +1808,11 @@ object Form1: TForm1
             end
             object TabSheet2: TTabSheet
               Caption = 'History'
-              ClientHeight = 185
+              ClientHeight = 205
               ClientWidth = 318
               object GridUserOrders: TStringGrid
                 Left = 0
-                Height = 165
+                Height = 185
                 Top = 20
                 Width = 318
                 Align = alClient
@@ -1843,12 +1850,13 @@ object Form1: TForm1
         end
         object PanelPoolHistory: TPanel
           Left = 328
-          Height = 215
+          Height = 235
           Top = 110
           Width = 304
           Align = alRight
-          ClientHeight = 215
+          ClientHeight = 235
           ClientWidth = 304
+          ParentBackground = False
           TabOrder = 2
           object LabelPoolVolume: TLabel
             Left = 1
@@ -1887,7 +1895,7 @@ object Form1: TForm1
           end
           object GridPoolTrades: TStringGrid
             Left = 1
-            Height = 153
+            Height = 173
             Top = 61
             Width = 302
             Align = alClient
@@ -1918,7 +1926,7 @@ object Form1: TForm1
   object PanelStatus: TPanel
     Left = 0
     Height = 36
-    Top = 424
+    Top = 444
     Width = 640
     Align = alBottom
     BevelOuter = bvNone
@@ -1928,6 +1936,7 @@ object Form1: TForm1
     ClientHeight = 32
     ClientWidth = 636
     Color = clSilver
+    ParentBackground = False
     ParentColor = False
     TabOrder = 1
     object LabelCLock: TLabel
@@ -1957,6 +1966,7 @@ object Form1: TForm1
       ClientHeight = 30
       ClientWidth = 80
       Color = clBlack
+      ParentBackground = False
       ParentColor = False
       TabOrder = 3
       object Labelsupply: TLabel
@@ -1995,6 +2005,7 @@ object Form1: TForm1
       ClientHeight = 26
       ClientWidth = 28
       Color = clLime
+      ParentBackground = False
       ParentColor = False
       ParentShowHint = False
       ShowHint = True
@@ -2049,6 +2060,7 @@ object Form1: TForm1
       ClientHeight = 26
       ClientWidth = 84
       Color = clLime
+      ParentBackground = False
       ParentColor = False
       ParentShowHint = False
       ShowHint = True
@@ -2148,6 +2160,7 @@ object Form1: TForm1
       ClientHeight = 30
       ClientWidth = 80
       Color = clHighlightText
+      ParentBackground = False
       ParentColor = False
       TabOrder = 5
       object Labelsummary: TLabel
@@ -2206,6 +2219,7 @@ object Form1: TForm1
       ClientHeight = 26
       ClientWidth = 107
       Color = clRed
+      ParentBackground = False
       ParentColor = False
       ParentShowHint = False
       ShowHint = True
@@ -2276,6 +2290,7 @@ object Form1: TForm1
       Font.Pitch = fpFixed
       Font.Quality = fqDraft
       Font.Style = [fsBold, fsItalic]
+      ParentBackground = False
       ParentColor = False
       ParentFont = False
       TabOrder = 4
