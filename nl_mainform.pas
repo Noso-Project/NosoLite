@@ -364,7 +364,7 @@ if StrToIntDef(Parameter(UpdatedMNs,0),-1)> MasternodesLastBlock then
    ToStartLog('Nodes updated');
    end;
 Pendings_String := GetPendings();
-//ProcessPendings();
+ProcessPendings();
 Sleep(500);
    Form1.Visible:=true;
    form4.Visible:=false;
