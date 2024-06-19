@@ -5,7 +5,7 @@ unit nl_functions;
 interface
 
 uses
-  Classes, SysUtils,strutils, nl_data, nl_language, dateutils,HlpHashFactory, SbpBase58;
+  Classes, SysUtils,strutils, nl_data, nl_language, dateutils,HlpHashFactory, SbpBase58, nosonosocfg;
 
 // General functions
 function ThisPercent(percent, thiswidth : integer;RestarBarra : boolean = false):integer;
@@ -195,7 +195,7 @@ End;
 // Fill the nodes array with nodes data
 Procedure LoadSeedNodes(STR_Source:string);
 var
-  counter      : integer = 1;
+  counter      : integer = 0;
   IsParamEmpty : boolean = false;
   ThisParam    : string = '';
   ThisNode     : NodeData;
@@ -203,6 +203,8 @@ var
 Begin
 EnterCriticalSection(CS_ArrayNodes);
 SetLEngth(ARRAY_Nodes,0);
+STR_Source := StringReplace(STR_Source,':',' ',[rfReplaceAll, rfIgnoreCase]);
+ToLog(NosoCFGString);
 Repeat
    begin
    ThisParam := parameter(STR_Source,counter);
@@ -210,11 +212,9 @@ Repeat
    else
       begin
       ThisNode := Default(NodeData);
-      ThisParam := StringReplace(ThisParam,':',' ',[rfReplaceAll, rfIgnoreCase]);
-      IpAndPort := Parameter(ThisParam,0);
-      IpAndPort :=  StringReplace(ThisParam,';',' ',[rfReplaceAll, rfIgnoreCase]);
-      ThisNode.host:=Parameter(IpAndPort,0);
-      ThisNode.port:=StrToIntDef(Parameter(IpAndPort,1),8080);
+      ThisParam := StringReplace(ThisParam,';',' ',[rfReplaceAll, rfIgnoreCase]);
+      ThisNode.host:=Parameter(ThisParam,0);
+      ThisNode.port:=StrToIntDef(Parameter(ThisParam,1),8080);
       ThisNode.block:=0;
       ThisNode.Pending:=0;
       ThisNode.updated:=0;

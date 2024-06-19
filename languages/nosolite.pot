@@ -330,33 +330,6 @@ msgstr ""
 msgid "Entered Noso address not present on wallet"
 msgstr ""
 
-#: tform1.button1.caption
-msgctxt "tform1.button1.caption"
-msgid "Submit"
-msgstr ""
-
-#: tform1.button2.caption
-msgctxt "tform1.button2.caption"
-msgid "Submit"
-msgstr ""
-
-#: tform1.button3.caption
-msgid "Withdraw"
-msgstr ""
-
-#: tform1.buttonpoolcancelmessage.caption
-msgctxt "tform1.buttonpoolcancelmessage.caption"
-msgid "Cancel"
-msgstr ""
-
-#: tform1.buttonpoolconnect.caption
-msgid "Connect"
-msgstr ""
-
-#: tform1.buttonpoolokmessage.caption
-msgid "Ok"
-msgstr ""
-
 #: tform1.caption
 msgid "Nosolite"
 msgstr ""
@@ -365,53 +338,13 @@ msgstr ""
 msgid "Check to use all addresses"
 msgstr ""
 
-#: tform1.edit3.text
-msgctxt "tform1.edit3.text"
-msgid "0.00000000"
-msgstr ""
-
 #: tform1.editscmont.text
 msgctxt "tform1.editscmont.text"
 msgid "0.00000000"
 msgstr ""
 
-#: tform1.edittradebuy.text
-msgctxt "tform1.edittradebuy.text"
-msgid "0.00000000"
-msgstr ""
-
-#: tform1.edittradesell.text
-msgctxt "tform1.edittradesell.text"
-msgid "0.00000000"
-msgstr ""
-
 #: tform1.imagesync.hint
 msgid "Checking nodes"
-msgstr ""
-
-#: tform1.label1.caption
-msgctxt "tform1.label1.caption"
-msgid "Liquidity pool"
-msgstr ""
-
-#: tform1.label10.caption
-msgctxt "tform1.label10.caption"
-msgid "Fee"
-msgstr ""
-
-#: tform1.label11.caption
-msgctxt "tform1.label11.caption"
-msgid "0.00000000"
-msgstr ""
-
-#: tform1.label12.caption
-msgctxt "tform1.label12.caption"
-msgid "0.00000000"
-msgstr ""
-
-#: tform1.label13.caption
-msgctxt "tform1.label13.caption"
-msgid "0 %"
 msgstr ""
 
 #: tform1.label14.caption
@@ -424,118 +357,6 @@ msgctxt "tform1.label15.caption"
 msgid "Destination"
 msgstr ""
 
-#: tform1.label16.caption
-msgctxt "tform1.label16.caption"
-msgid "0.00000000"
-msgstr ""
-
-#: tform1.label17.caption
-msgctxt "tform1.label17.caption"
-msgid "Amount"
-msgstr ""
-
-#: tform1.label18.caption
-msgctxt "tform1.label18.caption"
-msgid "Average price"
-msgstr ""
-
-#: tform1.label19.caption
-msgctxt "tform1.label19.caption"
-msgid "0.00000000"
-msgstr ""
-
-#: tform1.label2.caption
-msgid "Recent trades"
-msgstr ""
-
-#: tform1.label20.caption
-msgctxt "tform1.label20.caption"
-msgid "Total"
-msgstr ""
-
-#: tform1.label21.caption
-msgctxt "tform1.label21.caption"
-msgid "0.00000000"
-msgstr ""
-
-#: tform1.label22.caption
-msgctxt "tform1.label22.caption"
-msgid "Price change / New price"
-msgstr ""
-
-#: tform1.label23.caption
-msgctxt "tform1.label23.caption"
-msgid "0 %"
-msgstr ""
-
-#: tform1.label24.caption
-msgctxt "tform1.label24.caption"
-msgid "Fee"
-msgstr ""
-
-#: tform1.label25.caption
-msgctxt "tform1.label25.caption"
-msgid "0.00000000"
-msgstr ""
-
-#: tform1.label26.caption
-msgid "Withdraw nUSDo"
-msgstr ""
-
-#: tform1.label27.caption
-msgid "Coin"
-msgstr ""
-
-#: tform1.label28.caption
-msgctxt "tform1.label28.caption"
-msgid "Amount"
-msgstr ""
-
-#: tform1.label29.caption
-msgctxt "tform1.label29.caption"
-msgid "Address"
-msgstr ""
-
-#: tform1.label3.caption
-msgid "My trades"
-msgstr ""
-
-#: tform1.label30.caption
-msgid "Max: 0.00000000"
-msgstr ""
-
-#: tform1.label31.caption
-msgid "My History"
-msgstr ""
-
-#: tform1.label4.caption
-msgid "TRADE"
-msgstr ""
-
-#: tform1.label5.caption
-msgid "Noso/nUSDo"
-msgstr ""
-
-#: tform1.label6.caption
-msgctxt "tform1.label6.caption"
-msgid "Amount"
-msgstr ""
-
-#: tform1.label7.caption
-msgctxt "tform1.label7.caption"
-msgid "Average price"
-msgstr ""
-
-#: tform1.label8.caption
-msgctxt "tform1.label8.caption"
-msgid "Price change / New price"
-msgstr ""
-
-#: tform1.label9.caption
-msgctxt "tform1.label9.caption"
-msgid "Total"
-msgstr ""
-
 #: tform1.labellocked.caption
 msgctxt "tform1.labellocked.caption"
 msgid "0.00000000 NOSO"
@@ -543,26 +364,6 @@ msgstr ""
 
 #: tform1.labellocked.hint
 msgid "Locked balance"
-msgstr ""
-
-#: tform1.labelpoolmainprice.caption
-msgid "LabelPoolMainPrice"
-msgstr ""
-
-#: tform1.labelpoolmessages.caption
-msgid "Reconnecting..."
-msgstr ""
-
-#: tform1.labelpooltier.caption
-msgid "LAbelPoolTier"
-msgstr ""
-
-#: tform1.labelpoolvolume.caption
-msgid "LabelPoolVolume"
-msgstr ""
-
-#: tform1.labelpoomarketcap.caption
-msgid "LabelPoolMarketcap"
 msgstr ""
 
 #: tform1.labelstake.caption
@@ -703,25 +504,8 @@ msgstr ""
 msgid "Downloading summary"
 msgstr ""
 
-#: tform1.panelpooltrade.caption
-msgid "PanelPoolTrade"
-msgstr ""
-
 #: tform1.panelsync.hint
 msgid "Synchronizing"
-msgstr ""
-
-#: tform1.sbdepositltc.hint
-msgid "Deposit LTC to your account"
-msgstr ""
-
-#: tform1.sbdepositnoso.hint
-msgid "Deposit Noso to your account"
-msgstr ""
-
-#: tform1.sbpooltrade.caption
-msgctxt "tform1.sbpooltrade.caption"
-msgid "Trade"
 msgstr ""
 
 #: tform1.sbscmax.hint
@@ -730,22 +514,6 @@ msgstr ""
 
 #: tform1.sbscpaste.hint
 msgid "Paste destination"
-msgstr ""
-
-#: tform1.sbsharesbuy.hint
-msgid "Buy shares to fund the pool"
-msgstr ""
-
-#: tform1.sbsharessell.hint
-msgid "Sell your shares"
-msgstr ""
-
-#: tform1.sbwithdrawltc.hint
-msgid "Withdraw LTC from your account"
-msgstr ""
-
-#: tform1.sbwithdrawnoso.hint
-msgid "Withdraw Noso from your account"
 msgstr ""
 
 #: tform1.scbitcancel.caption
@@ -785,32 +553,8 @@ msgstr ""
 msgid "Polls"
 msgstr ""
 
-#: tform1.tabliqpool.caption
-msgid "Liqpool"
-msgstr ""
-
-#: tform1.tabsheet1.caption
-msgid "Trades"
-msgstr ""
-
-#: tform1.tabsheet2.caption
-msgid "History"
-msgstr ""
-
-#: tform1.tabsheet3.caption
-msgid "Buy"
-msgstr ""
-
-#: tform1.tabsheet4.caption
-msgid "Sell"
-msgstr ""
-
 #: tform1.tabwallet.caption
 msgid "Wallet"
-msgstr ""
-
-#: tform1.textpoolmessages.caption
-msgid "TextPoolMessages"
 msgstr ""
 
 #: tform2.button1.caption

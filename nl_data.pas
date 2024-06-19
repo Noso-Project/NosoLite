@@ -156,6 +156,7 @@ var
   FILE_Options  : textfile;
   FILE_Sumary   : File of SumaryData;
   FILE_MNs      : TextFile;
+  FILE_CFG      : TextFile;
   FILE_GVTs     : File of TGVT;
   FILE_Labels   : TextFile;
   FILE_StartLog : TextFile;

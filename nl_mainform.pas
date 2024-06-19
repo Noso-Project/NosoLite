@@ -8,33 +8,18 @@ uses
   Classes, lclintf, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, ExtCtrls,
   Grids, Menus, StdCtrls, nl_GUI, nl_disk, nl_data, nl_functions, IdTCPClient,
   nl_language, nl_cripto, Clipbrd, Buttons, Spin, nl_explorer, IdComponent,
-  strutils, Types, nl_qrcode, DefaultTranslator, infoform, nl_apps, nl_consensus,
-  nl_network, splashform, formlog, formnetwork, formliqpool;
+  strutils, Types, nl_qrcode, DefaultTranslator, infoform, nl_consensus,
+  nl_network, splashform, formlog, formnetwork, formliqpool, nosonosocfg;
 
 type
 
   { TForm1 }
 
   TForm1 = class(TForm)
-    Button1: TButton;
-    Button2: TButton;
-    Button3: TButton;
-    ButtonPoolCancelMessage: TButton;
-    ButtonPoolOkMessage: TButton;
-    ButtonPoolConnect: TButton;
     CBMultisend: TCheckBox;
-    ComboBox1: TComboBox;
-    Edit3: TEdit;
-    Edit4: TEdit;
-    EditTradebuy: TEdit;
-    EditTradeSell: TEdit;
-    EditPoolMessages: TEdit;
-    EditPoolAddress: TEdit;
     Edit2: TEdit;
     EditSCDest: TEdit;
     EditSCMont: TEdit;
-    GridUserTrades: TStringGrid;
-    GridUserOrders: TStringGrid;
     GVTsGrid: TStringGrid;
     ImageBlockInfo: TImage;
     ImageList: TImageList;
@@ -42,52 +27,10 @@ type
     ImageDownload: TImage;
     ImgSCDest: TImage;
     ImgSCMont: TImage;
-    Label1: TLabel;
-    Label10: TLabel;
-    Label11: TLabel;
-    Label12: TLabel;
-    Label13: TLabel;
     Label14: TLabel;
     Label15: TLabel;
-    Label16: TLabel;
-    Label17: TLabel;
-    Label18: TLabel;
-    Label19: TLabel;
-    Label2: TLabel;
-    Label20: TLabel;
-    Label21: TLabel;
-    Label22: TLabel;
-    Label23: TLabel;
-    Label24: TLabel;
-    Label25: TLabel;
-    Label26: TLabel;
-    Label27: TLabel;
-    Label28: TLabel;
-    Label29: TLabel;
-    Label30: TLabel;
-    Label31: TLabel;
     MenuItem12: TMenuItem;
     MenuItem13: TMenuItem;
-    Panel11: TPanel;
-    Panel12: TPanel;
-    Panel13: TPanel;
-    Panel14: TPanel;
-    PanelWithdraw: TPanel;
-    SpeedButton2: TSpeedButton;
-    TextPoolMessages: TLabel;
-    Label3: TLabel;
-    Label4: TLabel;
-    Label6: TLabel;
-    Label7: TLabel;
-    Label8: TLabel;
-    Label9: TLabel;
-    LabelPoolMessages: TLabel;
-    Label5: TLabel;
-    LabelPoolMainPrice: TLabel;
-    LabelPoolVolume: TLabel;
-    LAbelPoolTier: TLabel;
-    labelPoolUser: TLabel;
-    LabelPooMarketCap: TLabel;
     Labelsupply: TLabel;
     Labelstake: TLabel;
     Labelsummary: TLabel;
@@ -121,31 +64,9 @@ type
     MenuItem9: TMenuItem;
     MM_File: TMenuItem;
     PageControl: TPageControl;
-    PageControl1: TPageControl;
-    PageControl2: TPageControl;
-    Panel1: TPanel;
-    Panel10: TPanel;
-    Panel2: TPanel;
-    Panel3: TPanel;
-    Panel4: TPanel;
-    Panel5: TPanel;
-    Panel6: TPanel;
-    Panel7: TPanel;
-    Panel8: TPanel;
-    Panel9: TPanel;
-    Paneltradetop: TPanel;
-    PanelPoolTrade: TPanel;
-    PanelButtonsPoolMessage: TPanel;
-    PanelPoolMain: TPanel;
-    PanelPoolHeader: TPanel;
-    PanelPoolMarketPrice: TPanel;
-    PanelPoolMessages: TPanel;
-    PanelPoolHistory: TPanel;
     Panel23: TPanel;
-    PanelPoolUSer: TPanel;
     PanelTransferGVT: TPanel;
     PC_GVTs: TPageControl;
-    PanelPoolTop: TPanel;
     PanelSupply: TPanel;
     PanelTrxInfo: TPanel;
     PanelDown: TPanel;
@@ -158,10 +79,8 @@ type
     PanelStatus: TPanel;
     PanelDownload: TPanel;
     PUMAddressess: TPopupMenu;
-    SBDepositLTC: TSpeedButton;
     SBSCMax: TSpeedButton;
     SBSCPaste: TSpeedButton;
-    SBWithdrawLTC: TSpeedButton;
     SCBitCancel: TBitBtn;
     SCBitClea: TBitBtn;
     SCBitConf: TBitBtn;
@@ -169,50 +88,23 @@ type
     SCBitSend1: TBitBtn;
     SGridAddresses: TStringGrid;
     SGridSC: TStringGrid;
-    GridPoolData: TStringGrid;
-    SBDepositNoso: TSpeedButton;
-    SBWithdrawNoso: TSpeedButton;
-    GridPoolTrades: TStringGrid;
-    SBSharesBuy: TSpeedButton;
-    SBSharesSell: TSpeedButton;
-    SBPoolTrade: TSpeedButton;
-    SpeedButton1: TSpeedButton;
-    TabSheet3: TTabSheet;
-    TabSheet4: TTabSheet;
-    TabLiqPool: TTabSheet;
     TabGVTs: TTabSheet;
     TabGVTsGVTs: TTabSheet;
     TabGVTsPolls: TTabSheet;
-    TabSheet1: TTabSheet;
-    TabSheet2: TTabSheet;
     TabWallet: TTabSheet;
     StartTimer : TTimer;
-    procedure ButtonPoolCancelMessageClick(Sender: TObject);
-    procedure ButtonPoolConnectClick(Sender: TObject);
-    procedure ButtonPoolOkMessageClick(Sender: TObject);
     procedure CBMultisendChange(Sender: TObject);
-    procedure EditPoolMessagesKeyPress(Sender: TObject; var Key: char);
     procedure EditSCDestChange(Sender: TObject);
     procedure EditSCMontChange(Sender: TObject);
     procedure EditSCMontKeyPress(Sender: TObject; var Key: char);
-    procedure EditTradebuyChange(Sender: TObject);
-    procedure EditTradebuyKeyPress(Sender: TObject; var Key: char);
-    procedure EditTradeSellChange(Sender: TObject);
-    procedure EditTradeSellKeyPress(Sender: TObject; var Key: char);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
-    procedure GridPoolDataPrepareCanvas(sender: TObject; aCol, aRow: Integer;
-      aState: TGridDrawState);
-    procedure GridPoolTradesResize(Sender: TObject);
-    procedure GridUserOrdersResize(Sender: TObject);
-    procedure GridUserTradesResize(Sender: TObject);
     procedure GVTsGridResize(Sender: TObject);
     procedure MenuItem10Click(Sender: TObject);
     procedure MenuItem11Click(Sender: TObject);
     procedure MenuItem12Click(Sender: TObject);
-    procedure MenuItem13Click(Sender: TObject);
     procedure MenuItem15Click(Sender: TObject);
     procedure MenuItem16Click(Sender: TObject);
     procedure MenuItem17Click(Sender: TObject);
@@ -228,14 +120,6 @@ type
     procedure MenuItem9Click(Sender: TObject);
     procedure MM_File_ExitClick(Sender: TObject);
     procedure PanelBlockInfoClick(Sender: TObject);
-    procedure SBDepositLTCClick(Sender: TObject);
-    procedure SBDepositNosoClick(Sender: TObject);
-    procedure SBPoolTradeClick(Sender: TObject);
-    procedure SBSharesBuyClick(Sender: TObject);
-    procedure SBWithdrawLTCClick(Sender: TObject);
-    procedure SBWithdrawNosoClick(Sender: TObject);
-    procedure SpeedButton1Click(Sender: TObject);
-    procedure SpeedButton2Click(Sender: TObject);
     Procedure StartTimerRun(Sender: TObject);
     Procedure RunAppStart();
 
@@ -254,7 +138,6 @@ type
     procedure SGridAddressesPrepareCanvas(sender: TObject; aCol, aRow: Integer;
       aState: TGridDrawState);
     procedure SGridAddressesResize(Sender: TObject);
-    procedure TabLiqPoolResize(Sender: TObject);
 
   private
 
@@ -355,12 +238,12 @@ ToLog(Format('Offset: %d seconds',[MainNetOffSet]));
 
 UpdatedMNs := GetMNsFromNode;
   ToStartLog('MNs file retrieved');
-G_NosoCFGStr := GetNosoCFGFromNode;
-  ToStartLog('NOSOCfg retrieved');
+SetCFGFilename(DataDirectory+CFGFilename);
+FillArrayNodes;
 if StrToIntDef(Parameter(UpdatedMNs,0),-1)> MasternodesLastBlock then
    begin
    SaveMnsToFile(UpdatedMNs);
-   FillArrayNodes;
+   //FillArrayNodes;
    ToStartLog('Nodes updated');
    end;
 Pendings_String := GetPendings();
@@ -372,7 +255,6 @@ Sleep(500);
    THREAD_Update.FreeOnTerminate:=true;
    THREAD_Update.Start;
    form1.PageControl.ActivePage := form1.TabWallet;
-EditPoolAddress.Text:=ARRAY_Addresses[0].Hash;
 End;
 
 // On close query form events
@@ -912,63 +794,6 @@ Begin
 if not form5.Visible then Form5.Show;
 End;
 
-// Launch liquidity pool
-procedure TForm1.MenuItem13Click(Sender: TObject);
-var
-  LoginAddress     : string;
-  AddressIndex     : integer;
-  ReqTime, RanSeed : string;
-  RequestMessage   : string;
-  RequestRespo     : string;
-  LSignature       : string;
-Begin
-if not Form7.Visible then
-   begin
-   LoginAddress := InputBox(ARRAY_Addresses[SGridAddresses.Row-1].hash,'Enter address', (ARRAY_Addresses[SGridAddresses.Row-1].hash));
-   AddressIndex := IsAddressOnWallet(LoginAddress);
-   if AddressIndex <0 then
-      begin
-      form3.BorderIcons:=form3.BorderIcons+[bisystemmenu];
-      form3.memorequest.Text:=rsGUI0051;
-      form3.memoresult.Text:=format(rsGUI0052,[]);
-      form3.ShowModal;
-      end
-   else
-      begin
-      form3.BorderIcons:=form3.BorderIcons+[bisystemmenu];
-      form3.memorequest.Text:='Connect to pool with address '+LoginAddress;
-      form3.memoresult.Text:='Connecting...';
-      form1.Enabled:=false;
-      form3.Show;
-      application.ProcessMessages;
-      ReqTime := UTCTime.ToString;
-      RanSeed := GetPoolRanSeed();
-      RequestMessage := 'CONNECT '+LoginAddress+' '+ReqTime+' '+RanSeed+' '+
-                  ARRAY_Addresses[AddressIndex].PublicKey+' '+
-                  GetStringSigned('CONNECT'+LoginAddress+ReqTime+RanSeed,ARRAY_Addresses[AddressIndex].PrivateKey);
-                  //signstring=CONNECT+ADDRESS+UTCTIME+RANSEED
-      RequestRespo:=PostMessageToHost(LiqPoolHost,LiqPoolPort,RequestMessage);
-      if parameter(RequestRespo,0)= 'STATUS' then
-         begin
-         LSignature := Parameter(RequestRespo,15);
-         if VerifySignedString(LoginAddress+ReqTime+RanSeed+Parameter(RequestRespo,5),LSignature,PoolPub) then
-            begin
-            form3.Close;
-            form7.Visible:=true;
-            ToLog(RequestRespo);
-            end
-         else
-            begin
-            form3.memoresult.Text := 'Invalid credentials response';
-            ToLog('Invalid credentials response');
-            end;
-         end
-      else if parameter(RequestRespo,0)= 'ERROR' then
-         form3.memoresult.Text := RequestRespo;
-      end;
-   end;
-End;
-
 // Click on panel
 procedure TForm1.PanelBlockInfoClick(Sender: TObject);
 begin
@@ -1170,526 +995,6 @@ if EditSCMont.SelStart <= length(EditSCMont.Text)-9 then // it is in integers
       if ((currpos=0) and (ultimo='0')) then EditSCMont.SelStart := 0;
       end;
    end;
-End;
-
-//******************************************************************************
-// Pool  panel
-//******************************************************************************
-
-// Resize Grid data
-Procedure TForm1.TabLiqPoolResize(Sender: TObject);
-var
-  GridWidth : integer;
-  GridHeigth: integer;
-Begin
-GridWidth := form1.GridPoolData.Width;
-
-form1.GridPoolData.ColWidths[0] := ThisPercent(20,GridWidth);
-form1.GridPoolData.ColWidths[1] := ThisPercent(30,GridWidth);
-form1.GridPoolData.ColWidths[2] := ThisPercent(20,GridWidth);
-form1.GridPoolData.ColWidths[3] := ThisPercent(30,GridWidth);
-
-form1.PanelPoolHistory.Width    := ThisPercent(50,GridWidth);
-form1.PanelPoolUSer.Width       := ThisPercent(50,GridWidth);
-
-SBDepositNoso.Top:=24;SBDepositNoso.Left:=ThisPercent(20,GridWidth)-20;
-SBWithdrawNoso.Top:=24;SBWithdrawNoso.Left:=ThisPercent(20,GridWidth)-44;
-SBDepositLTC.Top:=46;SBDepositLTC.Left:=ThisPercent(20,GridWidth)-20;
-SBWithdrawLTC.Top:=46;SBWithdrawLTC.Left:=ThisPercent(20,GridWidth)-44;
-SBSharesBuy.Top:=68;SBSharesBuy.Left:=ThisPercent(20,GridWidth)-20;
-SBSharesSell.Top:=68;SBSharesSell.Left:=ThisPercent(20,GridWidth)-44;
-SBPoolTrade.Top:=24;SBPoolTrade.Left:=ThisPercent(70,GridWidth)+4;
-
-
-PanelPoolMessages.Top:=(TabLiqPool.Height div 2) - (PanelPoolMessages.Height div 2);
-PanelPoolMessages.left:=(TabLiqPool.width div 2) - (PanelPoolMessages.width div 2);
-ButtonPoolOkMessage.Width:=PanelButtonsPoolMessage.Width div 2;
-ButtonPoolCancelMessage.Width:=PanelButtonsPoolMessage.Width div 2;
-
-PanelPoolTrade.Top:=(TabLiqPool.Height div 2) - (PanelPoolTrade.Height div 2);
-PanelPoolTrade.left:=(TabLiqPool.width div 2) - (PanelPoolTrade.width div 2);
-
-PanelWithdraw.Top:=(TabLiqPool.Height div 2) - (PanelWithdraw.Height div 2);
-PanelWithdraw.left:=(TabLiqPool.width div 2) - (PanelWithdraw.width div 2);
-
-End;
-
-// Format Grid data
-procedure TForm1.GridPoolDataPrepareCanvas(sender: TObject; aCol,
-  aRow: Integer; aState: TGridDrawState);
-var
-  ts: TTextStyle;
-Begin
-ts := (Sender as TStringGrid).Canvas.TextStyle;
-if ( ( (aCol=0) or (aCol=2) ) and (Arow>0) ) then
-   begin
-   if ((aCol=0) and (aRow=4)) then exit;
-   (Sender as TStringGrid).Canvas.Brush.Color := clSilver;
-   end;
-if aRow = 0 then
-   begin
-   (Sender as TStringGrid).Canvas.Brush.Color := clBlack;
-   (Sender as TStringGrid).Canvas.font.Color := clWhite;
-   end;
-if ( ( (aCol=1) or (aCol=3) ) and (Arow>0) ) then
-   begin
-   ts.Alignment := taRightJustify;
-   (Sender as TStringGrid).Canvas.TextStyle := ts;
-   end;
-if ((aCol=3) and (aRow= 3)) then
-   begin
-   (Sender as TStringGrid).Canvas.font.Style := [fsBold];
-   end;
-End;
-
-// Resize pool trades grid
-procedure TForm1.GridPoolTradesResize(Sender: TObject);
-var
-  GridWidth : integer;
-Begin
-GridWidth := form1.PanelPoolHistory.Width;
-form1.GridPoolTrades.ColWidths[0] := ThisPercent(20,GridWidth);
-form1.GridPoolTrades.ColWidths[1] := ThisPercent(40,GridWidth);
-form1.GridPoolTrades.ColWidths[2] := ThisPercent(40,GridWidth,true);
-End;
-
-procedure TForm1.GridUserOrdersResize(Sender: TObject);
-var
-  GridWidth : integer;
-begin
-GridWidth := form1.PanelPoolUser.Width;
-form1.GridUserOrders.ColWidths[0] := ThisPercent(20,GridWidth);
-form1.GridUserOrders.ColWidths[1] := ThisPercent(40,GridWidth);
-form1.GridUserOrders.ColWidths[2] := ThisPercent(40,GridWidth,true);
-end;
-
-// Resize user trades grid
-procedure TForm1.GridUserTradesResize(Sender: TObject);
-var
-  GridWidth : integer;
-Begin
-GridWidth := form1.PanelPoolUser.Width;
-form1.GridUserTrades.ColWidths[0] := ThisPercent(20,GridWidth);
-form1.GridUserTrades.ColWidths[1] := ThisPercent(40,GridWidth);
-form1.GridUserTrades.ColWidths[2] := ThisPercent(40,GridWidth,true);
-End;
-
-// Click on connect button
-procedure TForm1.ButtonPoolConnectClick(Sender: TObject);
-var
-  Address        : string;
-  AddressIndex   : integer;
-  ValidAddress   : integer = 0;
-  RequestRespo   : String;
-  RequestMessage : String;
-  RanSeed        : string;
-  ReqTime        : String;
-  LSignature     : string;
-Begin
-Address := EditPoolAddress.Text;
-ReqTime := UTCTime.ToString;
-AddressIndex := IsAddressOnWallet(Address);
-if AddressIndex<0 then ValidAddress := 1;
-if ValidAddress = 0 then
-   begin
-   ShowAppPanel(rsGUI0050,'',0,false); // Connecting
-   Application.ProcessMessages;
-   RanSeed := GetPoolRanSeed();
-   RequestMessage := 'CONNECT '+Address+' '+ReqTime+' '+RanSeed+' '+
-                  ARRAY_Addresses[AddressIndex].PublicKey+' '+
-                  GetStringSigned('CONNECT'+ADDRESS+ReqTime+RanSeed,ARRAY_Addresses[AddressIndex].PrivateKey);
-                  //signstring=CONNECT+ADDRESS+UTCTIME+RANSEED
-   RequestRespo:=PostMessageToHost(LiqPoolHost,LiqPoolPort,RequestMessage);
-   if parameter(RequestRespo,0)= 'STATUS' then
-      begin
-      LSignature := Parameter(RequestRespo,15);
-      if VerifySignedString(Address+ReqTime+RanSeed+Parameter(RequestRespo,5),LSignature,PoolPub) then
-         begin
-         PanelPoolMain.Visible:=true;
-         EditPoolAddress.Visible:=false;
-         ButtonPoolConnect.Visible:=false;
-         LAbelPoolTier.Visible:=true;
-         PanelPoolMarketPrice.Visible:=true;
-         labelPoolUser.Visible:=true;
-         ProcessStatusResponse(RequestRespo);
-         // Initialize pool sesion
-         SetPoolUser(Address,Parameter(RequestRespo,5));
-         LastPoolUpdate := UTCTime;
-         StartPoolThread;
-         end
-      else
-         begin
-         ToLog('Invalid credentials response');
-         end;
-      end
-   else if parameter(RequestRespo,0)= 'ERROR' then
-      ToLog(RequestRespo);
-   HideAppPanel;
-   end
-else sysutils.beep()
-End;
-
-// Button deposit Noso
-procedure TForm1.SBDepositNosoClick(Sender: TObject);
-Begin
-MessagePro := 'DEPNOSO';
-ShowAppPanel('Deposit Noso','To deposit Noso in your account, you need send the coins to the Pool address using your account as reference',0,true);
-End;
-
-// Button withdraw Noso
-procedure TForm1.SBWithdrawNosoClick(Sender: TObject);
-Begin
-MessagePro := 'WITHNOSO';
-ShowAppPanel('Withdraw Noso','Enter amount.',peCoin,true);
-End;
-
-// Button deposit nUSDo
-procedure TForm1.SBDepositLTCClick(Sender: TObject);
-Begin
-MessagePro := 'DEPNUSDO';
-ShowAppPanel('Deposit nUSDo','Send LTC to the following address. Funds received will be inmediately converted into nUSDo',2,true);
-End;
-
-// Button withdraw nUSDo
-procedure TForm1.SBWithdrawLTCClick(Sender: TObject);
-Begin
-{
-If PoolUser.WithLTC= '' then
-   begin
-   MessagePro := 'WITHLTCNOAD';
-   ShowAppPanel('Withdraw nUSDo','Enter your LiteCoin address',1,true);
-   end;
-}
-MessagePro := 'WITHLTCNOAD';
-ShowWithdrawPanel;
-End;
-
-// Button buy liquishares
-procedure TForm1.SBSharesBuyClick(Sender: TObject);
-Begin
-MessagePro := 'BUYSHARES';
-ShowAppPanel('Buy liqshares','Enter the number of shares you want buy.'+slinebreak+Format('Price each: %s Noso and %s nUSDo',[Int2Curr2Dec(PoolNoso div Poolshares),Int2Curr2Dec(PoolnUSDo div PoolShares)]),1,true);
-End;
-
-// BUTTON TRADE NOSO
-procedure TForm1.SBPoolTradeClick(Sender: TObject);
-Begin
-ShowTradePanel();
-End;
-
-// BUTTON CLOSE TRADE NOSO
-procedure TForm1.SpeedButton1Click(Sender: TObject);
-Begin
-HideTradePanel();
-End;
-
-// Button close withdraw panel
-procedure TForm1.SpeedButton2Click(Sender: TObject);
-begin
-HideWithdrawPanel
-end;
-
-// Button OK message
-procedure TForm1.ButtonPoolOkMessageClick(Sender: TObject);
-begin
-MessagePro := MessagePro+'OK';
-HideAppPanel();
-Form1.EditPoolMessages.ReadOnly:=false;
-Form1.EditPoolMessages.Alignment:=taLeftJustify;
-end;
-
-// Button CANCEL message
-procedure TForm1.ButtonPoolCancelMessageClick(Sender: TObject);
-Begin
-HideAppPanel();
-Form1.EditPoolMessages.ReadOnly:=false;
-Form1.EditPoolMessages.Alignment:=taLeftJustify;
-End;
-
-// Keypress on edit pool messages
-procedure TForm1.EditPoolMessagesKeyPress(Sender: TObject; var Key: char);
-var
-  Permitido : string = '1234567890.';
-  Ultimo    : char;
-  Actualmente : string;
-  currpos : integer;
-  ParteEntera : string;
-  ParteDecimal : string;
-  PosicionEnElPunto : integer;
-Begin
-if PoolEditStyle = peCoin then
-   begin
-   if key = chr(27) then          // ESC keys clears
-     begin
-     EditPoolMessages.Text := '0.00000000';
-     EditPoolMessages.SelStart := 1;
-     exit;
-     end;
-   {
-   if key = chr(8) then          // BACK KEY
-     begin
-     currpos := EditPoolMessages.SelStart;
-     if EditPoolMessages.SelStart>1 then
-        begin
-        Actualmente := EditPoolMessages.Text;
-        Actualmente[currpos] := '0';
-        EditPoolMessages.Text:=Actualmente;
-        end;
-     EditPoolMessages.SelStart := currpos-1;
-     exit;
-     end;
-   }
-   ultimo := char(key);
-   if pos(ultimo,permitido)= 0 then exit;  // Not valid key
-   Actualmente := EditPoolMessages.Text;
-   PosicionEnElPunto := Length(Actualmente)-9;
-   currpos := EditPoolMessages.SelStart;
-   if key = '.' then                      // decimal point
-      begin
-      EditPoolMessages.SelStart := length(EditPoolMessages.Text)-8;
-      exit;
-      end;
-   if ((EditPoolMessages.SelStart > length(EditPoolMessages.Text)-9) and
-      (EditPoolMessages.SelStart < length(EditPoolMessages.Text)))    then // it is in decimals
-      begin
-      Actualmente[currpos+1] := ultimo;
-      EditPoolMessages.Text:=Actualmente;
-      EditPoolMessages.SelStart := currpos+1;
-      end;
-   if EditPoolMessages.SelStart <= length(EditPoolMessages.Text)-9 then // it is in integers
-      begin
-      ParteEntera := copy(actualmente,1,length(Actualmente)-9);
-      ParteDecimal := copy(actualmente,length(Actualmente)-7,8);
-      if currpos = PosicionEnElPunto then // esta justo antes del punto
-         begin
-         if length(parteentera)>7 then exit;
-         ParteEntera := ParteEntera+Ultimo;
-         ParteEntera := IntToStr(StrToIntDef(ParteEntera,0));
-         actualmente := parteentera+'.'+partedecimal;
-         EditPoolMessages.Text:=Actualmente;
-         EditPoolMessages.SelStart := Length(Actualmente)-9;
-         end
-      else
-         begin
-         Actualmente[currpos+1] := ultimo;
-         ParteEntera := copy(actualmente,1,length(Actualmente)-9);
-         ParteEntera := IntToStr(StrToIntDef(ParteEntera,0));
-         actualmente := parteentera+'.'+partedecimal;
-         EditPoolMessages.Text:=Actualmente;
-         EditPoolMessages.SelStart := currpos+1;
-         if ((currpos=0) and (ultimo='0')) then EditPoolMessages.SelStart := 0;
-         end;
-      end;
-   end;
-if ((MessagePro = 'WITHLTCNOAD') and (ValidateLitecoin(EditPoolMessages.Text))) then
-   begin
-
-   end;
-End;
-
-// EDIT TRADE BUY on KEYPRESS
-procedure TForm1.EditTradebuyKeyPress(Sender: TObject; var Key: char);
-var
-  Permitido : string = '1234567890.';
-  Ultimo    : char;
-  Actualmente : string;
-  currpos : integer;
-  ParteEntera : string;
-  ParteDecimal : string;
-  PosicionEnElPunto : integer;
-Begin
-if key = chr(27) then          // ESC keys clears
-  begin
-  EditTradebuy.Text := '0.00000000';
-  EditTradebuy.SelStart := 1;
-  exit;
-  end;
-ultimo := char(key);
-if pos(ultimo,permitido)= 0 then exit;  // Not valid key
-Actualmente := EditTradebuy.Text;
-PosicionEnElPunto := Length(Actualmente)-9;
-currpos := EditTradebuy.SelStart;
-if key = '.' then                      // decimal point
-   begin
-   EditTradebuy.SelStart := length(EditTradebuy.Text)-8;
-   exit;
-   end;
-if ((EditTradebuy.SelStart > length(EditTradebuy.Text)-9) and
-   (EditTradebuy.SelStart < length(EditTradebuy.Text)))    then // it is in decimals
-   begin
-   Actualmente[currpos+1] := ultimo;
-   EditTradebuy.Text:=Actualmente;
-   EditTradebuy.SelStart := currpos+1;
-   end;
-if EditTradebuy.SelStart <= length(EditTradebuy.Text)-9 then // it is in integers
-   begin
-   ParteEntera := copy(actualmente,1,length(Actualmente)-9);
-   ParteDecimal := copy(actualmente,length(Actualmente)-7,8);
-   if currpos = PosicionEnElPunto then // esta justo antes del punto
-      begin
-      if length(parteentera)>7 then exit;
-      ParteEntera := ParteEntera+Ultimo;
-      ParteEntera := IntToStr(StrToIntDef(ParteEntera,0));
-      actualmente := parteentera+'.'+partedecimal;
-      EditTradebuy.Text:=Actualmente;
-      EditTradebuy.SelStart := Length(Actualmente)-9;
-      end
-   else
-      begin
-      Actualmente[currpos+1] := ultimo;
-      ParteEntera := copy(actualmente,1,length(Actualmente)-9);
-      ParteEntera := IntToStr(StrToIntDef(ParteEntera,0));
-      actualmente := parteentera+'.'+partedecimal;
-      EditTradebuy.Text:=Actualmente;
-      EditTradebuy.SelStart := currpos+1;
-      if ((currpos=0) and (ultimo='0')) then EditTradebuy.SelStart := 0;
-      end;
-   end;
-End;
-
-// EDIT TRADE SELL on KEYPRESS
-procedure TForm1.EditTradeSellKeyPress(Sender: TObject; var Key: char);
-var
-  Permitido : string = '1234567890.';
-  Ultimo    : char;
-  Actualmente : string;
-  currpos : integer;
-  ParteEntera : string;
-  ParteDecimal : string;
-  PosicionEnElPunto : integer;
-Begin
-if key = chr(27) then          // ESC keys clears
-  begin
-  EditTradeSell.Text := '0.00000000';
-  EditTradeSell.SelStart := 1;
-  exit;
-  end;
-ultimo := char(key);
-if pos(ultimo,permitido)= 0 then exit;  // Not valid key
-Actualmente := EditTradeSell.Text;
-PosicionEnElPunto := Length(Actualmente)-9;
-currpos := EditTradeSell.SelStart;
-if key = '.' then                      // decimal point
-   begin
-   EditTradeSell.SelStart := length(EditTradeSell.Text)-8;
-   exit;
-   end;
-if ((EditTradeSell.SelStart > length(EditTradeSell.Text)-9) and
-   (EditTradeSell.SelStart < length(EditTradeSell.Text)))    then // it is in decimals
-   begin
-   Actualmente[currpos+1] := ultimo;
-   EditTradeSell.Text:=Actualmente;
-   EditTradeSell.SelStart := currpos+1;
-   end;
-if EditTradeSell.SelStart <= length(EditTradeSell.Text)-9 then // it is in integers
-   begin
-   ParteEntera := copy(actualmente,1,length(Actualmente)-9);
-   ParteDecimal := copy(actualmente,length(Actualmente)-7,8);
-   if currpos = PosicionEnElPunto then // esta justo antes del punto
-      begin
-      if length(parteentera)>7 then exit;
-      ParteEntera := ParteEntera+Ultimo;
-      ParteEntera := IntToStr(StrToIntDef(ParteEntera,0));
-      actualmente := parteentera+'.'+partedecimal;
-      EditTradeSell.Text:=Actualmente;
-      EditTradeSell.SelStart := Length(Actualmente)-9;
-      end
-   else
-      begin
-      Actualmente[currpos+1] := ultimo;
-      ParteEntera := copy(actualmente,1,length(Actualmente)-9);
-      ParteEntera := IntToStr(StrToIntDef(ParteEntera,0));
-      actualmente := parteentera+'.'+partedecimal;
-      EditTradeSell.Text:=Actualmente;
-      EditTradeSell.SelStart := currpos+1;
-      if ((currpos=0) and (ultimo='0')) then EditTradeSell.SelStart := 0;
-      end;
-   end;
-End;
-
-// EDIT TRADE BUY ON CHANGE
-procedure TForm1.EditTradebuyChange(Sender: TObject);
-var
-  BuyAmount : int64;
-  Remainning : int64;
-  StepSize, thisStep  : int64;
-  CurrNoso, CurrUSD : int64;
-  TotalBuy  : Int64 = 0;
-  ThisBuy   : int64;
-  PriceStart : Extended;
-  CurrPrice  : Extended;
-  AverPrice  : extended;
-  PriceChange: Extended;
-  NextPrice  : Extended;
-Begin
-BuyAmount  := CurrToInt(EditTradebuy.Text);
-if BuyAmount > PoolNoso then
-   begin
-   BuyAmount := PoolNoso;
-   EditTradebuy.Text := Int2Curr(PoolNoso);
-   end;
-Remainning := BuyAmount;
-StepSize := PoolNoso div 200;
-CurrNoso := PoolNoso;
-CurrUSD := PoolnUSDo;
-PriceStart := PoolNusdo/PoolNoso;
-Repeat
-   if Remainning>= StepSize then thisStep:= StepSize
-   else ThisStep := Remainning;
-     CurrPrice := CurrUSD/CurrNoso;
-     ThisBuy   := Round(ThisStep*CurrPrice);
-     TotalBuy  := TotalBuy + ThisBuy;
-     CurrNoso  := CurrNoso - ThisStep;
-     CurrUSD   := CurrUSD + ThisBuy;
-     Remainning := Remainning-ThisStep;
-until Remainning = 0;
-if BuyAmount>0 then AverPRice := TotalBuy/BuyAmount
-else AverPRice := 0;
-PriceChange := ((AverPRice/PRiceStart)*100)-100;
-NextPrice   := CurrUSD/CurrNoso;
-Label11.Caption := FormatFLoat('0.00000000',AverPrice);
-Label12.Caption:=Int2Curr(TotalBuy); // Total USD of BUY
-Label13.Caption:=Format(' %s %% / %s',[FormatFLoat('0.00',PriceChange),FormatFloat('0.00000000',NextPrice)]);
-End;
-
-// EDIT TRADE SELL ON CHANGE
-procedure TForm1.EditTradeSellChange(Sender: TObject);
-var
-  SellAmount : int64;
-  Remainning : int64;
-  StepSize, thisStep  : int64;
-  CurrNoso, CurrUSD : int64;
-  TotalSell  : Int64 = 0;
-  ThisSell   : int64;
-  PriceStart : Extended;
-  CurrPrice  : Extended;
-  AverPrice  : extended;
-  PriceChange: Extended;
-  NextPrice  : Extended;
-Begin
-SellAmount  := CurrToInt(EditTradeSell.Text);
-Remainning := SellAmount;
-StepSize := PoolNoso div 200;
-CurrNoso := PoolNoso;
-CurrUSD := PoolnUSDo;
-PriceStart := PoolNusdo/PoolNoso;
-Repeat
-   if Remainning>= StepSize then thisStep:= StepSize
-   else ThisStep := Remainning;
-     CurrPrice := CurrUSD/CurrNoso;
-     ThisSell   := Round(ThisStep*CurrPrice);
-     TotalSell  := TotalSell + ThisSell;
-     CurrNoso  := CurrNoso + ThisStep;
-     CurrUSD   := CurrUSD - ThisSell;
-     Remainning := Remainning-ThisStep;
-until Remainning = 0;
-if SellAmount>0 then AverPRice := TotalSell/SellAmount
-else AverPRice := 0;
-PriceChange := ((AverPRice/PRiceStart)*100)-100;
-NextPrice   := CurrUSD/CurrNoso;
-Label19.Caption := FormatFLoat('0.00000000',AverPrice);
-Label21.Caption:=Int2Curr(TotalSell); // Total USD of Sell
-Label23.Caption:=Format(' %s %% / %s',[FormatFLoat('0.00',PriceChange),FormatFloat('0.00000000',NextPrice)]);
 End;
 
 

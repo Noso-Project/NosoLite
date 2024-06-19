@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, nl_data, nl_cripto, nl_language, dialogs, nl_functions, fileutil,
-  Zipper, splashform;
+  Zipper, splashform,nosonosocfg;
 
 Procedure VerifyFilesStructure();
 Procedure CreateNewWallet();
@@ -23,6 +23,7 @@ Procedure CreateMNsFile();
 Procedure LoadMNsFromFile();
 Procedure FillArrayNodes();
 Procedure SaveMnsToFile(LineText:String);
+Procedure SaveCFGToFile(LineText:String);
 Function GetVerificators(LineText:String):String;
 // GVTs
 Procedure CreateGVTsFile();
@@ -285,7 +286,7 @@ End;
 
 Procedure FillArrayNodes();
 Begin
-if WO_UseSeedNodes then LoadSeedNodes(STR_SeedNodes)
+if WO_UseSeedNodes then LoadSeedNodes(Parameter(NosoCFGString,1))
 else LoadSeedNodes(GetVerificators(GetMasterNodes));
 End;
 
@@ -296,6 +297,14 @@ Rewrite(FILE_MNs);
 SetMasternodes(LineText);
 write(FILE_MNs,LineText);
 CloseFile(FILE_MNs);
+End;
+
+Procedure SaveCFGToFile(LineText:String);
+Begin
+assignfile(FILE_CFG,CFGFilename);
+Rewrite(FILE_CFG);
+write(FILE_CFG,LineText);
+CloseFile(FILE_CFG);
 End;
 
 Function GetVerificators(LineText:String):String;
