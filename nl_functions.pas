@@ -5,7 +5,8 @@ unit nl_functions;
 interface
 
 uses
-  Classes, SysUtils,strutils, nl_data, nl_language, dateutils,HlpHashFactory, SbpBase58, nosonosocfg;
+  Classes, SysUtils,strutils, nl_data, nl_language, dateutils,HlpHashFactory, SbpBase58,
+  nosonosocfg,nosotime,nosodebug, nosoconsensus;
 
 // General functions
 function ThisPercent(percent, thiswidth : integer;RestarBarra : boolean = false):integer;
@@ -20,13 +21,12 @@ Function CurrToInt(CurrStr:String):Int64;
 Procedure LoadSeedNodes(STR_Source:string);
 Function GetNodeIndex(Index:integer):NodeData;
 Function ArrayNodesLength():integer;
-Function PickRandomNode():NodeData;
 
 // Time related
-function UTCTime():int64;
+//function UTCTime():int64;
 function TimestampToDate(timestamp:int64):String;
 function TimeSinceStamp(value:int64):string;
-Function BlockAge():integer;
+//Function BlockAge():integer;
 
 // Network
 
@@ -36,7 +36,7 @@ function GetAddressBalanceFromSumary(address:string):int64;
 function GetAddressPendingPays(address : string):int64;
 function GetAddressToShow(address:string):String;
 function IsAddressOnWallet(address:string):integer;
-Procedure ToLog(StringToAdd:String);
+//Procedure ToLog(StringToAdd:String);
 function TryInsertAddress(Address:WalletData):boolean;
 function GetMaximunToSend(ammount:int64):int64;
 function IsValidAddressHash(Address:String):boolean;
@@ -204,7 +204,7 @@ Begin
 EnterCriticalSection(CS_ArrayNodes);
 SetLEngth(ARRAY_Nodes,0);
 STR_Source := StringReplace(STR_Source,':',' ',[rfReplaceAll, rfIgnoreCase]);
-ToLog(NosoCFGString);
+ToLog('main',NosoCFGString);
 Repeat
    begin
    ThisParam := parameter(STR_Source,counter);
@@ -247,27 +247,12 @@ Result := Length(ARRAY_Nodes);
 LeaveCriticalSection(CS_ArrayNodes);
 End;
 
-Function PickRandomNode():NodeData;
-var
-  TNumber : integer = 0;
-  Trys   : integer = 0;
-Begin
-Result := Default(NodeData);
-if ArrayNodesLength>0 then
-   begin
-   REPEAT
-      TNumber := Random(ArrayNodesLength);
-      Inc(Trys);
-   UNTIL ( (GetNodeIndex(Tnumber).Synced) or (Trys >= ArrayNodesLength) );
-   Result := GetNodeIndex(Tnumber);
-   end;
-End;
-
 // ************
 // *** TIME ***
 // ************
 
 // Returns the UTCTime
+{
 function UTCTime():int64;
 var
   G_TIMEUTCTimeOffset : int64;
@@ -277,6 +262,7 @@ G_TIMEUTCTimeOffset := GetLocalTimeOffset*60;
 GetUTCTimestamp := DateTimeToUnix(now);
 result := GetUTCTimestamp+G_TIMEUTCTimeOffset-MainNetOffSet;
 End;
+}
 
 // Returns a DateTime format from a Unix time
 function TimestampToDate(timestamp:int64):String;
@@ -303,10 +289,12 @@ else if diferencia div 31536000 < 1 then result := IntToStr(diferencia div 25920
 else result := IntToStr(diferencia div 31536000)+' Y'
 end;
 
+{
 Function BlockAge():integer;
 Begin
 Result := UTCtime mod 600;
 End;
+}
 
 // ***************
 // *** NETWORK ***
@@ -477,12 +465,14 @@ For Counter := 0 to length(ARRAY_Addresses)-1 do
 End;
 
 // Adds a new line to the log
+{
 Procedure ToLog(StringToAdd:String);
 Begin
 EnterCriticalSection(CS_LOG);
 LogLines.Add(Format(rsGUI0011,[DateTimeToStr(now),StringToAdd]));
 LeaveCriticalSection(CS_LOG);
 End;
+}
 
 // Trys to add a new address in the wallet
 function TryInsertAddress(Address:WalletData):boolean;
@@ -497,11 +487,11 @@ if IsAddressOnWallet(Address.Hash)<0 then
    SAVE_Wallet := true;
    REF_Addresses := true;
    insert(Default(PendingData),ARRAY_Pending,length(ARRAY_Pending));
-   ToLog(Format(rsGUI0012,[GetAddressToShow(Address.Hash)]));
+   ToLog('main',Format(rsGUI0012,[GetAddressToShow(Address.Hash)]));
    end
 else
    begin
-   ToLog(Format(rsError0007,[GetAddressToShow(Address.Hash)]));
+   ToLog('main',Format(rsError0007,[GetAddressToShow(Address.Hash)]));
    end;
 End;
 
@@ -717,6 +707,7 @@ var
   TO_ammount, TO_fee : int64;
   add_Index : integer;
 Begin
+if Pendings_String = '' then exit;
 setlength(ARRAY_Pending,0);
 setlength(ARRAY_Pending,length(ARRAY_Addresses));
 repeat

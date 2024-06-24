@@ -5,7 +5,8 @@ unit nl_data;
 interface
 
 uses
-  Classes, SysUtils, IdTCPClient, dateutils, strutils, formlog;
+  Classes, SysUtils, IdTCPClient, dateutils, strutils, formlog,nosotime,
+  nosoconsensus,nosodebug;
 
 Type
 
@@ -138,11 +139,13 @@ CONST
   GVTFilename       = DataDirectory+'gvts.psk';
   LabelsFilename    = DataDirectory+'labels.psk';
   StartLogFilename  = DataDirectory+'startlog.txt';
+  MainLogFilename   = DataDirectory+'log.txt';
+  DeepDebLogFilename = DataDirectory+DirectorySeparator+'deepdeb.txt';
   Customizationfee =25000;
   Comisiontrfr = 10000;
   MinimunFee = 1000000;
   Protocol = 2;
-  ProgramVersion = '1.70';
+  ProgramVersion = '1.80';
 
   HexAlphabet : string = '0123456789ABCDEF';
   B58Alphabet : string = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
@@ -189,6 +192,7 @@ var
   Int_TotalSupply         : integer = 0;
   Int_StakeSize           : integer = 0;
   Int_GVTOwned            : integer = 0;
+  LastLogLine             : string = '';
 
   WO_LastBlock    : integer = 0;
   WO_LastSumary   : string = '';
@@ -204,7 +208,7 @@ var
   REF_Nodes      : Boolean = false;
   REF_Status     : Boolean = false;
   REF_GVTS       : Boolean = false;
-  LogLines       : TStringList;
+  //LogLines       : TStringList;
   G_Masternodes  : String = '';
   G_UTCTime      : int64;
   G_FirstRun     : boolean = true;
@@ -248,14 +252,8 @@ End;
 
 procedure TUpdateThread.UpdateLog();
 Begin
-EnterCriticalSection(CS_LOG);
-While LogLines.Count>0 do
-   begin
-   //Form1.MemoLog.lines.Add(LogLines[0]);
-   Form5.memolog.lines.Add(LogLines[0]);
-   LogLines.Delete(0);
-   end;
-LeaveCriticalSection(CS_LOG);
+  Form5.memolog.lines.Add(LastLogLine);
+
 End;
 
 procedure TUpdateThread.UpdateStatus();
@@ -295,33 +293,25 @@ var
   counter : integer;
   LLine : String = '';
   ActualTime : int64;
+  LastRefNodes : int64;
 Begin
 While not terminated do
    begin
-   if ((UTCTime >= LastNodesUpdateTime+WO_Refreshrate) and (WO_Refreshrate>0) and
-        (BlockAge>=10) and (BlockAge<595) and (not FillingNodes) and (not NodesFilled) ) then
-      begin
-      Synchronize(@showsync);
-      RunFillnodes;
-      //ToLog('Starting sync nodes');
-      end;
-   If NodesFilled then
-      begin
-      //ToLog('Nodes Synced');
-      LastNodesUpdateTime := UTCTime;
-      NodesFilled  := false;
-      Synchronize(@hidesync);
-      REF_Nodes := true;
-      Int_LastPendingCount := MainConsensus.pending;
-      MainConsensus := CalculateConsensus;
-      if MainConsensus.pending > Int_LastPendingCount then
-         begin
-         Pendings_String := GetPendings();
-         ProcessPendings();
-         Int_LastPendingCount := MainConsensus.pending;
-         end;
-      end;
-   if ( (MainConsensus.block>GetSumaryLastBlock) and (not GettingSum) and (not SumReceived) ) then
+   if LastRefNodes <> LastConsensusTime then
+     begin
+     REF_Nodes := true;
+     LastRefNodes := LastConsensusTime;
+     end;
+   //{
+   if Getconsensus(3).ToInteger{Pendings} > Int_LastPendingCount then
+     begin
+     Pendings_String := GetPendings();
+     ProcessPendings();
+     Int_LastPendingCount := Getconsensus(3).ToInteger;
+     end;
+   //}
+   //{
+   if ( (GetConsensus(2){lastblock}.ToInteger>GetSumaryLastBlock) and (not GettingSum) and (not SumReceived) ) then
       // NEW BLOCK
       begin
       Synchronize(@showdownload);
@@ -329,13 +319,16 @@ While not terminated do
       Pendings_String := '';
       ProcessPendings();
       REF_Addresses := true;
-      ToLog('Downloading sumary');
+      ToLog('main','Downloading sumary');
       RunGetSumary();
       REF_Status := true;
       end;
+   //}
+
+   //{
    if SumReceived then
       begin
-      ToLog('Sumary downloaded');
+      ToLog('main','Sumary downloaded');
       Synchronize(@hidedownload);
       if GoodSumary then
          begin
@@ -353,7 +346,9 @@ While not terminated do
          end;
       SumReceived := false;
       end;
-   If Copy(HashMD5File(GVTFilename),1,5) <> MainConsensus.GVTHash then
+   //}
+   //{
+   If Copy(HashMD5File(GVTFilename),1,5) <> Copy(GetConsensus(18),1,5) then
       begin
       if (not UpdatingGVTs) then
          begin
@@ -361,12 +356,15 @@ While not terminated do
          RunUpdateGVTs();
          end;
       end;
-
-   if MainConsensus.block=GetSumaryLastBlock then Wallet_Synced := true
+   //}
+   if GetConsensus(2){lastblock}.ToInteger=GetSumaryLastBlock then Wallet_Synced := true
    else Wallet_Synced := false;
-   if SAVE_Wallet then SaveWallet;
+   //if SAVE_Wallet then SaveWallet;
    if REF_Addresses then Synchronize(@UpdateAddresses);
-   if LogLines.Count>0 then Synchronize(@UpdateLog);
+   while GetLogLine('main',lastlogline) do Synchronize(@UpdateLog);
+   Repeat
+   until not GetDeepDebLine(lastlogline);
+
    if REF_Nodes then Synchronize(@UpdateNodes);
    if REF_Status then Synchronize(@UpdateStatus);
    if REF_GVTs then Synchronize(@UpdateGVTs);
@@ -374,9 +372,9 @@ While not terminated do
    if UTCTime <> G_UTCTime then
       begin
       G_UTCTime := UTCTime;
-      Synchronize(@UpdateStatus);
+      REF_Status := true;
       end;
-   Sleep(200);
+   Sleep(1000);
    end;
 End;
 

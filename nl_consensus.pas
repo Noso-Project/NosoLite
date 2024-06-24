@@ -5,7 +5,8 @@ unit nl_consensus;
 interface
 
 uses
-  Classes, SysUtils, IdTCPClient, IdGlobal, nl_data, nl_functions, strutils, nl_language, Nl_disk;
+  Classes, SysUtils, IdTCPClient, IdGlobal, nl_data, nl_functions, strutils, nl_language, Nl_disk,
+  nosodebug,nosoconsensus;
 
 Type
 
@@ -218,7 +219,7 @@ REPEAT
    LCycles := LCycles+1;
 UNTIL ( (GetSyncingThreads <= 0) or (GetTickCount64-StartTime>=5000) );
 Result := GetTickCount64-StartTime;
-ToLog(Format('FN: %d ms / %d Cyc / %d OT',[result,Lcycles,GetSyncingThreads]));
+ToLog('main',Format('FN: %d ms / %d Cyc / %d OT',[result,Lcycles,GetSyncingThreads]));
 End;
 
 Procedure RunFillNodes();
@@ -238,13 +239,13 @@ var
   DownloadedFile : Boolean = false;
   HashLine       : string;
   RanNode        : integer;
-  ThisNode       : NodeData;
+  ThisNode       : string;
 Begin
 Result         := false;
 TCPClient      := TidTCPClient.Create(nil);
-ThisNode       := PickRandomNode;
-TCPClient.Host :=ThisNode.host;
-TCPClient.Port :=ThisNode.port;
+ThisNode       := GetRandonNode;
+TCPClient.Host := Parameter(ThisNode,0);
+TCPClient.Port := StrToIntDef(Parameter(ThisNode,1),8080);
 TCPClient.ConnectTimeout:= 1000;
 TCPClient.ReadTimeout:=800;
 MyStream       := TMemoryStream.Create;
@@ -386,13 +387,13 @@ var
   DownloadedFile : Boolean = false;
   HashLine       : string;
   RanNode        : integer;
-  ThisNode       : NodeData;
+  ThisNode       : string;
 Begin
 Result         := false;
 TCPClient      := TidTCPClient.Create(nil);
-ThisNode       := PickRandomNode;
-TCPClient.Host :=ThisNode.host;
-TCPClient.Port :=ThisNode.port;
+ThisNode       := GetRandonNode;
+TCPClient.Host := Parameter(ThisNode,0);
+TCPClient.Port := StrToIntDef(Parameter(ThisNode,1),8080);
 TCPClient.ConnectTimeout:= 1000;
 TCPClient.ReadTimeout:=800;
 MyStream       := TMemoryStream.Create;

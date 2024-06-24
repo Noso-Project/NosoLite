@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, nl_data, nl_signerutils, HlpHashFactory, Base64, nl_language,
-  nl_GUI, nl_network, MD5, infoform, forms, StrUtils, ClpConverters,ClpBigInteger,SbpBase58;
+  nl_GUI, nl_network, MD5, infoform, forms, StrUtils, ClpConverters,ClpBigInteger,SbpBase58,
+  nosotime,nosodebug;
 
 Function CreateNewAddress(keysData:string = ''):WalletData;
 function GetAddressFromPublicKey(PubKey:String):String;
@@ -139,7 +140,7 @@ Signature := TSignerUtils.SignMessage(MessageAsBytes, StrToByte(DecodeStringBase
 Result := EncodeStringBase64(ByteToString(Signature));
 EXCEPT ON E:Exception do
    begin
-   ToLog('ERROR Signing message: '+E.Message);
+   ToLog('main','ERROR Signing message: '+E.Message);
    end;
 END{Try};
 End;
@@ -157,7 +158,7 @@ Result := TSignerUtils.VerifySignature(Signature, MessageAsBytes,
       StrToByte(DecodeStringBase64(PublicKey)), TKeyType.SECP256K1);
 EXCEPT ON E:Exception do
    begin
-   ToLog('ERROR Verifying signature: '+E.Message);
+   ToLog('main','ERROR Verifying signature: '+E.Message);
    end;
 END{Try};End;
 
@@ -175,7 +176,7 @@ Signature := GetStringSigned('VERIFICATION',PrivateK);
 SignProcess := VerifySignedString('VERIFICATION',signature,PublicK);
 EXCEPT on E:Exception do
    begin
-   ToLog(rsDIA0003);
+   ToLog('main',rsDIA0003);
    end;
 END{Try};
 if SignProcess then
@@ -216,7 +217,7 @@ if not IsValidAddressHash(Destination) then
 
 if Remaining > CoinsAvailable then
       begin
-      ToLog(rsError0012);
+      ToLog('main',rsError0012);
       KeepProcess := false;
       end;
 if KeepProcess then
@@ -251,7 +252,7 @@ if KeepProcess then
       OrderString := orderstring+GetStringfromOrder(ArrayTrfrs[counter])+' $';
       end;
    Setlength(orderstring,length(orderstring)-2);
-   ToLog(OrderString);
+   ToLog('main',OrderString);
    Result := SendOrder(OrderString);
    end;
 WO_Refreshrate := PreviousRefresh;
@@ -344,7 +345,7 @@ result := XorDecode(HashSha256String('noso'), Certificate);
 EXCEPT ON E:Exception do
    begin
    result := '';
-   ToLog('Error decoding certificate: '+E.Message);
+   ToLog('main','Error decoding certificate: '+E.Message);
    end;
 END; {TRY}
 End;

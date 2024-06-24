@@ -9,7 +9,8 @@ uses
   Grids, Menus, StdCtrls, nl_GUI, nl_disk, nl_data, nl_functions, IdTCPClient,
   nl_language, nl_cripto, Clipbrd, Buttons, Spin, nl_explorer, IdComponent,
   strutils, Types, nl_qrcode, DefaultTranslator, infoform, nl_consensus,
-  nl_network, splashform, formlog, formnetwork, formliqpool, nosonosocfg;
+  nl_network, splashform, formlog, formnetwork, formliqpool, nosonosocfg, nosoconsensus,
+  nosotime,nosodebug;
 
 type
 
@@ -187,7 +188,7 @@ setlength(ARRAY_Addresses,0);
 setlength(ARRAY_Nodes,0);
 setlength(ARRAY_Sumary,0);
 Setlength(ARRAY_Pending,0);
-LogLines :=TStringList.create;
+//LogLines :=TStringList.create;
 form1.Caption:='Nosolite '+ProgramVersion;
 End;
 
@@ -217,37 +218,38 @@ var
   MainnetTime : int64;
   UpdatedMNs  : String = '';
 Begin
-VerifyFilesStructure;
-  ToStartLog('Files verified');
-LoadGUIInterface();
-UpdateWalletFromSumary();
-RefreshAddresses();
-RefreshNodes();
-RefreshStatus();
-RefreshGVTs;
-  ToStartLog('GVTs updated');
-
-FillNodes;
-MainConsensus := CalculateConsensus;
-  ToStartLog('Consensus calculated');
-
-MainnetTime := GetMainnetTimestamp;
-if MainnetTime<>0 then MainNetOffSet := UTCTime-MainnetTime;
-ToLog(Format('Offset: %d seconds',[MainNetOffSet]));
-  ToStartLog('Mainnet time synced');
+  VerifyFilesStructure;
+    ToStartLog('Files verified');
+  LoadGUIInterface();
+  UpdateWalletFromSumary();
+  RefreshAddresses();
+  RefreshNodes();
+  RefreshStatus();
+  InitDeepDeb(DeepDebLogFilename,format('Nosolite %s',[ProgramVersion]));
+  CreateNewLog('main',MainLogFilename);
+  RefreshGVTs;
+    ToStartLog('GVTs updated');
+  SetNodesArray(GetCFGDataStr(1));
+  StartAutoConsensus;
+    ToStartLog('Consensus started');
+  GetTimeOffset(PArameter(GetCFGDataStr,2));
+  ToStartLog('TIME: '+NosoT_TimeOffset.ToString);
+  //MainnetTime := GetMainnetTimestamp;
+  //if MainnetTime<>0 then MainNetOffSet := UTCTime-MainnetTime;
+  //ToLog(Format('Offset: %d seconds',[MainNetOffSet]));
+  //ToStartLog('Mainnet time synced');
 
 UpdatedMNs := GetMNsFromNode;
   ToStartLog('MNs file retrieved');
-SetCFGFilename(DataDirectory+CFGFilename);
-FillArrayNodes;
+
 if StrToIntDef(Parameter(UpdatedMNs,0),-1)> MasternodesLastBlock then
    begin
    SaveMnsToFile(UpdatedMNs);
    //FillArrayNodes;
    ToStartLog('Nodes updated');
    end;
-Pendings_String := GetPendings();
-ProcessPendings();
+//Pendings_String := GetPendings();
+//ProcessPendings();
 Sleep(500);
    Form1.Visible:=true;
    form4.Visible:=false;
@@ -276,7 +278,8 @@ DoneCriticalSection(CS_ARRAY_Addresses);
 DoneCriticalSection(CS_LOG);
 DoneCriticalSection(CS_ArrayNodes);
 DoneCriticalSection(CS_Masternodes);
-LogLines.Free;
+StopAutoConsensus;
+//LogLines.Free;
 application.Terminate;
 End;
 
@@ -554,7 +557,7 @@ if length(ARRAY_Addresses)>1 then
    SAVE_Wallet := true;
    REF_Addresses := true;
    end
-else ToLog(rsError0009);
+else ToLog('main',rsError0009);
 End;
 
 // Lock Address
@@ -616,7 +619,7 @@ else
    SignProcess := VerifySignedString('VERIFICATION',signature,ARRAY_Addresses[CurrPos].PublicKey);
    EXCEPT on E:Exception do
       begin
-      ToLog(format(rsError0011,[ARRAY_Addresses[CurrPos].Hash]));
+      ToLog('main',format(rsError0011,[ARRAY_Addresses[CurrPos].Hash]));
       end;
    END{Try};
    if SignProcess then
@@ -625,7 +628,7 @@ else
       REF_Addresses := true;
       SAVE_Wallet := true;
       end
-   else ToLog(format(rsError0011,[ARRAY_Addresses[CurrPos].Hash]));
+   else ToLog('main',format(rsError0011,[ARRAY_Addresses[CurrPos].Hash]));
    end;
 end;
 
@@ -653,7 +656,7 @@ Begin
 currtime := UTCTime.ToString;
 CurrPos := SGridAddresses.Row-1;
 if isAddressLocked(ARRAY_Addresses[currpos]) then
-   ToLog(rsError0013)
+   ToLog('main',rsError0013)
 else
    begin
    address := GetAddressToShow(ARRAY_Addresses[currpos].Hash);
@@ -772,7 +775,7 @@ Begin
 TRY
 OpenDocument(GetCurrentDir+directoryseparator+'wallet');
 EXCEPT ON E:Exception do
-   ToLog(e.Message);
+   ToLog('main',e.Message);
 END; {TRY}
 End;
 
@@ -859,7 +862,7 @@ OperResult :=SendTo(EditSCDest.Text,ammount,MemoSCCon.Text);
 if ( (OperResult <>'') and (Parameter(OperResult,0)<>'ERROR') ) then
    begin
    form3.memoresult.Text:=format(rsGUI0024,[OperResult]);
-   tolog('Order: '+OperResult);
+   tolog('main','Order: '+OperResult);
    end
 else
    begin
@@ -890,7 +893,7 @@ if ( (IsValidDestination(EditSCDest.Text) ) and
    SCBitConf.Visible:=true;
    SCBitCancel.Visible:=true;
    end
-else ToLog(rsError0010);
+else ToLog('main',rsError0010);
 End;
 
 // Set the maximun available ammount

@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, nl_data, nl_cripto, nl_language, dialogs, nl_functions, fileutil,
-  Zipper, splashform,nosonosocfg;
+  Zipper, splashform,nosonosocfg,nosodebug;
 
 Procedure VerifyFilesStructure();
 Procedure CreateNewWallet();
@@ -51,7 +51,7 @@ if not FileExists(MNsFilename) then CreateMNsFile() else LoadMNsFromFile();
 if not FileExists(GVTFilename) then CreateGVTsFile() else LoadGVTsFile();
 if not FileExists(LabelsFilename) then CreateLabelsFile() else LoadLabelsFile();
 CreateStartLog();
-
+SetCFGFilename(DataDirectory+CFGFilename);
 End;
 
 //******************************************************************************
@@ -73,7 +73,7 @@ if not fileexists(WalletFileName) then
    closefile(FILE_Wallet);
    EXCEPT on E:Exception do
      begin
-     ToLog(format(rsError0001,[e.Message]));
+     ToLog('main',format(rsError0001,[e.Message]));
      end;
    END;
    end;
@@ -97,7 +97,7 @@ for counter := 0 to length(ARRAY_Addresses)-1 do
 closefile(FILE_Wallet);
 EXCEPT on E:Exception do
    begin
-   ToLog(format(rsError0002,[e.Message]));
+   ToLog('main',format(rsError0002,[e.Message]));
    end;
 END{Try};
 End;
@@ -124,7 +124,7 @@ For Counter := 0 to length(ARRAY_Addresses)-1 do
 Truncate(FILE_Wallet);
 EXCEPT on E:Exception do
    begin
-   ToLog(Format(rsError0004,[E.Message]))
+   ToLog('main',Format(rsError0004,[E.Message]))
    end;
 END{Try};
 LeaveCriticalSection(CS_ARRAY_Addresses);
@@ -253,7 +253,7 @@ UnZipper := TUnZipper.Create;
    END;
 EXCEPT on E:Exception do
    begin
-   tolog ('Error unzipping block file');
+   tolog ('main','Error unzipping block file');
    end;
 END{Try};
 End;
@@ -447,12 +447,12 @@ End;
 
 Procedure ToStartLog(TextLine:String);
 Begin
-assignfile(FILE_StartLog,StartLogFilename);
-Append(FILE_StartLog);
-WriteLn(FILE_StartLog,TextLine);
-CloseFile(FILE_StartLog);
-form4.LabelSplash.Caption:=form4.LabelSplash.Caption+TextLine+slinebreak;
-form4.LabelSplash.Update;
+  assignfile(FILE_StartLog,StartLogFilename);
+  Append(FILE_StartLog);
+  WriteLn(FILE_StartLog,TextLine);
+  CloseFile(FILE_StartLog);
+  form4.LabelSplash.Caption:=form4.LabelSplash.Caption+TextLine+slinebreak;
+  form4.LabelSplash.Update;
 End;
 
 END. // END UNIT

@@ -57,10 +57,12 @@ Begin
 ts := (Sender as TStringGrid).Canvas.TextStyle;
 if aRow > 0 then
    begin
+   {
    if ARRAY_Nodes[aRow-1].Updated=0 then (Sender as TStringGrid).Canvas.Brush.Color :=  clgreen;
    if ((ARRAY_Nodes[aRow-1].Updated>0) and (ARRAY_Nodes[aRow-1].Updated<6)) then (Sender as TStringGrid).Canvas.Brush.Color :=  clyellow;
    if ARRAY_Nodes[aRow-1].Updated>5 then (Sender as TStringGrid).Canvas.Brush.Color := clRed;
    if ( (ARRAY_Nodes[aRow-1].Updated=0) and (not ARRAY_Nodes[aRow-1].Synced) ) then (Sender as TStringGrid).Canvas.Brush.Color := clAqua;
+   }
    end;
 end;
 

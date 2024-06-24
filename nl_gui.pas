@@ -5,7 +5,8 @@ unit nl_GUI;
 interface
 
 uses
-  Classes, SysUtils, nl_functions, nl_language, nl_data, graphics, DateUtils, formnetwork;
+  Classes, SysUtils, nl_functions, nl_language, nl_data, graphics, DateUtils, formnetwork,
+  nosoconsensus, nosotime;
 
 Procedure LoadGUIInterface();
 Procedure RefreshAddresses();
@@ -78,25 +79,27 @@ End;
 // Refresh the nodes grid
 Procedure RefreshNodes();
 var
-  counter : integer = 0;
+  counter     : integer = 0;
+  LConsensus  : TNodeConsensus;
 Begin
-Form6.LabelNodes.caption := 'Block: '+MasternodesLastBlock.ToString+'+';
-form6.SGridNodes.RowCount:=length(ARRAY_Nodes)+1;
-if length(ARRAY_Nodes)>0 then
+Form6.LabelNodes.caption := 'Block: '+GetConsensus(2)+'+';
+form6.SGridNodes.RowCount:=GetNodesArrayCount+1;
+if GetNodesArrayCount > 0 then
    begin
-   for counter := 0 to length(ARRAY_Nodes)-1 do
+   for counter := 0 to GetNodesArrayCount-1 do
       begin
-      form6.SGridNodes.Cells[0,counter+1] := ARRAY_Nodes[counter].Host;
-      form6.SGridNodes.Cells[1,counter+1] := ARRAY_Nodes[counter].Block.ToString;
-      form6.SGridNodes.Cells[2,counter+1] := ARRAY_Nodes[counter].Pending.ToString;
-      form6.SGridNodes.Cells[3,counter+1] := ARRAY_Nodes[counter].Branch+'/'+ARRAY_Nodes[counter].SumHash;
-      form6.SGridNodes.Cells[4,counter+1] := ARRAY_Nodes[counter].MNsHash+'-'+ARRAY_Nodes[counter].MNsCount.ToString+'-'+ARRAY_Nodes[counter].Checks.ToString;
-      form6.SGridNodes.Cells[5,counter+1] := ARRAY_Nodes[counter].Peers.ToString;
-      form6.SGridNodes.Cells[6,counter+1] := BestHashReadeable(ARRAY_Nodes[counter].NMSDiff);
-      form6.SGridNodes.Cells[7,counter+1] := ARRAY_Nodes[counter].version;
+      LConsensus := GetNodesArrayIndex(counter);
+      form6.SGridNodes.Cells[0,counter+1] := LConsensus.Host;
+      form6.SGridNodes.Cells[1,counter+1] := LConsensus.Block.ToString;
+      form6.SGridNodes.Cells[2,counter+1] := '';//LConsensus.pending.ToString;
+      form6.SGridNodes.Cells[3,counter+1] := Copy(LConsensus.ConStr,1,5)+'/'+Copy(GetConsensus(0),1,5);
+      form6.SGridNodes.Cells[4,counter+1] := '';//ARRAY_Nodes[counter].MNsHash+'-'+ARRAY_Nodes[counter].MNsCount.ToString+'-'+ARRAY_Nodes[counter].Checks.ToString;
+      form6.SGridNodes.Cells[5,counter+1] := LConsensus.Peers.ToString;
+      form6.SGridNodes.Cells[6,counter+1] := 'null';
+      form6.SGridNodes.Cells[7,counter+1] := '';//ARRAY_Nodes[counter].version;
       end;
    end;
-Form6.Caption:=Format('Noso network (%d nodes)',[length(ARRAY_Nodes)]);
+Form6.Caption:=Format('Noso network (%d nodes)',[GetNodesArrayCount]);
 End;
 
 // Refresh the status bar
@@ -115,7 +118,7 @@ else form1.PanelBlockInfo.Color:=clRed;
 form1.LabelBlockInfo.Caption:=GetSumaryLastBlock.ToString;
 Form1.Labelsupply.Caption:=FormatFloat('0.00', Supply)+'M';
 Form1.Labelsupply.Hint:=format(rsGUI0025,[FormatFloat('0.00', Supply)]);
-form1.LabelTime.Caption:=TimestampToDate(G_UTCTime);
+form1.LabelTime.Caption:=TimestampToDate(UTCTime);
 form1.labelstake.Caption:=IntToStr(Int_StakeSize)+' NOSO';
 form1.Labelsummary.Caption:=FormatFloat('0.00', (length(ARRAY_Sumary)+1)/1000)+'k';
 End;

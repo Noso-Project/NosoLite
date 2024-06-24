@@ -74,7 +74,7 @@ var
   defseeds : string = '';
 Begin
   CFGFilename := Fname;
-  AssignFile(CFGFile, CFGFilename);
+  //AssignFile(CFGFile, CFGFilename);
   if not fileexists(CFGFilename) then
     begin
     SaveCFGToFile(DefaultNosoCFG);
@@ -90,6 +90,7 @@ Begin
       ToLog('console','Unable to download default seeds. Please, use a fallback');
       end;
     end;
+  ToLog('main','all well here');
   GetCFGFromFile;
   SetCFGHash();
 End;
